@@ -8,6 +8,8 @@ class StatisticsModel extends Main {
 	}
 
 	public function get() {
-		var_dump('Получение');exit;
+		$sth = $this->_db->prepare('SELECT * FROM `statistic_games` WHERE game_id = ?');
+		$sth->execute(['1058']);
+		return $sth->fetch(PDO::FETCH_ASSOC);
 	}
 }
