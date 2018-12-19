@@ -3,9 +3,10 @@
 class Route {
 	
 	public static function routing() {
+		
 		$url = trim($_SERVER['REQUEST_URI']);
-		if (!$url || $url === '/') {
-			$controllerName = 'index';
+		if (!$url || $url === '/' || $url === 'index') {
+			$controllerName = 'statistics';
 			$method = 'index';
 		} else {
 			$urlArray = explode('/', $url);
@@ -21,11 +22,13 @@ class Route {
 		}
 
 		require_once $file;
+		
 		$Controller = new $controllerName;
 		if (!method_exists($Controller, $method)) {
 			print('Данного метода не существует!');
 			exit;
 		}
+
 		$Controller->$method();
 	}
 }
