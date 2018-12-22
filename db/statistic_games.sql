@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS `statistic_games`;
 CREATE TABLE `statistic_games` (
   `game_id` int(10) unsigned NOT NULL,
   `dt` date NOT NULL DEFAULT '1901-01-01' COMMENT 'Дата проведения',

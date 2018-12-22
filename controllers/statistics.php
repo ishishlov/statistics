@@ -25,7 +25,13 @@ class Statistics extends Common {
 		$Csv = new Csv($_FILES['csv']);
 		$data = $Csv->getArray();
 		$data = $this->_getCorrectKeyArray($data);
-		$this->vd($data);exit;
+		$data = $this->_removeFirstRow($data);
+		$errors = $this->_validateArrayData($data);
+		if ($errors) {
+			$this->vd('Ошибка');exit;
+		}
+		$res = $this->_model->save($data);
+		$this->vd($res);exit;
 	}
 
 	/**
@@ -40,7 +46,7 @@ class Statistics extends Common {
 	}
 
 	/**
-	 * Установка корректных названий элементам массива
+	 * Установка корректных названий элементам массива и добавление поле "статус"
 	 * 
 	 * @param array $data
 	 * @return array
@@ -55,8 +61,36 @@ class Statistics extends Common {
 			foreach ($row as $key2 => $value) {
 				$finalData[$key1][StatisticsModel::FIELDS[$key2]] = mb_convert_encoding($value, "utf-8", "windows-1251");
 			}
+			$finalData[$key1][StatisticsModel::FIELDS[28]] = StatisticsModel::STATUS_NOT_CONFIRMED;
 		}
 
 		return $finalData;
+	}
+
+	/**
+	 * Удалить первую строку если она состоит из заголовков
+	 * 
+	 * @param array $data
+	 * @return array
+	 */
+	private function _removeFirstRow($data) {
+		$temp = (int)$data[0][StatisticsModel::FIELDS[0]];
+		//$this->vd($temp1);exit;
+		if (!$temp) {
+			array_shift($data);
+		}
+		return $data;
+	}
+
+	/**
+	 * Проверка на корректность заполнения полей
+	 * 
+	 * @param type $data
+	 * @return array
+	 */
+	private function _validateArrayData($data) {
+		$errors = [];
+		
+		return $errors;
 	}
 }
