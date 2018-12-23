@@ -12,7 +12,7 @@ class StatisticsModel extends Main {
 	const TABLE_NAME_STATISTIC_PLAYERS = 'statistic_players';
 	/** Название таблицы статистики игр */
 	const TABLE_NAME_STATISTIC_GAMES = 'statistic_games';
-	
+
 	const FIELDS = [
 		0 => '`game_id`',
 		1 => '`dt`',
@@ -99,6 +99,51 @@ class StatisticsModel extends Main {
 		return $statistic;
 	}
 
+	/**
+	 * Получить данные по неподтвержденному протоколу
+	 * 
+	 * @return array
+	 */
+	public function getNotConfirmedProtocolData() {
+		$sth = $this->_db->prepare('
+			SELECT
+				game_id
+			FROM `statistic_games` 
+			
+			WHERE status = ?');
+		$sth->execute([self::STATUS_NOT_CONFIRMED]);
+		return $sth->fetch(PDO::FETCH_ASSOC);
+	}
+
+	/**
+	 * Подтверждение протокола матча
+	 * 
+	 * @return bool
+	 */
+	public function confirmedProtocol() {
+		$stmt = $this->_db->prepare('UPDATE ' . self::TABLE_NAME_STATISTIC_GAMES . ' SET `status` = ? WHERE `status` = ?');
+		return $stmt->execute([self::STATUS_CONFIRMED, self::STATUS_NOT_CONFIRMED]);
+	}
+
+	/**
+	 * Удаление неподтвержденного протокола матча
+	 * 
+	 * @return bool
+	 */
+	public function deleteNotConfirmedProtocol($gameId) {
+		$stmt = $this->_db->prepare('DELETE FROM ' . self::TABLE_NAME_STATISTIC_PLAYERS. ' WHERE `game_id` = ?');
+		$res1 = $stmt->execute([$gameId]);
+		$stmt = $this->_db->prepare('DELETE FROM ' . self::TABLE_NAME_STATISTIC_GAMES . ' WHERE `game_id` = ?');
+		$res2 = $stmt->execute([$gameId]);
+		return $res1 && $res2;
+	}
+
+	/**
+	 * Получить массивы данных по статистике игры и статистике игроков
+	 * 
+	 * @param array $data
+	 * @return array
+	 */
 	private function _getDataForStaticticGameAndPlayer($data) {
 		$statisticGame = [];
 		$statisticPlayer = [];

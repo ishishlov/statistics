@@ -15,6 +15,8 @@ class Statistics extends Common {
 	 * Страница с формой сохранения протокола статистики
 	 */
 	public function index() {
+		$notConfirmedProtocol = $this->_model->getNotConfirmedProtocolData();
+		$this->_data['isShowLoadButton'] = (bool)!$notConfirmedProtocol;
 		$this->display('index.tpl');
 	}
 
