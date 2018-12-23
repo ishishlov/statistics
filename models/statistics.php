@@ -7,37 +7,42 @@ class StatisticsModel extends Main {
 	const STATUS_CONFIRMED = 1;
 	/** Статус протокола статистики - не подтвержен */
 	const STATUS_NOT_CONFIRMED = 2;
+
+	/** Название таблицы статистики игроков */
+	const TABLE_NAME_STATISTIC_PLAYERS = 'statistic_players';
+	/** Название таблицы статистики игр */
+	const TABLE_NAME_STATISTIC_GAMES = 'statistic_games';
 	
 	const FIELDS = [
-		0 => 'game_id',
-		1 => 'dt',
-		2 => 'tournament_id',
-		3 => 'team_id',
-		4 => 'player_id',
-		5 => 'season_id',
-		6 => 'venue',
-		7 => 'min',
-		8 => 'two-point_made',
-		9 => 'two-point_throw',
-		10 => 'three-point_made',
-		11 => 'three-point_throw',
-		12 => 'free_made',
-		13 => 'free_throw',
-		14 => 'offensive_rebound',
-		15 => 'deffensive_rebound',
-		16 => 'assists',
-		17 => 'commited_foul',
-		18 => 'recieved _foul',
-		19 => 'turnover',
-		20 => 'steal',
-		21 => 'in_fawor',
-		22 => 'against',
-		23 => 'effectiveness',
-		24 => 'plus-minus',
-		25 => 'points_scored',
-		26 => 'games',
-		27 => 'gs',
-		28 => 'status'
+		0 => '`game_id`',
+		1 => '`dt`',
+		2 => '`tournament_id`',
+		3 => '`team_id`',
+		4 => '`player_id`',
+		5 => '`season_id`',
+		6 => '`venue`',
+		7 => '`min`',
+		8 => '`two-point_made`',
+		9 => '`two-point_throw`',
+		10 => '`three-point_made`',
+		11 => '`three-point_throw`',
+		12 => '`free_made`',
+		13 => '`free_throw`',
+		14 => '`offensive_rebound`',
+		15 => '`deffensive_rebound`',
+		16 => '`assists`',
+		17 => '`commited_foul`',
+		18 => '`recieved_foul`',
+		19 => '`turnover`',
+		20 => '`steal`',
+		21 => '`in_fawor`',
+		22 => '`against`',
+		23 => '`effectiveness`',
+		24 => '`plus-minus`',
+		25 => '`points_scored`',
+		26 => '`games`',
+		27 => '`gs`',
+		28 => '`status`'
 	];
 
 	const FIELD_FOR_STATICTIC_PLAYER = [
@@ -109,7 +114,7 @@ class StatisticsModel extends Main {
 			}
 		}
 		return [
-			'statisticGame'		=> $statisticGame,
+			'statisticGame'		=> [$statisticGame[0]],
 			'statisticPlayer'	=> $statisticPlayer
 		];
 	}
@@ -124,11 +129,11 @@ class StatisticsModel extends Main {
 		
 	}
 
-	private function _saveStaticticGame($statisticGame) {
-		
+	private function _saveStaticticGame($data) {
+		return $this->insert(self::TABLE_NAME_STATISTIC_GAMES, $data);
 	}
 
-	private function _saveStaticticPlayer($statisticPlayer) {
-		
+	private function _saveStaticticPlayer($data) {
+		return $this->insert(self::TABLE_NAME_STATISTIC_PLAYERS, $data);
 	}
 }
