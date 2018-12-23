@@ -49,7 +49,7 @@ class Main {
 
 		foreach ($data as $key => $statistics) {
 			foreach ($statistics as $title => $statistic) {
-				$executeData[] = $statistic;
+				$executeData[] = $statistic !== '' ? $statistic : null;
 			}
 		}
 

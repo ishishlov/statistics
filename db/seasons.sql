@@ -5,7 +5,9 @@ CREATE TABLE `seasons` (
   PRIMARY KEY (`season_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COMMENT='Список сезонов';
 
-
+-- ----------------------------
+-- Records of seasons
+-- ----------------------------
 INSERT INTO `seasons` VALUES ('10', '2010-11');
 INSERT INTO `seasons` VALUES ('11', '2011-12');
 INSERT INTO `seasons` VALUES ('12', '2012-13');

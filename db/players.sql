@@ -5,7 +5,9 @@ CREATE TABLE `players` (
   PRIMARY KEY (`player_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8 COMMENT='Список игроков';
 
-
+-- ----------------------------
+-- Records of players
+-- ----------------------------
 INSERT INTO `players` VALUES ('81', 'ШВЕД Алексей');
 INSERT INTO `players` VALUES ('103', 'ЗАЙЦЕВ Вячеслав');
 INSERT INTO `players` VALUES ('113', 'МОНЯ Сергей');

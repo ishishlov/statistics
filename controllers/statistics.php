@@ -46,6 +46,17 @@ class Statistics extends Common {
 	}
 
 	/**
+	 * Скачать образец протокола
+	 */
+	public function loadProtocol() {
+		$file = 'files/test.csv';
+		header("Content-type: text/csv");
+		header('Content-Disposition: attachment; filename="test.csv"');
+		readfile($file);
+		//$this->vd('Скачиваем протокол');exit;
+	}
+
+	/**
 	 * Установка корректных названий элементам массива и добавление поле "статус"
 	 * 
 	 * @param array $data

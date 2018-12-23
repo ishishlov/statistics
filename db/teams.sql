@@ -1,9 +1,13 @@
+
 CREATE TABLE `teams` (
   `team_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL COMMENT 'Название команды',
   PRIMARY KEY (`team_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COMMENT='Список команд';
 
+-- ----------------------------
+-- Records of teams
+-- ----------------------------
 INSERT INTO `teams` VALUES ('1', 'АВТОДОР');
 INSERT INTO `teams` VALUES ('2', 'АНАДОЛУ ЭФЕС');
 INSERT INTO `teams` VALUES ('3', 'АСТАНА');
