@@ -99,6 +99,59 @@ class StatisticsModel extends Main {
 		return $statistic;
 	}
 
+	public function getBySeasonIdAndTournamentId($seasonId, $tournamentId) {
+		$sth = $this->_db->prepare(
+			'SELECT
+				SUM(sp.`two-point_made`) AS "two-point_made",
+				SUM(sp.`two-point_throw`) AS "two-point_throw",
+				SUM(sp.`three-point_made`) AS "three-point_made",
+				SUM(sp.`three-point_throw`) AS "three-point_throw",
+				SUM(sp.free_made) AS "free_made",
+				SUM(sp.free_throw) AS "free_throw",
+				SUM(sp.offensive_rebound) AS "offensive_rebound",
+				SUM(sp.deffensive_rebound) AS "deffensive_rebound",
+				SUM(sp.assists) AS "assists",
+				SUM(sp.commited_foul) AS "commited_foul",
+				SUM(sp.recieved_foul) AS "recieved_foul",
+				MAX(sp.turnover) AS "max_turnover",
+				MIN(sp.turnover) AS "min_turnover",
+				SUM(sp.steal) AS "steal",
+				SUM(sp.in_fawor) AS "in_fawor",
+				SUM(sp.`against`) AS "against",
+				SUM(sp.effectiveness) AS "effectiveness",
+				SUM(sp.points_scored) AS "points_scored",
+				MAX(sp.op) AS "max_op",
+				MIN(sp.op) AS "min_op",
+				MAX(sp.`plus-minus`) AS "max_plus-minus",
+				MIN(sp.`plus-minus`) AS "min_plus-minus",
+				MAX(sp.pvk) AS "max_pvk",
+				MIN(sp.pvk) AS "min_pvk",
+				MAX(sp.bvk) AS "max_bvk",
+				MIN(sp.bvk) AS "min_bvk"
+			FROM statistic_players sp 
+			JOIN statistic_games sg ON sp.game_id = sg.game_id
+			WHERE sg.season_id = ? AND tournament_id = ?'
+		);
+		$sth->execute([$seasonId, $tournamentId]);
+		return $sth->fetch(PDO::FETCH_ASSOC);
+	}
+
+	/**
+	 * Добавление к массиву сырых данных вычисляемых полей
+	 * 
+	 * @param array $data -массив сырых данных из бд
+	 * @return array
+	 */
+	public function addCalculateCommandStatistics($data) {
+		$data['two-three-point_made'] = (int)$data['two-point_made'] + (int)$data['three-point_made'];
+		$data['two-three-point_throw'] = (int)$data['two-point_throw'] + (int)$data['three-point_throw'];
+		$data['two-point_percent'] = round((int)$data['two-point_made'] * 100 / (int)$data['two-point_throw'], 1);
+		$data['three-point_percent'] = round((int)$data['three-point_made'] * 100 / (int)$data['three-point_throw'], 1);
+		$data['two-three-point_percent'] = round((int)$data['two-three-point_made'] * 100 / (int)$data['two-three-point_throw'], 1);
+		$data['free_percent'] = round((int)$data['free_made'] * 100 / (int)$data['free_throw'], 1);
+		return $data;
+	}
+
 	/**
 	 * Получить данные по неподтвержденному протоколу
 	 * 

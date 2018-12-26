@@ -21,6 +21,16 @@ class Statistics extends Common {
 	}
 
 	/**
+	 * Страница с формой сохранения протокола статистики
+	 */
+	public function commandStatistics() {
+		$commandStatisticsFromDB = $this->_model->getBySeasonIdAndTournamentId(17, 1);
+		$commandStatisticsFrom = $this->_model->addCalculateCommandStatistics($commandStatisticsFromDB);
+		$this->vd($commandStatisticsFrom);exit;
+		$this->display('commandstatistics.tpl');
+	}
+
+	/**
 	 * Сохранить протокол статистики
 	 */
 	public function save() {
@@ -55,7 +65,6 @@ class Statistics extends Common {
 		header("Content-type: text/csv");
 		header('Content-Disposition: attachment; filename="test.csv"');
 		readfile($file);
-		//$this->vd('Скачиваем протокол');exit;
 	}
 
 	/**
