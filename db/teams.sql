@@ -1,4 +1,3 @@
-
 CREATE TABLE `teams` (
   `team_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL COMMENT 'Название команды',
@@ -34,3 +33,4 @@ INSERT INTO `teams` VALUES ('23', 'ФЕНЕРБАХЧЕ');
 INSERT INTO `teams` VALUES ('24', 'ЦМОКИ');
 INSERT INTO `teams` VALUES ('25', 'ЦРВЕНА ЗВЕЗДА');
 INSERT INTO `teams` VALUES ('26', 'ЦСКА');
+

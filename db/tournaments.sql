@@ -1,4 +1,3 @@
-
 CREATE TABLE `tournaments` (
   `tournament_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL COMMENT 'Название турнира',
@@ -8,5 +7,5 @@ CREATE TABLE `tournaments` (
 -- ----------------------------
 -- Records of tournaments
 -- ----------------------------
-INSERT INTO `tournaments` VALUES ('1', 'ВТБ');
-INSERT INTO `tournaments` VALUES ('2', 'ЕЛ');
+INSERT INTO `tournaments` VALUES ('1', 'Единая Лига ВТБ');
+INSERT INTO `tournaments` VALUES ('2', 'Евролига');

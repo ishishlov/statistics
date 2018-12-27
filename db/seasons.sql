@@ -1,4 +1,3 @@
-
 CREATE TABLE `seasons` (
   `season_id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL COMMENT 'Дата сезона',
