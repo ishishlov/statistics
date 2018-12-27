@@ -24,9 +24,10 @@ class Statistics extends Common {
 	 * Страница с формой сохранения протокола статистики
 	 */
 	public function commandStatistics() {
-		$commandStatisticsFromDB = $this->_model->getBySeasonIdAndTournamentId(17, 1);
-		$commandStatisticsFrom = $this->_model->addCalculateCommandStatistics($commandStatisticsFromDB);
-		$this->vd($commandStatisticsFrom);exit;
+		$seasonStatistics = $this->_model->getSeasonStatistics(17, 1);
+		$gamesStatistics = $this->_model->getGamesStatistics(17, [1,2]);
+		
+		//$this->vd($gamesStatistics);exit;
 		$this->display('commandstatistics.tpl');
 	}
 

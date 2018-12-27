@@ -22,10 +22,10 @@ class StatisticsModel extends Main {
 		5 => '`season_id`',
 		6 => '`venue`',
 		7 => '`min`',
-		8 => '`two-point_made`',
-		9 => '`two-point_throw`',
-		10 => '`three-point_made`',
-		11 => '`three-point_throw`',
+		8 => '`two_point_made`',
+		9 => '`two_point_throw`',
+		10 => '`three_point_made`',
+		11 => '`three_point_throw`',
 		12 => '`free_made`',
 		13 => '`free_throw`',
 		14 => '`offensive_rebound`',
@@ -38,7 +38,7 @@ class StatisticsModel extends Main {
 		21 => '`in_fawor`',
 		22 => '`against`',
 		23 => '`effectiveness`',
-		24 => '`plus-minus`',
+		24 => '`plus_minus`',
 		25 => '`points_scored`',
 		26 => '`games`',
 		27 => '`gs`',
@@ -80,7 +80,7 @@ class StatisticsModel extends Main {
 		self::FIELDS[5],
 		self::FIELDS[28]
 	];
-	
+
 	public function save($data) {
 		$statisticGameAndPlayer = $this->_getDataForStaticticGameAndPlayer($data);
 		$res = $this->_saveStaticticPlayer($statisticGameAndPlayer['statisticPlayer']);
@@ -99,57 +99,62 @@ class StatisticsModel extends Main {
 		return $statistic;
 	}
 
-	public function getBySeasonIdAndTournamentId($seasonId, $tournamentId) {
+	public function getSeasonStatistics($seasonId, $tournamentId) {
 		$sth = $this->_db->prepare(
 			'SELECT
-				SUM(sp.`two-point_made`) AS "two-point_made",
-				SUM(sp.`two-point_throw`) AS "two-point_throw",
-				SUM(sp.`three-point_made`) AS "three-point_made",
-				SUM(sp.`three-point_throw`) AS "three-point_throw",
-				SUM(sp.free_made) AS "free_made",
-				SUM(sp.free_throw) AS "free_throw",
-				SUM(sp.offensive_rebound) AS "offensive_rebound",
-				SUM(sp.deffensive_rebound) AS "deffensive_rebound",
-				SUM(sp.assists) AS "assists",
-				SUM(sp.commited_foul) AS "commited_foul",
-				SUM(sp.recieved_foul) AS "recieved_foul",
-				MAX(sp.turnover) AS "max_turnover",
-				MIN(sp.turnover) AS "min_turnover",
-				SUM(sp.steal) AS "steal",
-				SUM(sp.in_fawor) AS "in_fawor",
-				SUM(sp.`against`) AS "against",
-				SUM(sp.effectiveness) AS "effectiveness",
-				SUM(sp.points_scored) AS "points_scored",
-				MAX(sp.op) AS "max_op",
-				MIN(sp.op) AS "min_op",
-				MAX(sp.`plus-minus`) AS "max_plus-minus",
-				MIN(sp.`plus-minus`) AS "min_plus-minus",
-				MAX(sp.pvk) AS "max_pvk",
-				MIN(sp.pvk) AS "min_pvk",
-				MAX(sp.bvk) AS "max_bvk",
-				MIN(sp.bvk) AS "min_bvk"
-			FROM statistic_players sp 
-			JOIN statistic_games sg ON sp.game_id = sg.game_id
-			WHERE sg.season_id = ? AND tournament_id = ?'
+				MAX(sp.`two_point_made`) AS two_point_made,
+				MAX(sp.`two_point_throw`) AS two_point_throw,
+				MAX(ROUND(sp.`two_point_made` * 100 / sp.`two_point_throw`, 1)) AS two_point_percent,
+				MAX(sp.`three_point_made`) AS three_point_made,
+				MAX(sp.`three_point_throw`) AS three_point_throw,
+				MAX(ROUND(sp.`three_point_made` * 100 / sp.`three_point_throw`, 1)) AS three_point_percent,
+				MAX(sp.`two_point_made` + sp.`three_point_made`) AS two_three_point_made,
+				MAX(sp.`two_point_throw` + sp.`three_point_throw`) AS two_three_point_throw,
+				MAX(ROUND((sp.`two_point_made` + sp.`three_point_made`) * 100 / (sp.`two_point_throw` + sp.`three_point_throw`), 1)) AS two_three_point_percent,
+				MAX(sp.free_made) AS free_made,
+				MAX(sp.free_throw) AS free_throw,
+				MAX(ROUND(sp.free_made * 100 / sp.free_throw)) AS free_percent,
+				MAX(sp.offensive_rebound) AS offensive_rebound,
+				MAX(sp.deffensive_rebound) AS deffensive_rebound,
+				MAX(sp.offensive_rebound + sp.deffensive_rebound) AS sum_rebound,
+				MAX(sp.assists) AS assists,
+				MAX(sp.commited_foul) AS commited_foul,
+				MAX(sp.recieved_foul) AS recieved_foul,
+				MAX(sp.turnover) AS max_turnover,
+				MIN(sp.turnover) AS min_turnover,
+				MAX(sp.steal) AS steal,
+				MAX(sp.in_fawor) AS in_fawor,
+				MAX(sp.`against`) AS against,
+				MAX(sp.effectiveness) AS effectiveness,
+				MAX(sp.points_scored) AS points_scored,
+				MAX(sp.op) AS max_op,
+				MIN(sp.op) AS min_op,
+				MAX(sp.`plus_minus`) AS max_plus_minus,
+				MIN(sp.`plus_minus`) AS min_plus_minus,
+				MAX(sp.pvk) AS max_pvk,
+				MIN(sp.pvk) AS min_pvk,
+				MAX(sp.bvk) AS max_bvk,
+				MIN(sp.bvk) AS min_bvk
+			FROM statistic_games sg 
+			JOIN statistic_players sp ON sp.game_id = sg.game_id
+			WHERE sg.season_id = 17 AND sg.tournament_id = 1'
 		);
 		$sth->execute([$seasonId, $tournamentId]);
 		return $sth->fetch(PDO::FETCH_ASSOC);
 	}
 
-	/**
-	 * Добавление к массиву сырых данных вычисляемых полей
-	 * 
-	 * @param array $data -массив сырых данных из бд
-	 * @return array
-	 */
-	public function addCalculateCommandStatistics($data) {
-		$data['two-three-point_made'] = (int)$data['two-point_made'] + (int)$data['three-point_made'];
-		$data['two-three-point_throw'] = (int)$data['two-point_throw'] + (int)$data['three-point_throw'];
-		$data['two-point_percent'] = round((int)$data['two-point_made'] * 100 / (int)$data['two-point_throw'], 1);
-		$data['three-point_percent'] = round((int)$data['three-point_made'] * 100 / (int)$data['three-point_throw'], 1);
-		$data['two-three-point_percent'] = round((int)$data['two-three-point_made'] * 100 / (int)$data['two-three-point_throw'], 1);
-		$data['free_percent'] = round((int)$data['free_made'] * 100 / (int)$data['free_throw'], 1);
-		return $data;
+	public function getGamesStatistics($seasonId, $tournamentIds) {
+		$tournamentIdsString = implode(',', $tournamentIds);
+		$sth = $this->_db->prepare(
+			'SELECT sg.game_id, sg.dt, tr.`name` AS tournament, tm.`name` AS opponent,  IF(sg.venue = 1, "дома", "в гостях") AS venue, sg.score
+			FROM `statistic_games` sg
+			JOIN tournaments tr ON tr.tournament_id = sg.tournament_id
+			JOIN teams tm ON tm.team_id = sg.team_id
+			WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?
+			ORDER BY sg.dt DESC'
+		);
+		$sth->execute([$seasonId]);
+		return $sth->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	/**
@@ -159,10 +164,8 @@ class StatisticsModel extends Main {
 	 */
 	public function getNotConfirmedProtocolData() {
 		$sth = $this->_db->prepare('
-			SELECT
-				game_id
+			SELECT game_id
 			FROM `statistic_games` 
-			
 			WHERE status = ?');
 		$sth->execute([self::STATUS_NOT_CONFIRMED]);
 		return $sth->fetch(PDO::FETCH_ASSOC);
