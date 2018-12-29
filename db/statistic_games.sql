@@ -1,3 +1,24 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : statistics
+Source Server Version : 50638
+Source Host           : localhost:3306
+Source Database       : statistics
+
+Target Server Type    : MYSQL
+Target Server Version : 50638
+File Encoding         : 65001
+
+Date: 2018-12-29 23:28:51
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for statistic_games
+-- ----------------------------
+DROP TABLE IF EXISTS `statistic_games`;
 CREATE TABLE `statistic_games` (
   `game_id` int(10) unsigned NOT NULL,
   `dt` date NOT NULL DEFAULT '1901-01-01' COMMENT 'Дата проведения',
@@ -22,3 +43,4 @@ INSERT INTO `statistic_games` VALUES ('1054', '2017-10-07', '2', '15', '\0', '17
 INSERT INTO `statistic_games` VALUES ('1055', '2017-10-10', '1', '1', '\0', '17', '46:40', '1');
 INSERT INTO `statistic_games` VALUES ('1056', '2017-10-12', '2', '26', '\0', '17', '68:69', '1');
 INSERT INTO `statistic_games` VALUES ('1057', '2017-10-15', '1', '24', '', '17', '50:59', '1');
+SET FOREIGN_KEY_CHECKS=1;

@@ -1,3 +1,24 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : statistics
+Source Server Version : 50638
+Source Host           : localhost:3306
+Source Database       : statistics
+
+Target Server Type    : MYSQL
+Target Server Version : 50638
+File Encoding         : 65001
+
+Date: 2018-12-29 23:28:43
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for seasons
+-- ----------------------------
+DROP TABLE IF EXISTS `seasons`;
 CREATE TABLE `seasons` (
   `season_id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL COMMENT 'Дата сезона',
@@ -28,3 +49,4 @@ INSERT INTO `seasons` VALUES ('27', '2027-28');
 INSERT INTO `seasons` VALUES ('28', '2028-29');
 INSERT INTO `seasons` VALUES ('29', '2029-30');
 INSERT INTO `seasons` VALUES ('30', '2030-31');
+SET FOREIGN_KEY_CHECKS=1;

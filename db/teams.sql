@@ -1,3 +1,24 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : statistics
+Source Server Version : 50638
+Source Host           : localhost:3306
+Source Database       : statistics
+
+Target Server Type    : MYSQL
+Target Server Version : 50638
+File Encoding         : 65001
+
+Date: 2018-12-29 23:29:22
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for teams
+-- ----------------------------
+DROP TABLE IF EXISTS `teams`;
 CREATE TABLE `teams` (
   `team_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL COMMENT 'Название команды',
@@ -33,4 +54,4 @@ INSERT INTO `teams` VALUES ('23', 'ФЕНЕРБАХЧЕ');
 INSERT INTO `teams` VALUES ('24', 'ЦМОКИ');
 INSERT INTO `teams` VALUES ('25', 'ЦРВЕНА ЗВЕЗДА');
 INSERT INTO `teams` VALUES ('26', 'ЦСКА');
-
+SET FOREIGN_KEY_CHECKS=1;

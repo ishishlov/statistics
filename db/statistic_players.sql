@@ -1,3 +1,24 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : statistics
+Source Server Version : 50638
+Source Host           : localhost:3306
+Source Database       : statistics
+
+Target Server Type    : MYSQL
+Target Server Version : 50638
+File Encoding         : 65001
+
+Date: 2018-12-29 23:29:11
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for statistic_players
+-- ----------------------------
+DROP TABLE IF EXISTS `statistic_players`;
 CREATE TABLE `statistic_players` (
   `player_id` int(10) unsigned NOT NULL,
   `game_id` int(10) unsigned NOT NULL COMMENT 'Ссылка на game_id из statistic_games',
@@ -113,4 +134,4 @@ INSERT INTO `statistic_players` VALUES ('176', '1054', '23:57', '2', '3', '0', '
 INSERT INTO `statistic_players` VALUES ('176', '1055', '23:57', '2', '3', '0', '0', '4', '4', '2', '6', '2', '1', '5', '1', '1', '2', '0', '19', '22', '8', '1', '1', '96', '0', '89');
 INSERT INTO `statistic_players` VALUES ('176', '1056', '23:57', '2', '3', '0', '0', '4', '4', '2', '6', '2', '1', '5', '1', '1', '2', '0', '19', '22', '8', '1', '1', '96', '0', '89');
 INSERT INTO `statistic_players` VALUES ('176', '1057', '23:57', '2', '3', '0', '0', '4', '4', '2', '6', '2', '1', '5', '1', '1', '2', '0', '19', '22', '8', '1', '1', '96', '0', '89');
-
+SET FOREIGN_KEY_CHECKS=1;
