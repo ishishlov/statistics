@@ -1,3 +1,31 @@
+		<noindex>
+			<section class="slider_sponsors">
+				<div class="container">
+					<div class="wrap_slider_sponsors" style="display: none;">
+						<div class="center_sponsors">
+							<div class="wr_sponsors"><a href="http://mosreg.ru/" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2015/admmo.jpg" alt="Администрация Московской Области"></span></a></div>
+							<div class="wr_sponsors"><a href="http://admhimki.ru/" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2015/admhimki.jpg" alt="Администрация г.Химки"></span></a></div>
+							<div class="wr_sponsors"><a href="http://kapitoliy.ru/" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2015/kapitolii.jpg" alt="ТЦ Капитолий"></span></a></div>
+							<div class="wr_sponsors"><a href="http://www.profile-stroy.ru/" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2015/profilstroy.jpg" alt="ООО Профиль-Строй"></span></a></div>
+							<div class="wr_sponsors"><a href="http://solgarvitamin.ru/" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2015/solgar_logo_stripe.png" alt="Солгар"></span></a></div>
+							<div class="wr_sponsors"><a href="http://www.adidas.ru/basketbol" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2015/3_stripes.png" alt="Адс"></span></a></div>
+							<div class="wr_sponsors"><a href="https://vk.com/basketballhome" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2015/baskethome_logo_stripe.png" alt="Баскетхоум"></span></a></div>
+							<div class="wr_sponsors"><a href="http://arena-mo.ru/" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2017/arena-mo.jpg" alt="Арена Мытищи"></span></a></div>
+							<div class="wr_sponsors"><a href="http://www.gazprominvestholding.ru/" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2018/gazprominvhold_stripe.jpg" alt="Газппром инвестхолдинг"></span></a></div>
+							<div class="wr_sponsors"><a href="http://mosreg.ru/" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2015/admmo.jpg" alt="Администрация Московской Области"></span></a></div>
+							<div class="wr_sponsors"><a href="http://admhimki.ru/" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2015/admhimki.jpg" alt="Администрация г.Химки"></span></a></div>
+							<div class="wr_sponsors"><a href="http://kapitoliy.ru/" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2015/kapitolii.jpg" alt="ТЦ Капитолий"></span></a></div>
+							<div class="wr_sponsors"><a href="http://www.profile-stroy.ru/" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2015/profilstroy.jpg" alt="ООО Профиль-Строй"></span></a></div>
+							<div class="wr_sponsors"><a href="http://solgarvitamin.ru/" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2015/solgar_logo_stripe.png" alt="Солгар"></span></a></div>
+							<div class="wr_sponsors"><a href="http://www.adidas.ru/basketbol" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2015/3_stripes.png" alt="Адс"></span></a></div>
+							<div class="wr_sponsors"><a href="https://vk.com/basketballhome" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2015/baskethome_logo_stripe.png" alt="Баскетхоум"></span></a></div>
+							<div class="wr_sponsors"><a href="http://arena-mo.ru/" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2017/arena-mo.jpg" alt="Арена Мытищи"></span></a></div>
+							<div class="wr_sponsors"><a href="http://www.gazprominvestholding.ru/" rel="nofollow" class="sponsor_item"><span><img src="https://bckhimki.ru/files/sponsors/2018/gazprominvhold_stripe.jpg" alt="Газппром инвестхолдинг"></span></a></div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</noindex>		
 		<footer class="footer">
 			<div class="foot_up">
 				<div class="container clear">

@@ -21,12 +21,21 @@ class Statistics extends Common {
 	}
 
 	/**
+	 * Временная страница с формой сохранения протокола статистики
+	 */
+	public function commandStatisticsCopy() {
+		$seasonStatistics = $this->_model->getSeasonStatistics(17, 1);
+		$gamesStatistics = $this->_model->getGamesStatistics(17, [1,2]);
+		//$this->vd($gamesStatistics);exit;
+		$this->display('commandstatisticscopy.tpl');
+	}
+
+	/**
 	 * Страница с формой сохранения протокола статистики
 	 */
 	public function commandStatistics() {
 		$seasonStatistics = $this->_model->getSeasonStatistics(17, 1);
 		$gamesStatistics = $this->_model->getGamesStatistics(17, [1,2]);
-		
 		//$this->vd($gamesStatistics);exit;
 		$this->display('commandstatistics.tpl');
 	}
