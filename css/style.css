@@ -5,10 +5,10 @@
 
 .stat-widget-wrap-main {
 	width: 100%;
-    max-width: 1230px;
-    margin: 0 auto;
-    padding: 0 30px;
-    min-width: 320px;
+	max-width: 1230px;
+	margin: 0 auto;
+	padding: 0 30px;
+	min-width: 320px;
 }
 
 .stat-widget-title-main {
@@ -61,32 +61,87 @@
 	box-shadow: 0 1px 4px 0 rgba(8,9,11,0.17), inset 0 1px 3px 0 rgba(0,0,1,0);
 }
 
+.stat-widget-filter-season {
+	margin:0 0 0 10px;
+	height:37px;
+}
+
 .stat-widget-season-statistic-table {
 	margin-top: 10px;
 }
 
-.stat-widget-season-statistic-table-row {
-	
-}
-
-.stat-widget-season-statistic-table-cell {
-	display: inline-block;
-	vertical-align: middle;
-	text-align: center;
-}
-
 .stat-widget-season-statistic-table-cell-head {
+	text-align: center;
+	border-right: 1px #ddd solid;
+	white-space: nowrap;
+}
+
+.stat-widget-season-statistic-table-cell-head-end {
+	text-align: center;
+	white-space: nowrap;
+}
+
+.stat-widget-season-statistic-table-cell-end {
+	text-align: center;
+	white-space: nowrap;
+	border-right: 1px #ddd solid;
+}
+
+.stat-widget-season-statistic-table-cell-bold {
+	text-align: center;
+	white-space: nowrap;
 	font-weight: bold;
 }
 
-.stat-widget-season-statistic-table-cell-wide {
-	width: 5%;
+.stat-widget-season-statistic-table-cell {
+	text-align: center;
+	white-space: nowrap;
 }
 
-.stat-widget-season-statistic-table-cell-xwide {
-	width: 7.5%;
+.stat-widget-game-statistic-table {
+	margin-top: 10px;
+	width: 100%;
+	border-collapse: collapse;
+	color: #000;
+	text-align: left;
+	font-weight: 300;
 }
 
-.stat-widget-season-statistic-table-cell-xxwide {
-	width: 9%;
+.stat-widget-game-statistic-table th {
+	padding: 8px 5px 12px;
+	font-size: 15px;
+}
+
+.stat-widget-game-statistic-table td {
+	padding: 8px 5px;
+	font-size: 15px;
+}
+
+.stat-widget-game-statistic-table-cell-left {
+	width: 290px;
+	text-align: left;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.stat-widget-game-statistic-table-cell-center {
+	text-align: center;
+}
+
+.stat-widget-game-statistic-team-logo {
+	padding-left: 35px;
+	color: #696969;
+	line-height: 2em;
+	display: block;
+}
+
+.stat-widget-info {
+	font-size: 13px;
+	margin: 30px 0;
+	border-top: 1px solid #ccc;
+	padding-top: 15px;
+}
+
+.stat-widget-info-link {
+	margin-top: 15px;
 }
