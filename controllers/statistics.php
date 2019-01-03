@@ -34,9 +34,11 @@ class Statistics extends Common {
 	 * Страница с формой сохранения протокола статистики
 	 */
 	public function commandStatistics() {
-		$seasonStatistics = $this->_model->getSeasonStatistics(17, 1);
-		$gamesStatistics = $this->_model->getGamesStatistics(17, [1,2]);
-		//$this->vd($gamesStatistics);exit;
+		$this->_data['allSeasons'] = $this->_model->getAllSeasons();
+		$this->_data['seasonsStatistic'] = $this->_model->getSeasonsStatistic(17, 1);
+		$this->_data['gamesStatistics'] = $this->_model->getGamesStatistic(17, [1,2]);
+		
+		//$this->vd($this->_data['allSeasons']);exit;
 		$this->display('commandstatistics.tpl');
 	}
 

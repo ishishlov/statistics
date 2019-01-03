@@ -99,42 +99,38 @@ class StatisticsModel extends Main {
 		return $statistic;
 	}
 
-	public function getSeasonStatistics($seasonId, $tournamentId) {
+	public function getSeasonsStatistic($seasonId, $tournamentId) {
 		$sth = $this->_db->prepare(
 			'SELECT
-				MAX(sp.`two_point_made`) AS two_point_made,
-				MAX(sp.`two_point_throw`) AS two_point_throw,
-				MAX(ROUND(sp.`two_point_made` * 100 / sp.`two_point_throw`, 1)) AS two_point_percent,
-				MAX(sp.`three_point_made`) AS three_point_made,
-				MAX(sp.`three_point_throw`) AS three_point_throw,
-				MAX(ROUND(sp.`three_point_made` * 100 / sp.`three_point_throw`, 1)) AS three_point_percent,
-				MAX(sp.`two_point_made` + sp.`three_point_made`) AS two_three_point_made,
-				MAX(sp.`two_point_throw` + sp.`three_point_throw`) AS two_three_point_throw,
-				MAX(ROUND((sp.`two_point_made` + sp.`three_point_made`) * 100 / (sp.`two_point_throw` + sp.`three_point_throw`), 1)) AS two_three_point_percent,
-				MAX(sp.free_made) AS free_made,
-				MAX(sp.free_throw) AS free_throw,
-				MAX(ROUND(sp.free_made * 100 / sp.free_throw)) AS free_percent,
-				MAX(sp.offensive_rebound) AS offensive_rebound,
-				MAX(sp.deffensive_rebound) AS deffensive_rebound,
-				MAX(sp.offensive_rebound + sp.deffensive_rebound) AS sum_rebound,
-				MAX(sp.assists) AS assists,
-				MAX(sp.commited_foul) AS commited_foul,
-				MAX(sp.recieved_foul) AS recieved_foul,
+				MAX(sp.`two_point_made`) AS max_two_point_made,
+				MAX(sp.`two_point_throw`) AS max_two_point_throw,
+				MAX(ROUND(sp.`two_point_made` * 100 / sp.`two_point_throw`, 1)) AS max_two_point_percent,
+				MAX(sp.`three_point_made`) AS max_three_point_made,
+				MAX(sp.`three_point_throw`) AS max_three_point_throw,
+				MAX(ROUND(sp.`three_point_made` * 100 / sp.`three_point_throw`, 1)) AS max_three_point_percent,
+				MAX(sp.`two_point_made` + sp.`three_point_made`) AS max_two_three_point_made,
+				MAX(sp.`two_point_throw` + sp.`three_point_throw`) AS max_two_three_point_throw,
+				MAX(ROUND((sp.`two_point_made` + sp.`three_point_made`) * 100 / (sp.`two_point_throw` + sp.`three_point_throw`), 1)) AS max_two_three_point_percent,
+				MAX(sp.free_made) AS max_free_made,
+				MAX(sp.free_throw) AS max_free_throw,
+				MAX(ROUND(sp.free_made * 100 / sp.free_throw)) AS max_free_percent,
+				MAX(sp.offensive_rebound) AS max_offensive_rebound,
+				MAX(sp.deffensive_rebound) AS max_deffensive_rebound,
+				MAX(sp.offensive_rebound + sp.deffensive_rebound) AS max_sum_rebound,
+				MAX(sp.assists) AS max_assists,
+				MAX(sp.commited_foul) AS max_commited_foul,
+				MAX(sp.recieved_foul) AS max_recieved_foul,
 				MAX(sp.turnover) AS max_turnover,
 				MIN(sp.turnover) AS min_turnover,
-				MAX(sp.steal) AS steal,
-				MAX(sp.in_fawor) AS in_fawor,
-				MAX(sp.`against`) AS against,
-				MAX(sp.effectiveness) AS effectiveness,
-				MAX(sp.points_scored) AS points_scored,
+				MAX(sp.steal) AS max_steal,
+				MAX(sp.in_fawor) AS max_in_fawor,
+				MAX(sp.`against`) AS max_against,
+				MAX(sp.effectiveness) AS max_effectiveness,
+				MAX(sp.points_scored) AS max_points_scored,
 				MAX(sp.op) AS max_op,
 				MIN(sp.op) AS min_op,
 				MAX(sp.`plus_minus`) AS max_plus_minus,
-				MIN(sp.`plus_minus`) AS min_plus_minus,
-				MAX(sp.pvk) AS max_pvk,
-				MIN(sp.pvk) AS min_pvk,
-				MAX(sp.bvk) AS max_bvk,
-				MIN(sp.bvk) AS min_bvk
+				MIN(sp.`plus_minus`) AS min_plus_minus
 			FROM statistic_games sg 
 			JOIN statistic_players sp ON sp.game_id = sg.game_id
 			WHERE sg.season_id = 17 AND sg.tournament_id = 1'
@@ -143,7 +139,7 @@ class StatisticsModel extends Main {
 		return $sth->fetch(PDO::FETCH_ASSOC);
 	}
 
-	public function getGamesStatistics($seasonId, $tournamentIds) {
+	public function getGamesStatistic($seasonId, $tournamentIds) {
 		$tournamentIdsString = implode(',', $tournamentIds);
 		$sth = $this->_db->prepare(
 			'SELECT sg.game_id, sg.dt, tr.`name` AS tournament, tm.`name` AS opponent,  IF(sg.venue = 1, "дома", "в гостях") AS venue, sg.score
@@ -155,6 +151,23 @@ class StatisticsModel extends Main {
 		);
 		$sth->execute([$seasonId]);
 		return $sth->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function getAllSeasons() {
+		$allSeasons = [];
+		$sth = $this->_db->prepare('SELECT season_id FROM statistic_games WHERE status = 1 GROUP BY season_id');
+		$sth->execute();
+		$seasonIds = $sth->fetchAll(PDO::FETCH_COLUMN);
+		if (is_array($seasonIds)) {
+			$sth = $this->_db->prepare('SELECT season_id, name 
+										FROM seasons 
+										WHERE season_id IN (' . implode(', ', $seasonIds) . ')
+										ORDER BY season_id DESC');
+			$sth->execute();
+			$allSeasons = $sth->fetchAll(PDO::FETCH_ASSOC);
+		}
+
+		return $allSeasons;
 	}
 
 	/**

@@ -13,16 +13,9 @@
 				<ul>
 					<li>
 						<select class="stat-widget-filter-season">
-							<option value="10" selected="selected">2018-2019</option>
-							<option value="9">2017-2018</option>
-							<option value="8">2016-2017</option>
-							<option value="7">2015-2016</option>
-							<option value="6">2014-2015</option>
-							<option value="5">2013-2014</option>
-							<option value="4">2012-2013</option>
-							<option value="3">2011-2012</option>
-							<option value="2">2010-2011</option>
-							<option value="1">2009-2010</option>
+							{% for season in allSeasons %}
+								<option value="{{ season.season_id }}">{{ season.name }}</option>
+							{% endfor %}
 						</select>
 					</li>
 				</ul>
@@ -93,42 +86,42 @@
 						<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">&nbsp;</td>
 						<td class="stat-widget-season-statistic-table-cell-bold">иг</td>
 						<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">на</td>
-						<td class="stat-widget-season-statistic-table-cell stat-widget-season-statistic-table-cell-end">20</td>
+						<td class="stat-widget-season-statistic-table-cell stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_turnover }}</td>
 						<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">&nbsp;</td>
 						<td class="stat-widget-season-statistic-table-cell-bold">иг</td>
 						<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">на</td>
 						<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">&nbsp;</td>
 						<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">&nbsp;</td>
-						<td class="stat-widget-season-statistic-table-cell stat-widget-season-statistic-table-cell-end">104</td>
-						<td class="stat-widget-season-statistic-table-cell">-28</td>
+						<td class="stat-widget-season-statistic-table-cell stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_op }}</td>
+						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.min_plus_minus }}</td>
 					</tr>
 					<tr>
-						<td class="stat-widget-season-statistic-table-cell">27</td>
-						<td class="stat-widget-season-statistic-table-cell">47</td>
-						<td class="stat-widget-season-statistic-table-cell-end">74,3</td>
-						<td class="stat-widget-season-statistic-table-cell">17</td>
-						<td class="stat-widget-season-statistic-table-cell">39</td>
-						<td class="stat-widget-season-statistic-table-cell-end">76,2</td>
-						<td class="stat-widget-season-statistic-table-cell">39</td>
-						<td class="stat-widget-season-statistic-table-cell">79</td>
-						<td class="stat-widget-season-statistic-table-cell-end">61,8</td>
-						<td class="stat-widget-season-statistic-table-cell">25</td>
-						<td class="stat-widget-season-statistic-table-cell">40</td>
-						<td class="stat-widget-season-statistic-table-cell-end">100</td>
-						<td class="stat-widget-season-statistic-table-cell">25</td>
-						<td class="stat-widget-season-statistic-table-cell">31</td>
-						<td class="stat-widget-season-statistic-table-cell-end">46</td>
-						<td class="stat-widget-season-statistic-table-cell-end">30</td>
-						<td class="stat-widget-season-statistic-table-cell">33</td>
-						<td class="stat-widget-season-statistic-table-cell-end">33</td>
-						<td class="stat-widget-season-statistic-table-cell-end">6</td>
-						<td class="stat-widget-season-statistic-table-cell-end">13</td>
-						<td class="stat-widget-season-statistic-table-cell">9</td>
-						<td class="stat-widget-season-statistic-table-cell-end">6</td>
-						<td class="stat-widget-season-statistic-table-cell-end">142</td>
-						<td class="stat-widget-season-statistic-table-cell-end">106</td>
-						<td class="stat-widget-season-statistic-table-cell-end">54</td>
-						<td class="stat-widget-season-statistic-table-cell">40</td>
+						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_two_point_made }}</td>
+						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_two_point_throw }}</td>
+						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_two_point_percent }}</td>
+						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_three_point_made }}</td>
+						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_three_point_throw }}</td>
+						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_three_point_percent }}</td>
+						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_two_three_point_made }}</td>
+						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_two_three_point_throw }}</td>
+						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_two_three_point_percent }}</td>
+						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_free_made }}</td>
+						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_free_throw }}</td>
+						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_free_percent }}</td>
+						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_offensive_rebound }}</td>
+						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_deffensive_rebound }}</td>
+						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_sum_rebound }}</td>
+						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_assists }}</td>
+						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_commited_foul }}</td>
+						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_recieved_foul }}</td>
+						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.min_turnover }}</td> <!--  -->
+						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_steal }}</td>
+						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_in_fawor }}</td>
+						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_against }}</td>
+						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_effectiveness }}</td>
+						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_points_scored }}</td>
+						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.min_op }}</td> <!--  -->
+						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_plus_minus }}</td> <!--  -->
 					</tr>
 				</tbody>
 			</table>
