@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : statistics
+Source Server         : openserver
 Source Server Version : 50638
 Source Host           : localhost:3306
 Source Database       : statistics
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50638
 File Encoding         : 65001
 
-Date: 2018-12-29 23:28:51
+Date: 2019-01-04 00:39:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -35,6 +35,7 @@ CREATE TABLE `statistic_games` (
 -- ----------------------------
 -- Records of statistic_games
 -- ----------------------------
+INSERT INTO `statistic_games` VALUES ('1049', '2019-01-03', '1', '24', '\0', '16', '55:65', '1');
 INSERT INTO `statistic_games` VALUES ('1050', '2017-10-01', '2', '24', '', '17', '76:68', '1');
 INSERT INTO `statistic_games` VALUES ('1051', '2017-10-02', '1', '11', '\0', '17', '70:95', '1');
 INSERT INTO `statistic_games` VALUES ('1052', '2017-10-03', '2', '21', '', '17', '35:36', '1');
