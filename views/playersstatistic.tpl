@@ -2,7 +2,11 @@
 <link rel="stylesheet" href="/css/style.css" />
 <div class="stat-widget-container﻿">
 	<div class="stat-widget-wrap-main">
-		<div class="stat-widget-title-main">Игроки</div>
+		<ul class="stat-widget-tabs">
+			<li class="stat-widget-tab">КОМАНДНАЯ СТАТИСТИКА</li>
+			<li class="stat-widget-tab active">ИГРОКИ</li>
+			<li class="stat-widget-tab">ИСТОРИЯ</li>
+		</ul>
 		<div class="stat-widget-wrap-stat">
 			<div class="stat-widget-filters">
 				<ul class="stat-widget-filter-tournaments">
