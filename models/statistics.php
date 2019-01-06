@@ -142,7 +142,21 @@ class StatisticsModel extends Main {
 	public function getGamesStatistic($seasonId, $tournamentIds) {
 		$tournamentIdsString = implode(',', $tournamentIds);
 		$sth = $this->_db->prepare(
-			'SELECT sg.game_id, sg.dt, tr.`name` AS tournament, tm.`name` AS opponent,  IF(sg.venue = 1, "дома", "в гостях") AS venue, sg.score
+			'SELECT sg.game_id, sg.dt, tr.`name` AS tournament, tm.logo_url, tm.`name` AS opponent,  IF(sg.venue = 1, "дома", "в гостях") AS venue, sg.score
+			FROM `statistic_games` sg
+			JOIN tournaments tr ON tr.tournament_id = sg.tournament_id
+			JOIN teams tm ON tm.team_id = sg.team_id
+			WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?
+			ORDER BY sg.dt DESC'
+		);
+		$sth->execute([$seasonId]);
+		return $sth->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function getPlayersStatistic($seasonId, $tournamentIds) {
+		$tournamentIdsString = implode(',', $tournamentIds);
+		$sth = $this->_db->prepare(
+			'SELECT sg.game_id, sg.dt, tr.`name` AS tournament, tm.logo_url, tm.`name` AS opponent,  IF(sg.venue = 1, "дома", "в гостях") AS venue, sg.score
 			FROM `statistic_games` sg
 			JOIN tournaments tr ON tr.tournament_id = sg.tournament_id
 			JOIN teams tm ON tm.team_id = sg.team_id

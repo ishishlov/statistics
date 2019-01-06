@@ -145,3 +145,7 @@
 .stat-widget-info-link {
 	margin-top: 15px;
 }
+
+.stat-widget-player-statistic-table-cell{
+	text-align: left;
+}

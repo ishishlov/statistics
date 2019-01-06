@@ -114,14 +114,14 @@
 						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_assists }}</td>
 						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_commited_foul }}</td>
 						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_recieved_foul }}</td>
-						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.min_turnover }}</td> <!--  -->
+						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.min_turnover }}</td>
 						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_steal }}</td>
 						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_in_fawor }}</td>
 						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_against }}</td>
 						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_effectiveness }}</td>
 						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.max_points_scored }}</td>
-						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.min_op }}</td> <!--  -->
-						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_plus_minus }}</td> <!--  -->
+						<td class="stat-widget-season-statistic-table-cell-end">{{ seasonsStatistic.min_op }}</td>
+						<td class="stat-widget-season-statistic-table-cell">{{ seasonsStatistic.max_plus_minus }}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -143,6 +143,26 @@
 					<th class="stat-widget-game-statistic-table-cell-center" title="Дома или в гостях">МЕСТО</th>
 					<th class="stat-widget-game-statistic-table-cell-center">СЧЁТ</th>
 				</tr>
+				
+				{% for stat in gamesStatistic %}
+					<tr>
+						<td class="stat-widget-game-statistic-table-cell-left">{{ stat.dt }}</td>
+						<td class="stat-widget-game-statistic-table-cell-center">{{ stat.tournament }}</td>
+						<td class="stat-widget-game-statistic-table-cell-left">
+							<a class="stat-widget-game-statistic-team-logo"
+							   target="_blank"
+							   href="teamgames.html"
+							   style="background:url({{ stat.logo_url }}) left center no-repeat;"
+							>
+								{{ stat.opponent }}
+							</a>
+						</td>
+						<td class="stat-widget-game-statistic-table-cell-center">{{ stat.venue }}</td>
+						<td class="stat-widget-game-statistic-table-cell-center">
+							<a href="protocol.html">{{ stat.score }}</a>
+						</td>
+					</tr>
+				{% endfor %}
 				<tr>
 					<td class="stat-widget-game-statistic-table-cell-left">15/10/2018</td>
 					<td class="stat-widget-game-statistic-table-cell-center">Евролига</td>

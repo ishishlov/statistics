@@ -23,23 +23,35 @@ class Statistics extends Common {
 	/**
 	 * Временная страница с формой сохранения протокола статистики
 	 */
-	public function commandStatisticsCopy() {
-		$seasonStatistics = $this->_model->getSeasonStatistics(17, 1);
-		$gamesStatistics = $this->_model->getGamesStatistics(17, [1,2]);
+	public function commandsStatisticCopy() {
+		$seasonStatistics = $this->_model->getSeasonsStatistic(17, 1);
+		$gamesStatistics = $this->_model->getGamesStatistic(17, [1,2]);
 		//$this->vd($gamesStatistics);exit;
-		$this->display('commandstatisticscopy.tpl');
+		$this->display('commandstatisticcopy.tpl');
 	}
 
 	/**
-	 * Страница с формой сохранения протокола статистики
+	 * Страница командной статистики
 	 */
-	public function commandStatistics() {
+	public function commandsStatistic() {
 		$this->_data['allSeasons'] = $this->_model->getAllSeasons();
 		$this->_data['seasonsStatistic'] = $this->_model->getSeasonsStatistic(17, 1);
 		$this->_data['gamesStatistics'] = $this->_model->getGamesStatistic(17, [1,2]);
 		
 		//$this->vd($this->_data['allSeasons']);exit;
-		$this->display('commandstatistics.tpl');
+		$this->display('commandsstatistic.tpl');
+	}
+
+	/**
+	 * Страница статистики игроков
+	 */
+	public function playersStatistic() {
+		$this->_data['allSeasons'] = $this->_model->getAllSeasons();
+		$this->_data['seasonsStatistic'] = $this->_model->getSeasonsStatistic(17, 1);
+		$this->_data['playersStatistic'] = $this->_model->getPlayersStatistic(17, [1,2]);
+		
+		//$this->vd($this->_data['allSeasons']);exit;
+		$this->display('playersstatistic.tpl');
 	}
 
 	/**
