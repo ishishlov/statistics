@@ -150,6 +150,10 @@
 	font-size: 16px;
 }
 
+.stat-widget-game-statistic-table tr:hover {
+	background: #f1f1f1;
+}
+
 .stat-widget-game-statistic-table a {
 	text-decoration: none;
 	-webkit-transition: all .3s ease-out;

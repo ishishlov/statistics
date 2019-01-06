@@ -99,7 +99,8 @@ class StatisticsModel extends Main {
 		return $statistic;
 	}
 
-	public function getSeasonsStatistic($seasonId, $tournamentId) {
+	public function getSeasonsStatistic($seasonId, $tournamentIds) {
+		$tournamentIdsString = implode(',', $tournamentIds);
 		$sth = $this->_db->prepare(
 			'SELECT
 				MAX(sp.`two_point_made`) AS max_two_point_made,
@@ -133,9 +134,9 @@ class StatisticsModel extends Main {
 				MIN(sp.`plus_minus`) AS min_plus_minus
 			FROM statistic_games sg 
 			JOIN statistic_players sp ON sp.game_id = sg.game_id
-			WHERE sg.season_id = 17 AND sg.tournament_id = 1'
+			WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?'
 		);
-		$sth->execute([$seasonId, $tournamentId]);
+		$sth->execute([$seasonId]);
 		return $sth->fetch(PDO::FETCH_ASSOC);
 	}
 
@@ -186,6 +187,13 @@ class StatisticsModel extends Main {
 
 		return $allSeasons;
 	}
+	
+	public function getTournaments() {
+		$sth = $this->_db->prepare('SELECT tournament_id, name FROM tournaments');
+		$sth->execute();
+		return $sth->fetchAll(PDO::FETCH_ASSOC);
+	}
+	
 
 	/**
 	 * Получить данные по неподтвержденному протоколу

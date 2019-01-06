@@ -34,12 +34,23 @@ class Statistics extends Common {
 	 * Страница командной статистики
 	 */
 	public function commandsStatistic() {
-		$this->_data['allSeasons'] = $this->_model->getAllSeasons();
-		$this->_data['seasonsStatistic'] = $this->_model->getSeasonsStatistic(17, 1);
-		$this->_data['gamesStatistic'] = $this->_model->getGamesStatistic(17, [1,2]);
+//		$this->_data['allSeasons'] = $this->_model->getAllSeasons();
+//		$this->_data['seasonsStatistic'] = $this->_model->getSeasonsStatistic(17, 1);
+//		$this->_data['gamesStatistic'] = $this->_model->getGamesStatistic(17, [1,2]);
 		
 		//$this->vd($this->_data['gamesStatistics']);exit;
+		
 		$this->display('commandsstatistic.tpl');
+	}
+
+	public function getCommandsStatistic() {
+		$seasonId = (int) $_POST['seasonId'];
+		$tournamentIds = $this->arrayToInt($_POST['tournamentIds']);
+
+		$this->toJson([
+			'seasonsStatistic'	=> $this->_model->getSeasonsStatistic($seasonId, $tournamentIds),
+			'gamesStatistic'	=> $this->_model->getGamesStatistic($seasonId, $tournamentIds)
+		]);
 	}
 
 	/**
@@ -51,6 +62,28 @@ class Statistics extends Common {
 		$this->_data['playersStatistic'] = $this->_model->getPlayersStatistic(17, [1,2]);
 
 		$this->display('playersstatistic.tpl');
+	}
+
+	public function getPlayersStatistic() {
+		$seasonId = (int) $_POST['seasonId'];
+		$tournamentIds = $this->arrayToInt($_POST['tournamentIds']);
+
+		$this->toJson([
+			'seasonsStatistic'	=> $this->_model->getSeasonsStatistic($seasonId, $tournamentIds),
+			'playersStatistic'	=> $this->_model->getPlayersStatistic($seasonId, $tournamentIds)
+		]);	
+	}
+
+	public function getAllSeasons() {
+		$this->toJson([
+			'allSeasons' => $this->_model->getAllSeasons()
+		]);
+	}
+
+	public function getTournaments() {
+		$this->toJson([
+			'tournaments' => $this->_model->getTournaments()
+		]);
 	}
 
 	/**
