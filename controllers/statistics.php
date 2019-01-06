@@ -36,9 +36,9 @@ class Statistics extends Common {
 	public function commandsStatistic() {
 		$this->_data['allSeasons'] = $this->_model->getAllSeasons();
 		$this->_data['seasonsStatistic'] = $this->_model->getSeasonsStatistic(17, 1);
-		$this->_data['gamesStatistics'] = $this->_model->getGamesStatistic(17, [1,2]);
+		$this->_data['gamesStatistic'] = $this->_model->getGamesStatistic(17, [1,2]);
 		
-		//$this->vd($this->_data['allSeasons']);exit;
+		//$this->vd($this->_data['gamesStatistics']);exit;
 		$this->display('commandsstatistic.tpl');
 	}
 
@@ -49,8 +49,7 @@ class Statistics extends Common {
 		$this->_data['allSeasons'] = $this->_model->getAllSeasons();
 		$this->_data['seasonsStatistic'] = $this->_model->getSeasonsStatistic(17, 1);
 		$this->_data['playersStatistic'] = $this->_model->getPlayersStatistic(17, [1,2]);
-		
-		//$this->vd($this->_data['allSeasons']);exit;
+
 		$this->display('playersstatistic.tpl');
 	}
 

@@ -41,50 +41,19 @@
 					<th class="stat-widget-player-statistic-table-cell">Рост</th>
 					<th class="stat-widget-player-statistic-table-cell">Вес</th>
 				</tr>
-				<tr>
-					<td class="stat-widget-player-statistic-table-cell">1</td>
-					<td class="stat-widget-player-statistic-table-cell"><a href="protocol.html">Алексей Швед</a></td>
-					<td class="stat-widget-player-statistic-table-cell">16/12/1988</td>
-					<td class="stat-widget-player-statistic-table-cell">
-						<img src="http://widgets.baskethotel.com/static/images/flags/ru.gif" alt="RU" align="absmiddle" title="Россия">
-					</td>
-					<td class="stat-widget-player-statistic-table-cell">Защитник</td>
-					<td class="stat-widget-player-statistic-table-cell">198 cm</td>
-					<td class="stat-widget-player-statistic-table-cell">86 kg</td>
-				</tr>
-				<tr>
-					<td class="stat-widget-player-statistic-table-cell">3</td>
-					<td class="stat-widget-player-statistic-table-cell"><a href="protocol.html">Ди Бост</a></td>
-					<td class="stat-widget-player-statistic-table-cell">12/10/1989</td>
-					<td class="stat-widget-player-statistic-table-cell">
-						<img src="http://widgets.baskethotel.com/static/images/flags/us.gif" alt="US" align="absmiddle" title="США">
-					</td>
-					<td class="stat-widget-player-statistic-table-cell">Защитник</td>
-					<td class="stat-widget-player-statistic-table-cell">188 cm</td>
-					<td class="stat-widget-player-statistic-table-cell">80 kg</td>
-				</tr>
-				<tr>
-					<td class="stat-widget-player-statistic-table-cell">5</td>
-					<td class="stat-widget-player-statistic-table-cell"><a href="protocol.html">Антонио Крокер</a></td>
-					<td class="stat-widget-player-statistic-table-cell">17/01/1987</td>
-					<td class="stat-widget-player-statistic-table-cell">
-						<img src="http://widgets.baskethotel.com/static/images/flags/us.gif" alt="US" align="absmiddle" title="США">
-					</td>
-					<td class="stat-widget-player-statistic-table-cell">Форвард</td>
-					<td class="stat-widget-player-statistic-table-cell">198 cm</td>
-					<td class="stat-widget-player-statistic-table-cell">98 kg</td>
-				</tr>
-				<tr>
-					<td class="stat-widget-player-statistic-table-cell">6</td>
-					<td class="stat-widget-player-statistic-table-cell"><a href="protocol.html">Егор Вяльцев</a></td>
-					<td class="stat-widget-player-statistic-table-cell">10/10/1985</td>
-					<td class="stat-widget-player-statistic-table-cell">
-						<img src="http://widgets.baskethotel.com/static/images/flags/ru.gif" alt="RU" align="absmiddle" title="Россия">
-					</td>
-					<td class="stat-widget-player-statistic-table-cell">Защитник</td>
-					<td class="stat-widget-player-statistic-table-cell">193 cm</td>
-					<td class="stat-widget-player-statistic-table-cell">86 kg</td>
-				</tr>
+				{% for stat in playersStatistic %}
+					<tr>
+						<td class="stat-widget-player-statistic-table-cell">{{ stat.number }}</td>
+						<td class="stat-widget-player-statistic-table-cell"><a href="protocol.html">{{ stat.name }} {{ stat.surname }}</a></td>
+						<td class="stat-widget-player-statistic-table-cell">{{ stat.birthdate }}</td>
+						<td class="stat-widget-player-statistic-table-cell">
+							<img src="{{ stat.logo_src }}" alt="{{ stat.alpha }}" align="absmiddle" title="{{ stat.country }}">
+						</td>
+						<td class="stat-widget-player-statistic-table-cell">{{ stat.position }}</td>
+						<td class="stat-widget-player-statistic-table-cell">{{ stat.height }} cm</td>
+						<td class="stat-widget-player-statistic-table-cell">{{ stat.weight }} kg</td>
+					</tr>
+				{% endfor %}
 			</table>
 		</div>
 	</div>
