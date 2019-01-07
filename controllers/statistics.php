@@ -16,8 +16,20 @@ class Statistics extends Common {
 	 * Страница с формой сохранения протокола статистики
 	 */
 	public function index() {
-		$notConfirmedProtocol = $this->_model->getNotConfirmedProtocolData();
-		$this->_data['isShowLoadButton'] = (bool)!$notConfirmedProtocol;
+		if (isset($_POST['saveProtocol'])) {
+			$this->_save();
+		}
+		if (isset($_POST['cancel'])) {
+			$this->_model->deleteNotConfirmedProtocol();
+		}
+		if (isset($_POST['confirmed'])) {
+			$this->_model->confirmedProtocol();
+		}
+		$notConfirmedData = $this->_model->getNotConfirmedSeasonsStatistic();
+		//$this->vd($notConfirmedData);exit;
+
+		$this->_data['isShowLoadButton'] = (bool)!$notConfirmedData;
+		$this->_data['notConfirmedData'] = $notConfirmedData;
 		$this->display('index.tpl');
 	}
 
@@ -35,6 +47,8 @@ class Statistics extends Common {
 	 * Страница командной статистики
 	 */
 	public function commandsStatistic() {
+//		$test = Cache::getValue(StatisticsModel::CACHE_KEY_GAMES_STATISTIC);
+//		$this->vd($test);exit;
 		$this->display('commandsstatistic.tpl');
 	}
 
@@ -46,17 +60,6 @@ class Statistics extends Common {
 			'seasonsStatistic'	=> $this->_model->getSeasonsStatistic($seasonId, $tournamentIds),
 			'gamesStatistic'	=> $this->_model->getGamesStatistic($seasonId, $tournamentIds)
 		]);
-	}
-
-	/**
-	 * Страница статистики игроков
-	 */
-	public function playersStatistic() {
-		$this->_data['allSeasons'] = $this->_model->getAllSeasons();
-		$this->_data['seasonsStatistic'] = $this->_model->getSeasonsStatistic(17, 1);
-		$this->_data['playersStatistic'] = $this->_model->getPlayersStatistic(17, [1,2]);
-
-		$this->display('playersstatistic.tpl');
 	}
 
 	public function getPlayersStatistic() {
@@ -84,12 +87,13 @@ class Statistics extends Common {
 	/**
 	 * Сохранить протокол статистики
 	 */
-	public function save() {
+	private function _save() {
 		$Csv = new Csv($_FILES['csv']);
 		$data = $Csv->getArray();
 		$data = $this->_getCorrectKeyArray($data);
 		$data = $this->_removeFirstRow($data);
 		$errors = $this->_validateArrayData($data);
+		$this->vd($data);exit;
 		if ($errors) {
 			$this->vd('Ошибка');exit;
 		}

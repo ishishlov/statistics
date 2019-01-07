@@ -226,13 +226,58 @@ class StatisticsModel extends Main {
 	 * 
 	 * @return array
 	 */
-	public function getNotConfirmedProtocolData() {
+	public function getNotConfirmedGameIds() {
 		$sth = $this->_db->prepare('
 			SELECT game_id
 			FROM `statistic_games` 
 			WHERE status = ?');
 		$sth->execute([self::STATUS_NOT_CONFIRMED]);
-		return $sth->fetch(PDO::FETCH_ASSOC);
+		return $sth->fetchAll(PDO::FETCH_COLUMN);
+	}
+
+	public function getNotConfirmedSeasonsStatistic() {
+		$res = [];
+		$sth = $this->_db->prepare('
+			SELECT
+				MAX(sp.`two_point_made`) AS max_two_point_made,
+				MAX(sp.`two_point_throw`) AS max_two_point_throw,
+				MAX(ROUND(sp.`two_point_made` * 100 / sp.`two_point_throw`, 1)) AS max_two_point_percent,
+				MAX(sp.`three_point_made`) AS max_three_point_made,
+				MAX(sp.`three_point_throw`) AS max_three_point_throw,
+				MAX(ROUND(sp.`three_point_made` * 100 / sp.`three_point_throw`, 1)) AS max_three_point_percent,
+				MAX(sp.`two_point_made` + sp.`three_point_made`) AS max_two_three_point_made,
+				MAX(sp.`two_point_throw` + sp.`three_point_throw`) AS max_two_three_point_throw,
+				MAX(ROUND((sp.`two_point_made` + sp.`three_point_made`) * 100 / (sp.`two_point_throw` + sp.`three_point_throw`), 1)) AS max_two_three_point_percent,
+				MAX(sp.free_made) AS max_free_made,
+				MAX(sp.free_throw) AS max_free_throw,
+				MAX(ROUND(sp.free_made * 100 / sp.free_throw)) AS max_free_percent,
+				MAX(sp.offensive_rebound) AS max_offensive_rebound,
+				MAX(sp.deffensive_rebound) AS max_deffensive_rebound,
+				MAX(sp.offensive_rebound + sp.deffensive_rebound) AS max_sum_rebound,
+				MAX(sp.assists) AS max_assists,
+				MAX(sp.commited_foul) AS max_commited_foul,
+				MAX(sp.recieved_foul) AS max_recieved_foul,
+				MAX(sp.turnover) AS max_turnover,
+				MIN(sp.turnover) AS min_turnover,
+				MAX(sp.steal) AS max_steal,
+				MAX(sp.in_fawor) AS max_in_fawor,
+				MAX(sp.`against`) AS max_against,
+				MAX(sp.effectiveness) AS max_effectiveness,
+				MAX(sp.points_scored) AS max_points_scored,
+				MAX(sp.op) AS max_op,
+				MIN(sp.op) AS min_op,
+				MAX(sp.`plus_minus`) AS max_plus_minus,
+				MIN(sp.`plus_minus`) AS min_plus_minus
+			FROM statistic_games sg 
+			JOIN statistic_players sp ON sp.game_id = sg.game_id
+			WHERE sg.status = ?
+		');
+		$sth->execute([self::STATUS_NOT_CONFIRMED]);
+		$data = $sth->fetch(PDO::FETCH_ASSOC);
+		if ($data['max_two_point_made']) {
+			$res = $data;
+		}
+		return $res;
 	}
 
 	/**
@@ -250,12 +295,17 @@ class StatisticsModel extends Main {
 	 * 
 	 * @return bool
 	 */
-	public function deleteNotConfirmedProtocol($gameId) {
-		$stmt = $this->_db->prepare('DELETE FROM ' . self::TABLE_NAME_STATISTIC_PLAYERS. ' WHERE `game_id` = ?');
-		$res1 = $stmt->execute([$gameId]);
-		$stmt = $this->_db->prepare('DELETE FROM ' . self::TABLE_NAME_STATISTIC_GAMES . ' WHERE `game_id` = ?');
-		$res2 = $stmt->execute([$gameId]);
-		return $res1 && $res2;
+	public function deleteNotConfirmedProtocol() {
+		$gameIds = $this->getNotConfirmedGameIds();
+		if ($gameIds) {
+			$gameIdsString = implode(', ', $gameIds);
+			$stmt = $this->_db->prepare('DELETE FROM ' . self::TABLE_NAME_STATISTIC_PLAYERS. ' WHERE `game_id` IN(' . $gameIdsString . ')');
+			$res1 = $stmt->execute();
+			$stmt = $this->_db->prepare('DELETE FROM ' . self::TABLE_NAME_STATISTIC_GAMES . ' WHERE `game_id` IN(' . $gameIdsString . ')');
+			$res2 = $stmt->execute();
+			return $res1 && $res2;
+		}
+		return true;
 	}
 
 	/**
