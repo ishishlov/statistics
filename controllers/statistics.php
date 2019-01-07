@@ -2,6 +2,7 @@
 require_once 'controllers/common.php';
 require_once 'models/statistics.php';
 require_once 'models/csv.php';
+require_once 'models/cache.php';
 
 class Statistics extends Common {
 	

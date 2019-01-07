@@ -63,7 +63,7 @@
 							_module.getCommandsStatistic();
 							break;
 						case _tabs.players:
-							
+							_module.getPlayersStatistic();
 							break;
 						case _tabs.history:
 							
@@ -82,7 +82,7 @@
 							_module.getCommandsStatistic();
 							break;
 						case _tabs.players:
-							
+							_module.getPlayersStatistic();
 							break;
 						case _tabs.history:
 							
@@ -386,7 +386,6 @@
 				});
 
 				var html = (
-					'<div class="stat-widget-title">Игры</div>' +
 					'<table class="stat-widget-game-statistic-table">' +
 						'<colgroup>' +
 							'<colgroup>' +
