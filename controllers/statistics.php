@@ -35,12 +35,6 @@ class Statistics extends Common {
 	 * Страница командной статистики
 	 */
 	public function commandsStatistic() {
-//		$this->_data['allSeasons'] = $this->_model->getAllSeasons();
-//		$this->_data['seasonsStatistic'] = $this->_model->getSeasonsStatistic(17, 1);
-//		$this->_data['gamesStatistic'] = $this->_model->getGamesStatistic(17, [1,2]);
-		
-		//$this->vd($this->_data['gamesStatistics']);exit;
-		
 		$this->display('commandsstatistic.tpl');
 	}
 
@@ -100,18 +94,7 @@ class Statistics extends Common {
 			$this->vd('Ошибка');exit;
 		}
 		$res = $this->_model->save($data);
-		$this->vd($res);exit;
-	}
-
-	/**
-	 * Получить статистику
-	 */
-	public function get() {
-		$data = $this->_model->get();
-		echo '<pre>';
-		var_dump($data);
-		echo '</pre>';
-		exit;
+		//$this->vd($res);exit;
 	}
 
 	/**
@@ -140,7 +123,7 @@ class Statistics extends Common {
 			foreach ($row as $key2 => $value) {
 				$finalData[$key1][StatisticsModel::FIELDS[$key2]] = mb_convert_encoding($value, "utf-8", "windows-1251");
 			}
-			$finalData[$key1][StatisticsModel::FIELDS[28]] = StatisticsModel::STATUS_NOT_CONFIRMED;
+			$finalData[$key1][StatisticsModel::FIELDS[29]] = StatisticsModel::STATUS_NOT_CONFIRMED;
 		}
 
 		return $finalData;
@@ -154,7 +137,6 @@ class Statistics extends Common {
 	 */
 	private function _removeFirstRow($data) {
 		$temp = (int)$data[0][StatisticsModel::FIELDS[0]];
-		//$this->vd($temp1);exit;
 		if (!$temp) {
 			array_shift($data);
 		}
@@ -171,5 +153,15 @@ class Statistics extends Common {
 		$errors = [];
 		
 		return $errors;
+	}
+
+	/**
+	 * Временный метод для чистки всего кеша
+	 */
+	public function tempDeleteAllCache() {
+		$test = Cache::deleteValue(StatisticsModel::CACHE_KEY_SEASONS_STATISTIC);
+		$test2 = Cache::deleteValue(StatisticsModel::CACHE_KEY_GAMES_STATISTIC);
+		$test3 = Cache::deleteValue(StatisticsModel::CACHE_KEY_PLAYERS_STATISTIC);
+		var_dump('Delete is completed');exit;
 	}
 }

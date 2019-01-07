@@ -14,7 +14,7 @@ class Cache {
 	 * @return bool
 	 */
 	public static function getValue($key) {
-		$memcache = self::getMemcache();
+		$memcache = self::_getMemcache();
 		return $memcache->get($key);
 	}
 
@@ -23,12 +23,12 @@ class Cache {
 	 * 
 	 * @param string $key
 	 * @param mixed $data
-	 * @param bool [default = 0] $flag
+	 * @param int [default = 0] $flag
 	 * @param int [default = 604800 (7 дней)] $expire
 	 * @return bool
 	 */
 	public static function setValue($key, $data, $flag = 0, $expire = 604800) {
-		$memcache = self::getMemcache();
+		$memcache = self::_getMemcache();
 		return $memcache->set($key, $data, $flag, $expire);
 	}
 
@@ -39,11 +39,40 @@ class Cache {
 	 * @return bool
 	 */
 	public static function deleteValue($key) {
-		$memcache = self::getMemcache();
+		$memcache = self::_getMemcache();
 		return $memcache->delete($key);
 	}
 
-	private static function getMemcache() {
+	public static function getStatistic($key, $seasonId, $tournamentIds) {
+		$res = null;
+		$tournamentId = count($tournamentIds) === 1 ? (int) $tournamentIds[0] : 999;
+		$data = self::getValue($key);
+
+		if ($data && $data[$seasonId] && $data[$seasonId][$tournamentId]) {
+			$res = $data[$seasonId][$tournamentId];
+		}
+
+		return $res;
+	}
+
+	public static function setStatistic($key, $data, $seasonId, $tournamentIds, $flag = 0, $expire = 604800) {
+		$tournamentId = count($tournamentIds) === 1 ? (int) $tournamentIds[0] : 999;
+		$finishData = self::getValue($key);
+		$finishData[$seasonId][$tournamentId] = $data;
+
+		return self::setValue($key, $finishData, $flag, $expire);
+	}
+
+	public static function deleteStatistic($key, $seasonId, $tournamentIds) {
+		$tournamentId = count($tournamentIds) === 1 ? (int) $tournamentIds[0] : 999;
+		$data = self::getValue($key);
+		$data[$seasonId][$tournamentId] = null;
+		$res = self::setStatistic($key, $data, $seasonId, $tournamentIds);
+
+		return $res;
+	}
+
+	private static function _getMemcache() {
 		if (!self::$_memcache) {
 			self::$_memcache = new Memcache();
 			self::$_memcache->connect(self::HOST, self::PORT) or die('Could not connect');
