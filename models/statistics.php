@@ -18,6 +18,8 @@ class StatisticsModel extends Main {
 	const CACHE_KEY_GAMES_STATISTIC = 'gamesStatistic';
 	const CACHE_KEY_PLAYERS_STATISTIC = 'playersStatistic';
 
+	const CACHE_KEY_SEASONS = 'seasons';
+
 	const FIELDS = [
 		0 => '`game_id`',
 		1 => '`dt`',
@@ -198,20 +200,25 @@ class StatisticsModel extends Main {
 	}
 
 	public function getAllSeasons() {
-		$allSeasons = [];
-		$sth = $this->_db->prepare('SELECT season_id FROM statistic_games WHERE status = 1 GROUP BY season_id');
-		$sth->execute();
-		$seasonIds = $sth->fetchAll(PDO::FETCH_COLUMN);
-		if (is_array($seasonIds)) {
-			$sth = $this->_db->prepare('SELECT season_id, name 
-										FROM seasons 
-										WHERE season_id IN (' . implode(', ', $seasonIds) . ')
-										ORDER BY season_id DESC');
+		$res = Cache::getValue(self::CACHE_KEY_SEASONS);
+		if (!$res) {
+			$res = [];
+			$sth = $this->_db->prepare('SELECT season_id FROM statistic_games WHERE status = 1 GROUP BY season_id');
 			$sth->execute();
-			$allSeasons = $sth->fetchAll(PDO::FETCH_ASSOC);
+			$seasonIds = $sth->fetchAll(PDO::FETCH_COLUMN);
+			if (is_array($seasonIds)) {
+				$sth = $this->_db->prepare('SELECT season_id, name 
+											FROM seasons 
+											WHERE season_id IN (' . implode(', ', $seasonIds) . ')
+											ORDER BY season_id DESC');
+				$sth->execute();
+				$res = $sth->fetchAll(PDO::FETCH_ASSOC);
+			}
+
+			Cache::setValue(self::CACHE_KEY_SEASONS, $res);
 		}
 
-		return $allSeasons;
+		return $res;
 	}
 	
 	public function getTournaments() {
@@ -286,8 +293,20 @@ class StatisticsModel extends Main {
 	 * @return bool
 	 */
 	public function confirmedProtocol() {
-		$stmt = $this->_db->prepare('UPDATE ' . self::TABLE_NAME_STATISTIC_GAMES . ' SET `status` = ? WHERE `status` = ?');
-		return $stmt->execute([self::STATUS_CONFIRMED, self::STATUS_NOT_CONFIRMED]);
+		$res = false;
+		$gameIds = $this->getNotConfirmedGameIds();
+		if ($gameIds) {
+			$gameIdsString = implode(', ', $gameIds);
+			$stmt = $this->_db->prepare('UPDATE ' . self::TABLE_NAME_STATISTIC_GAMES . ' SET `status` = ? WHERE `game_id` IN(' . $gameIdsString . ')');
+			$res = $stmt->execute([self::STATUS_CONFIRMED]);
+		}
+		if ($res) {
+			Cache::deleteValue(StatisticsModel::CACHE_KEY_SEASONS_STATISTIC);
+			Cache::deleteValue(StatisticsModel::CACHE_KEY_GAMES_STATISTIC);
+			Cache::deleteValue(StatisticsModel::CACHE_KEY_PLAYERS_STATISTIC);
+			Cache::deleteValue(StatisticsModel::CACHE_KEY_SEASONS);
+		}
+		return $res;
 	}
 
 	/**

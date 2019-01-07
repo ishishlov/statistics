@@ -56,7 +56,6 @@ class Cache {
 	}
 
 	public static function setStatistic($key, $data, $seasonId, $tournamentIds, $flag = 0, $expire = 604800) {
-		return false;//временная заглушка
 		$tournamentId = count($tournamentIds) === 1 ? (int) $tournamentIds[0] : 999;
 		$finishData = self::getValue($key);
 		$finishData[$seasonId][$tournamentId] = $data;
@@ -67,7 +66,7 @@ class Cache {
 	public static function deleteStatistic($key, $seasonId, $tournamentIds) {
 		$tournamentId = count($tournamentIds) === 1 ? (int) $tournamentIds[0] : 999;
 		$data = self::getValue($key);
-		$data[$seasonId][$tournamentId] = null;
+		unset($data[$seasonId][$tournamentId]);
 		$res = self::setStatistic($key, $data, $seasonId, $tournamentIds);
 
 		return $res;

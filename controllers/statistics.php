@@ -163,9 +163,10 @@ class Statistics extends Common {
 	 * Временный метод для чистки всего кеша
 	 */
 	public function tempDeleteAllCache() {
-		$test = Cache::deleteValue(StatisticsModel::CACHE_KEY_SEASONS_STATISTIC);
-		$test2 = Cache::deleteValue(StatisticsModel::CACHE_KEY_GAMES_STATISTIC);
-		$test3 = Cache::deleteValue(StatisticsModel::CACHE_KEY_PLAYERS_STATISTIC);
+		Cache::deleteValue(StatisticsModel::CACHE_KEY_SEASONS_STATISTIC);
+		Cache::deleteValue(StatisticsModel::CACHE_KEY_GAMES_STATISTIC);
+		Cache::deleteValue(StatisticsModel::CACHE_KEY_PLAYERS_STATISTIC);
+		Cache::deleteValue(StatisticsModel::CACHE_KEY_SEASONS);
 		var_dump('Delete is completed');exit;
 	}
 }
