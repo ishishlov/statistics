@@ -58,7 +58,6 @@
 							<col width="60" />
 							<col width="60" />
 							<col width="60" />
-							<col width="60" />
 						</colgroup>
 						<tbody>
 							<tr>
@@ -74,7 +73,6 @@
 								<th class="stat-widget-season-statistic-table-cell-head" colspan="2">БШ</th>
 								<th class="stat-widget-season-statistic-table-cell-head">ЭФФ</th>
 								<th class="stat-widget-season-statistic-table-cell-head">О</th>
-								<th class="stat-widget-season-statistic-table-cell-head">ОП</th>
 								<th class="stat-widget-season-statistic-table-cell-head-end">РАЗН</th>
 							</tr>
 							<tr>
@@ -102,7 +100,6 @@
 								<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">на</td>
 								<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">&nbsp;</td>
 								<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">&nbsp;</td>
-								<td class="stat-widget-season-statistic-table-cell stat-widget-season-statistic-table-cell-end">{{ notConfirmedData.max_op }}</td>
 								<td class="stat-widget-season-statistic-table-cell">{{ notConfirmedData.min_plus_minus }}</td>
 							</tr>
 							<tr>
@@ -130,7 +127,6 @@
 								<td class="stat-widget-season-statistic-table-cell-end">{{ notConfirmedData.max_against }}</td>
 								<td class="stat-widget-season-statistic-table-cell-end">{{ notConfirmedData.max_effectiveness }}</td>
 								<td class="stat-widget-season-statistic-table-cell-end">{{ notConfirmedData.max_points_scored }}</td>
-								<td class="stat-widget-season-statistic-table-cell-end">{{ notConfirmedData.min_op }}</td>
 								<td class="stat-widget-season-statistic-table-cell">{{ notConfirmedData.max_plus_minus }}</td>
 							</tr>
 						</tbody>

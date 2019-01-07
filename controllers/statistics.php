@@ -93,7 +93,7 @@ class Statistics extends Common {
 		$data = $this->_getCorrectKeyArray($data);
 		$data = $this->_removeFirstRow($data);
 		$errors = $this->_validateArrayData($data);
-		$this->vd($data);exit;
+		//$this->vd($data);exit;
 		if ($errors) {
 			$this->vd('Ошибка');exit;
 		}

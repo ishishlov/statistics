@@ -139,8 +139,6 @@ class StatisticsModel extends Main {
 					MAX(sp.`against`) AS max_against,
 					MAX(sp.effectiveness) AS max_effectiveness,
 					MAX(sp.points_scored) AS max_points_scored,
-					MAX(sp.op) AS max_op,
-					MIN(sp.op) AS min_op,
 					MAX(sp.`plus_minus`) AS max_plus_minus,
 					MIN(sp.`plus_minus`) AS min_plus_minus
 				FROM statistic_games sg 
@@ -203,8 +201,8 @@ class StatisticsModel extends Main {
 		$res = Cache::getValue(self::CACHE_KEY_SEASONS);
 		if (!$res) {
 			$res = [];
-			$sth = $this->_db->prepare('SELECT season_id FROM statistic_games WHERE status = 1 GROUP BY season_id');
-			$sth->execute();
+			$sth = $this->_db->prepare('SELECT season_id FROM statistic_games WHERE status = ? GROUP BY season_id');
+			$sth->execute([self::STATUS_CONFIRMED]);
 			$seasonIds = $sth->fetchAll(PDO::FETCH_COLUMN);
 			if (is_array($seasonIds)) {
 				$sth = $this->_db->prepare('SELECT season_id, name 
@@ -271,8 +269,6 @@ class StatisticsModel extends Main {
 				MAX(sp.`against`) AS max_against,
 				MAX(sp.effectiveness) AS max_effectiveness,
 				MAX(sp.points_scored) AS max_points_scored,
-				MAX(sp.op) AS max_op,
-				MIN(sp.op) AS min_op,
 				MAX(sp.`plus_minus`) AS max_plus_minus,
 				MIN(sp.`plus_minus`) AS min_plus_minus
 			FROM statistic_games sg 
@@ -347,8 +343,22 @@ class StatisticsModel extends Main {
 				}
 			}
 		}
+
+		// убираем дублирование
+		$finishStatisticGame = [];
+		if ($statisticGame) {
+			$gameIds = [];
+			foreach ($statisticGame as $key => $value) {
+				if (!in_array($value[self::FIELDS[0]], $gameIds)) {
+					$value[self::FIELDS[1]] = date('Y-m-d', strtotime($value[self::FIELDS[1]]));
+					$finishStatisticGame[] = $value;
+					$gameIds[] = (int) $value[self::FIELDS[0]];
+				}
+			}
+		}
+
 		return [
-			'statisticGame'		=> [$statisticGame[0]],
+			'statisticGame'		=> $finishStatisticGame,
 			'statisticPlayer'	=> $statisticPlayer
 		];
 	}
