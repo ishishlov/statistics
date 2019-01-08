@@ -6,6 +6,7 @@
 	<meta name="google-site-verification" content="oU95wkE-iQwMDOFq3vfXkfwgYkNr3yB1Lklq569qTb4" />
 	<link rel="alternate" href="http://en.bckhimki.ru/" hreflang="en-GB" />
 	<link rel="stylesheet" href="/css/tempfont.css" />
+	<link rel="stylesheet" href="/css/main.min.css" />
 	<link rel="stylesheet" href="https://bckhimki.ru/css/v7/jquery.fancybox.min.css" />
 	<link rel="stylesheet" href="https://bckhimki.ru/css/v7/jquery.mCustomScrollbar.min.css" />
 	<link rel="stylesheet" href="https://bckhimki.ru/css/v7/slick.min.css" />
@@ -72,9 +73,12 @@
 			<div class="bott2_head">
 				<div class="container clear">
 					<ul>
-						<li><a class="active" href="team.html">Командная статистика</a></li>
-						<li><a href="players.html">Игроки</a></li>
-						<li><a href="history.html">История</a></li>
+						<li><a href="https://bckhimki.ru/season/calendar/">РАСПИСАНИЕ ИГР</a></li>
+						<li><a class="active" href="https://bckhimki.ru/season/stading/">ТУРНИРНАЯ ТАБЛИЦА</a></li>
+						<li><a href="https://bckhimki.ru/season/report/">РЕПОРТАЖИ МАТЧЕЙ</a></li>
+						<li><a href="https://bckhimki.ru/season/bilety/">БИЛЕТЫ</a></li>
+						<li><a href="https://bckhimki.ru/season/prodazha_biletov/">БИЛЕТЫ В КАССЕ</a></li>
+						<li><a href="https://bckhimki.ru/season/online/">БИЛЕТЫ ОНЛАЙН</a></li>
 					</ul>
 				</div>
 			</div>

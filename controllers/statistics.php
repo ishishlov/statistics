@@ -47,8 +47,7 @@ class Statistics extends Common {
 	 * Страница командной статистики
 	 */
 	public function commandsStatistic() {
-//		$test = Cache::getValue(StatisticsModel::CACHE_KEY_GAMES_STATISTIC);
-//		$this->vd($test);exit;
+//		$this->vd(phpinfo());exit;
 		$this->display('commandsstatistic.tpl');
 	}
 
