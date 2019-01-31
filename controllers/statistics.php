@@ -34,20 +34,9 @@ class Statistics extends Common {
 	}
 
 	/**
-	 * Временная страница с формой сохранения протокола статистики
-	 */
-	public function commandsStatisticCopy() {
-		$seasonStatistics = $this->_model->getSeasonsStatistic(17, 1);
-		$gamesStatistics = $this->_model->getGamesStatistic(17, [1,2]);
-		//$this->vd($gamesStatistics);exit;
-		$this->display('commandstatisticcopy.tpl');
-	}
-
-	/**
 	 * Страница командной статистики
 	 */
 	public function commandsStatistic() {
-//		$this->vd(phpinfo());exit;
 		$this->display('commandsstatistic.tpl');
 	}
 

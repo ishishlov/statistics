@@ -22,6 +22,7 @@ class DB {
 				$this->_login,
 				$this->_password
 			);
+			$this->_db->query("SET NAMES 'utf8'");
 		} catch (PDOException $e) {
 			die($e->getMessage());
 		}
