@@ -17,7 +17,8 @@ class Route {
 
 		$file = mb_strtolower('controllers/' . $controllerName . '.php');
 		if (!file_exists($file)) {
-			print('Данной страницы не существует!');
+			header("HTTP/1.0 404 Not Found");
+			//print('Данной страницы не существует!');
 			exit;
 		}
 
@@ -25,7 +26,8 @@ class Route {
 		
 		$Controller = new $controllerName;
 		if (!method_exists($Controller, $method)) {
-			print('Данного метода не существует!');
+			header("HTTP/1.0 404 Not Found");
+			//print('Данного метода не существует!');
 			exit;
 		}
 

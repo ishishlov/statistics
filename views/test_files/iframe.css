@@ -1,0 +1,13 @@
+body {
+    padding-top: 72px !important;
+}
+
+#euroleague-topbar {
+    width: 100vw;
+    height: 72px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99 !important;
+    border: 0px;
+}

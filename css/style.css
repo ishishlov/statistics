@@ -1,1 +1,199 @@
-﻿
+.stat-widget-container﻿ {
+	background: #e7e8ea;
+	padding: 40px 0 75px;
+}
+
+.stat-widget-wrap-main {
+	width: 100%;
+	max-width: 1230px;
+	margin: 0 auto;
+	padding: 0 30px;
+	min-width: 320px;
+}
+
+.stat-widget-title-main {
+	font-size: 24px;
+}
+
+.stat-widget-title {
+	font-size: 24px;
+	margin-top: 40px;
+}
+
+.stat-widget-wrap-stat {
+	background: #fff;
+	padding: 22px 18px 10px;
+}
+
+.stat-widget-tabs {
+	margin: 14px 0 0;
+	padding: 0;
+}
+
+.stat-widget-tab {
+	display: inline-block;
+	vertical-align: top;
+	color: #fff;
+	font-size: 15px;
+	font-family: "MyriadPro";
+	font-weight: 600;
+	padding: 0 15px;
+	margin-right: 5px;
+	line-height: 37px;
+	background: #082860;
+	text-align: center;
+	-webkit-box-shadow: inset 0 1px 3px 0 rgba(0,0,1,0.11);
+	-moz-box-shadow: inset 0 1px 3px 0 rgba(0,0,1,0.11);
+	box-shadow: inset 0 1px 3px 0 rgba(0,0,1,0.11);
+	cursor: pointer;
+	border-radius: 7px 7px 0 0;
+}
+
+.stat-widget-tab:hover{
+	color: #c4a003;
+}
+
+.stat-widget-tab.active {
+	color: #c4a003;
+	-webkit-box-shadow: 0 1px 4px 0 rgba(8,9,11,0.17), inset 0 1px 3px 0 rgba(0,0,1,0);
+	-moz-box-shadow: 0 1px 4px 0 rgba(8,9,11,0.17),inset 0 1px 3px 0 rgba(0,0,1,0);
+	box-shadow: 0 1px 4px 0 rgba(8,9,11,0.17), inset 0 1px 3px 0 rgba(0,0,1,0);
+}
+
+.stat-widget-filter-tournaments {
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+.stat-widget-filters ul li {
+	list-style: none;
+	margin-left: -4px;
+}
+
+.stat-widget-filter-tournament {
+	display: inline-block;
+	vertical-align: top;
+	font-size: 16px;
+	color: #cbc8c8;
+	font-family: "MyriadPro";
+	padding: 0 15px;
+	line-height: 37px;
+	background: #f6f6f8;
+	text-align: center;
+	-webkit-box-shadow: inset 0 1px 3px 0 rgba(0,0,1,0.11);
+	-moz-box-shadow: inset 0 1px 3px 0 rgba(0,0,1,0.11);
+	box-shadow: inset 0 1px 3px 0 rgba(0,0,1,0.11);
+	cursor: pointer;
+}
+
+.stat-widget-filter-tournament.active {
+	color: #373737;
+	background: #fff;
+	-webkit-box-shadow: 0 1px 4px 0 rgba(8,9,11,0.17), inset 0 1px 3px 0 rgba(0,0,1,0);
+	-moz-box-shadow: 0 1px 4px 0 rgba(8,9,11,0.17),inset 0 1px 3px 0 rgba(0,0,1,0);
+	box-shadow: 0 1px 4px 0 rgba(8,9,11,0.17), inset 0 1px 3px 0 rgba(0,0,1,0);
+}
+
+.stat-widget-filter-season {
+	margin:0 0 0 10px;
+	height:37px;
+}
+
+.stat-widget-season-statistic-table {
+	margin-top: 10px;
+}
+
+.stat-widget-season-statistic-table-cell-head {
+	text-align: center;
+	border-right: 1px #ddd solid;
+	white-space: nowrap;
+}
+
+.stat-widget-season-statistic-table-cell-head-end {
+	text-align: center;
+	white-space: nowrap;
+}
+
+.stat-widget-season-statistic-table-cell-end {
+	text-align: center;
+	white-space: nowrap;
+	border-right: 1px #ddd solid;
+}
+
+.stat-widget-season-statistic-table-cell-bold {
+	text-align: center;
+	white-space: nowrap;
+	font-weight: bold;
+}
+
+.stat-widget-season-statistic-table-cell {
+	text-align: center;
+	white-space: nowrap;
+}
+
+.stat-widget-game-statistic-table {
+	margin-top: 10px;
+	width: 100%;
+	border-collapse: collapse;
+	color: #000;
+	text-align: left;
+	font-weight: 300;
+}
+
+.stat-widget-game-statistic-table th {
+	padding: 8px 5px 12px;
+	font-size: 15px;
+}
+
+.stat-widget-game-statistic-table td {
+	padding: 8px 5px;
+	font-size: 16px;
+}
+
+.stat-widget-game-statistic-table tr:hover {
+	background: #f1f1f1;
+}
+
+.stat-widget-game-statistic-table a {
+	text-decoration: none;
+	-webkit-transition: all .3s ease-out;
+	-moz-transition: all .3s ease-out;
+	-o-transition: all .3s ease-out;
+	-ms-transition: all .3s ease-out;
+	transition: all .3s ease-out;
+	color: #4471f7;
+}
+
+.stat-widget-game-statistic-table-cell-left {
+	width: 290px;
+	text-align: left;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.stat-widget-game-statistic-table-cell-center {
+	text-align: center;
+}
+
+.stat-widget-game-statistic-team-logo {
+	padding-left: 35px;
+	color: #696969;
+	line-height: 2em;
+	display: block;
+}
+
+.stat-widget-info {
+	font-size: 13px;
+	margin: 30px 0;
+	border-top: 1px solid #ccc;
+	padding-top: 15px;
+}
+
+.stat-widget-info-link {
+	margin-top: 15px;
+}
+
+.stat-widget-player-statistic-table-cell{
+	text-align: left;
+}
