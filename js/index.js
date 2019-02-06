@@ -130,17 +130,19 @@
 			},
 
 			getTournaments: function () {
+				_module.showLoader();
 				var url = '/statistics/getTournaments';
 				$.ajax({
 					url: url,
 					type: 'POST',
 					dataType: 'json'
 				}).done(function(response) {
-					
+					_module.hideLoader();
 				});
 			},
 
 			getCommandsStatistic: function () {
+				_module.showLoader();
 				var url = '/statistics/getCommandsStatistic';
 				var ajaxParams = {
 					seasonId: _seasonId,
@@ -152,12 +154,14 @@
 					type: 'POST',
 					dataType: 'json'
 				}).done(function(response) {
+					_module.hideLoader();
 					_module.appendHtmlSeasonStatistic(response.seasonsStatistic);
 					_module.appendHtmlCommandsStatistic(response.gamesStatistic);
 				});
 			},
 
 			getPlayersStatistic: function () {
+				_module.showLoader();
 				var url = '/statistics/getPlayersStatistic';
 				var ajaxParams = {
 					seasonId: _seasonId,
@@ -169,6 +173,7 @@
 					type: 'POST',
 					dataType: 'json'
 				}).done(function(response) {
+					_module.hideLoader();
 					_module.appendHtmlSeasonStatistic(response.seasonsStatistic);
 					_module.appendHtmlPlayersStatistic(response.playersStatistic);
 				});
@@ -462,6 +467,29 @@
 
 			renderHistory: function () {
 				$('.stat-widget-data').empty();
+			},
+			
+			showLoader: function () {
+				var loaderHtml = (
+					'<div class="stat-loader"' +
+						'style="' +
+							'position:absolute;' +
+							'top:520px;' +
+							'left:50%;' +
+							'margin-left:-64px;' +
+							'width:300px;' +
+							'z-index:3;' +
+							'">' +
+						'<img src="/images/loader.gif" />' +
+					'</div>'
+				);
+				$('.stat-widget-data').css('opacity', '0.5');
+				$('.stat-widget-data').append(loaderHtml);
+			},
+			
+			hideLoader: function () {
+				$('.stat-widget-data').css('opacity', '1');
+				$('.stat-loader').remove();
 			}
 		};
 	})(jQuery);
