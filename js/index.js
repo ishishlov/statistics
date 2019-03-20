@@ -493,4 +493,4 @@
 			}
 		};
 	})(jQuery);
-})(jQuery);﻿
+})(jQuery);

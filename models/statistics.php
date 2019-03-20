@@ -109,7 +109,7 @@ class StatisticsModel extends Main {
 	}
 
 	public function getSeasonsStatistic($seasonId, $tournamentIds) {
-		$res = Cache::getStatistic(self::CACHE_KEY_SEASONS_STATISTIC, $seasonId, $tournamentIds);
+		//$res = Cache::getStatistic(self::CACHE_KEY_SEASONS_STATISTIC, $seasonId, $tournamentIds);
 		if (!$res) {
 			$tournamentIdsString = implode(',', $tournamentIds);
 			$sth = $this->_db->prepare(
@@ -148,7 +148,7 @@ class StatisticsModel extends Main {
 			$sth->execute([$seasonId]);
 			$res = $sth->fetch(PDO::FETCH_ASSOC);
 
-			Cache::setStatistic(self::CACHE_KEY_SEASONS_STATISTIC, $res, $seasonId, $tournamentIds);
+			//Cache::setStatistic(self::CACHE_KEY_SEASONS_STATISTIC, $res, $seasonId, $tournamentIds);
 		}
 		return $res;
 	}
@@ -296,10 +296,10 @@ class StatisticsModel extends Main {
 			$res = $stmt->execute([self::STATUS_CONFIRMED]);
 		}
 		if ($res) {
-			Cache::deleteValue(StatisticsModel::CACHE_KEY_SEASONS_STATISTIC);
-			Cache::deleteValue(StatisticsModel::CACHE_KEY_GAMES_STATISTIC);
-			Cache::deleteValue(StatisticsModel::CACHE_KEY_PLAYERS_STATISTIC);
-			Cache::deleteValue(StatisticsModel::CACHE_KEY_SEASONS);
+			//Cache::deleteValue(StatisticsModel::CACHE_KEY_SEASONS_STATISTIC);
+			//Cache::deleteValue(StatisticsModel::CACHE_KEY_GAMES_STATISTIC);
+			//Cache::deleteValue(StatisticsModel::CACHE_KEY_PLAYERS_STATISTIC);
+			//Cache::deleteValue(StatisticsModel::CACHE_KEY_SEASONS);
 		}
 		return $res;
 	}
