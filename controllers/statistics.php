@@ -56,9 +56,18 @@ class Statistics extends Common {
 
 		$this->toJson([
 			'seasonsStatistic'	=> $this->_model->getSeasonsStatistic($seasonId, $tournamentIds),
-			'playersStatistic'	=> $this->_model->getPlayersStatistic($seasonId, $tournamentIds)
+			'playersStatistic'	=> $this->_model->getPlayers($seasonId, $tournamentIds)
 		]);	
 	}
+
+    public function getPlayerData() {
+        $playerId= (int) $_POST['playerId'];
+
+        $this->toJson([
+            'playerStatistic'	=> $this->_model->getPlayerStatistic($playerId),
+            'playerInfo'        => $this->_model->getPlayer($playerId)
+        ]);
+    }
 
 	public function getAllSeasons() {
 		$this->toJson([

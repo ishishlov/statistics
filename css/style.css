@@ -197,3 +197,12 @@
 .stat-widget-player-statistic-table-cell{
 	text-align: left;
 }
+
+.stat-widget-link {
+	color: #4471f7;
+}
+
+.stat-widget-link:hover {
+	text-decoration-line: underline;
+	cursor: pointer;
+}

@@ -10,13 +10,15 @@ class StatisticsModel extends Main {
 	const STATUS_NOT_CONFIRMED = 2;
 
 	/** Название таблицы статистики игроков */
-	const TABLE_NAME_STATISTIC_PLAYERS = 'statistic_players';
+	const TABLE_NAME_STATISTIC_PLAYERS  = 'statistic_players';
 	/** Название таблицы статистики игр */
-	const TABLE_NAME_STATISTIC_GAMES = 'statistic_games';
+	const TABLE_NAME_STATISTIC_GAMES    = 'statistic_games';
 
-	const CACHE_KEY_SEASONS_STATISTIC = 'seasonsStatistic';
-	const CACHE_KEY_GAMES_STATISTIC = 'gamesStatistic';
-	const CACHE_KEY_PLAYERS_STATISTIC = 'playersStatistic';
+	const CACHE_KEY_SEASONS_STATISTIC   = 'seasonsStatistic';
+	const CACHE_KEY_GAMES_STATISTIC     = 'gamesStatistic';
+	const CACHE_KEY_PLAYERS_STATISTIC   = 'playersStatistic';
+	const CACHE_KEY_PLAYER_STATISTIC    = 'playerStatistic';
+	const CACHE_KEY_PLAYER_INFO         = 'playerInfo';
 
 	const CACHE_KEY_SEASONS = 'seasons';
 
@@ -172,7 +174,7 @@ class StatisticsModel extends Main {
 		return $res;
 	}
 
-	public function getPlayersStatistic($seasonId, $tournamentIds) {
+	public function getPlayers($seasonId, $tournamentIds) {
 		//$res = Cache::getStatistic(self::CACHE_KEY_PLAYERS_STATISTIC, $seasonId, $tournamentIds);
 		if (!$res) {
 			$tournamentIdsString = implode(',', $tournamentIds);
@@ -195,6 +197,42 @@ class StatisticsModel extends Main {
 
 		return $res;
 	}
+
+    public function getPlayer($playerId) {
+        //$res = Cache::getPlayerInfo(self::CACHE_KEY_PLAYER_INFO, $playerId);
+        if (!$res) {
+            $sth = $this->_db->prepare(
+                'SELECT p.player_id, p.number, p.name, p.surname, DATE_FORMAT(p.birthdate , "%d.%m.%Y") AS birthdate, gp.name AS position, p.height, p.weight
+					FROM players p
+					LEFT JOIN game_positions gp ON gp.game_position_id = p.game_position_id
+					WHERE p.player_id = ?'
+            );
+            $sth->execute([$playerId]);
+            $res = $sth->fetch(PDO::FETCH_ASSOC);
+
+            //Cache::setPlayerInfo(self::CACHE_KEY_PLAYER_INFO, $playerId);
+        }
+
+        return $res;
+    }
+
+    public function getPlayerStatistic($playerId) {
+        //$res = Cache::getPlayerStatistic(self::CACHE_KEY_PLAYER_STATISTIC, $seasonId, $tournamentIds);
+        if (!$res) {
+            $sth = $this->_db->prepare(
+                'SELECT p.player_id, p.number, p.name, p.surname, DATE_FORMAT(p.birthdate , "%d.%m.%Y") AS birthdate, gp.name AS position, p.height, p.weight
+					FROM players p
+					LEFT JOIN game_positions gp ON gp.game_position_id = p.game_position_id
+					WHERE p.player_id = ?'
+            );
+            $sth->execute([$playerId]);
+            $res = $sth->fetch(PDO::FETCH_ASSOC);
+
+            //Cache::setPlayerStatistic(self::CACHE_KEY_PLAYER_STATISTIC, $res, $playerId);
+        }
+
+        return $res;
+    }
 
 	public function getAllSeasons() {
 		//$res = Cache::getValue(self::CACHE_KEY_SEASONS);
