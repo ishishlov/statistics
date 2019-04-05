@@ -46,7 +46,7 @@ class Statistics extends Common {
 
 		$this->toJson([
 			'seasonsStatistic'	=> $this->_model->getSeasonsStatistic($seasonId, $tournamentIds),
-			'gamesStatistic'	=> $this->_model->getGamesStatistic($seasonId, $tournamentIds)
+			'gamesData'         => $this->_model->getGamesData($seasonId, $tournamentIds)
 		]);
 	}
 

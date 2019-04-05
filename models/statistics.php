@@ -155,7 +155,7 @@ class StatisticsModel extends Main {
 		return $res;
 	}
 
-	public function getGamesStatistic($seasonId, $tournamentIds) {
+	public function getGamesData($seasonId, $tournamentIds) {
 		//$res = Cache::getStatistic(self::CACHE_KEY_GAMES_STATISTIC, $seasonId, $tournamentIds);
 		if (!$res) {
 			$tournamentIdsString = implode(',', $tournamentIds);
@@ -219,13 +219,39 @@ class StatisticsModel extends Main {
     public function getPlayerStatistic($playerId, $seasonId, $tournamentIds) {
         //$res = Cache::getPlayerStatistic(self::CACHE_KEY_PLAYER_STATISTIC, $playerId, $seasonId, $tournamentIds);
         if (!$res) {
+            $tournamentIdsString = implode(',', $tournamentIds);
             $sth = $this->_db->prepare(
-                'SELECT p.player_id, p.number, p.name, p.surname, DATE_FORMAT(p.birthdate , "%d.%m.%Y") AS birthdate, gp.name AS position, p.height, p.weight
-					FROM players p
-					LEFT JOIN game_positions gp ON gp.game_position_id = p.game_position_id
-					WHERE p.player_id = ?'
+                'SELECT
+                    MAX(sp.`two_point_made`) AS MAX_two_point_made,
+					MAX(sp.`two_point_throw`) AS MAX_two_point_throw,
+					MAX(ROUND(sp.`two_point_made` * 100 / sp.`two_point_throw`, 1)) AS MAX_two_point_percent,
+					MAX(sp.`three_point_made`) AS MAX_three_point_made,
+					MAX(sp.`three_point_throw`) AS MAX_three_point_throw,
+					MAX(ROUND(sp.`three_point_made` * 100 / sp.`three_point_throw`, 1)) AS MAX_three_point_percent,
+					MAX(sp.`two_point_made` + sp.`three_point_made`) AS MAX_two_three_point_made,
+					MAX(sp.`two_point_throw` + sp.`three_point_throw`) AS MAX_two_three_point_throw,
+					MAX(ROUND((sp.`two_point_made` + sp.`three_point_made`) * 100 / (sp.`two_point_throw` + sp.`three_point_throw`), 1)) AS MAX_two_three_point_percent,
+					MAX(sp.free_made) AS MAX_free_made,
+					MAX(sp.free_throw) AS MAX_free_throw,
+					MAX(ROUND(sp.free_made * 100 / sp.free_throw)) AS MAX_free_percent,
+					MAX(sp.offensive_rebound) AS MAX_offensive_rebound,
+					MAX(sp.deffensive_rebound) AS MAX_deffensive_rebound,
+					MAX(sp.offensive_rebound + sp.deffensive_rebound) AS MAX_sum_rebound,
+					MAX(sp.assists) AS MAX_assists,
+					MAX(sp.commited_foul) AS MAX_commited_foul,
+					MAX(sp.recieved_foul) AS MAX_recieved_foul,
+					MAX(sp.turnover) AS MAX_turnover,
+					MAX(sp.steal) AS MAX_steal,
+					MAX(sp.in_fawor) AS MAX_in_fawor,
+					MAX(sp.`against`) AS MAX_against,
+					MAX(sp.effectiveness) AS MAX_effectiveness,
+					MAX(sp.points_scored) AS MAX_points_scored,
+					MAX(sp.`plus_minus`) AS MAX_plus_minus
+				FROM statistic_games sg 
+				JOIN statistic_players sp ON sp.game_id = sg.game_id
+				WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ? AND sp.player_id = ?'
             );
-            $sth->execute([$playerId]);
+            $sth->execute([$seasonId, $playerId]);
             $res = $sth->fetch(PDO::FETCH_ASSOC);
 
             //Cache::setPlayerStatistic(self::CACHE_KEY_PLAYER_STATISTIC, $res, $playerId, , $seasonId, $tournamentIds);
