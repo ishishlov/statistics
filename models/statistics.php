@@ -216,8 +216,8 @@ class StatisticsModel extends Main {
         return $res;
     }
 
-    public function getPlayerStatistic($playerId) {
-        //$res = Cache::getPlayerStatistic(self::CACHE_KEY_PLAYER_STATISTIC, $seasonId, $tournamentIds);
+    public function getPlayerStatistic($playerId, $seasonId, $tournamentIds) {
+        //$res = Cache::getPlayerStatistic(self::CACHE_KEY_PLAYER_STATISTIC, $playerId, $seasonId, $tournamentIds);
         if (!$res) {
             $sth = $this->_db->prepare(
                 'SELECT p.player_id, p.number, p.name, p.surname, DATE_FORMAT(p.birthdate , "%d.%m.%Y") AS birthdate, gp.name AS position, p.height, p.weight
@@ -228,7 +228,7 @@ class StatisticsModel extends Main {
             $sth->execute([$playerId]);
             $res = $sth->fetch(PDO::FETCH_ASSOC);
 
-            //Cache::setPlayerStatistic(self::CACHE_KEY_PLAYER_STATISTIC, $res, $playerId);
+            //Cache::setPlayerStatistic(self::CACHE_KEY_PLAYER_STATISTIC, $res, $playerId, , $seasonId, $tournamentIds);
         }
 
         return $res;

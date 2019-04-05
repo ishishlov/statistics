@@ -62,9 +62,11 @@ class Statistics extends Common {
 
     public function getPlayerData() {
         $playerId= (int) $_POST['playerId'];
+        $seasonId = (int) $_POST['seasonId'];
+        $tournamentIds = $this->arrayToInt($_POST['tournamentIds']);
 
         $this->toJson([
-            'playerStatistic'	=> $this->_model->getPlayerStatistic($playerId),
+            'playerStatistic'	=> $this->_model->getPlayerStatistic($playerId, $seasonId, $tournamentIds),
             'playerInfo'        => $this->_model->getPlayer($playerId)
         ]);
     }

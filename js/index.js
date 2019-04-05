@@ -5,10 +5,9 @@
 	var statWidget = (function() {
 		var _module;
 		var $_mainContainer;
-		var _tournaments;
 		var _tournamentIds = [2];
 		var _seasonId = 17;
-		var _allSeasons;
+		var _playerId = 0;
 		var _tabs = {
 			commandStatistic: 1,
 			players: 2,
@@ -30,22 +29,25 @@
 					$(event.target).addClass('active');
 					_tournamentIds = [2];
 					_seasonId = 17;
+					_playerId = 0;
 					_tabId = $(event.target).data('tab-id');
 					switch (_tabId) {
 						case _tabs.commandStatistic:
 							_module.renderGamesStatistic();
 							break;
+
 						case _tabs.players:
 							_module.renderPlayersStatistic();
 							break;
+
 						case _tabs.history:
 							_module.renderHistory();
 							break;
+
 						default:
 							_module.renderWidget();
 							break;
 					}
-					
 				});
 
 				//Смена фильтра
@@ -62,12 +64,19 @@
 						case _tabs.commandStatistic:
 							_module.getCommandsStatistic();
 							break;
+
 						case _tabs.players:
-							_module.getPlayersStatistic();
+							if (_playerId) {
+								_module.getPlayerInfo();
+							} else {
+								_module.getPlayersStatistic();
+							}
 							break;
+
 						case _tabs.history:
-							
+
 							break;
+
 						default:
 							_module.getCommandsStatistic();
 							break;
@@ -82,10 +91,14 @@
 							_module.getCommandsStatistic();
 							break;
 						case _tabs.players:
-							_module.getPlayersStatistic();
+							if (_playerId) {
+								_module.getPlayerInfo();
+							} else {
+								_module.getPlayersStatistic();
+							}
 							break;
 						case _tabs.history:
-							
+
 							break;
 						default:
 							_module.getCommandsStatistic();
@@ -95,8 +108,8 @@
 
 				//Профиль игрока
 				$_mainContainer.on('click', '.stat-widget-player-profile', function (event) {
-					playerId = $(event.target).data('player-id');
-					_module.getPlayerStatistic(playerId);
+					_playerId = $(event.target).data('player-id');
+					_module.renderPlayerInfo();
 				});
 			},
 
@@ -185,11 +198,13 @@
 				});
 			},
 
-			getPlayerStatistic: function (playerId) {
+			getPlayerInfo: function () {
 				_module.showLoader();
 				var url = '/statistics/getPlayerData';
 				var ajaxParams = {
-					playerId: playerId
+					playerId: _playerId,
+					seasonId: _seasonId,
+					tournamentIds: _tournamentIds
 				};
 				$.ajax({
 					url: url,
@@ -197,8 +212,6 @@
 					type: 'POST',
 					dataType: 'json'
 				}).done(function(response) {
-					$('.stat-widget-tab').removeClass('active');
-					$('.js-stat-widget-tab-players').addClass('active');
 					_module.hideLoader();
 					_module.appendHtmlPlayerInfo(response.playerInfo);
 					_module.appendHtmlPlayerStatistic(response.playerStatistic);
@@ -447,7 +460,7 @@
 
 			appendHtmlPlayerInfo: function (data) {
 				var avatar = data.avatar_src ? data.avatar_src : '/images/player_avatars/empty.jpg';
-				var fullName = val.name + ' ' + val.surname;
+				var fullName = data.name + ' ' + data.surname;
 
 				var html = (
 					'<div class="stat-widget-player-info-img">' +
@@ -482,9 +495,8 @@
 					'<div class="clearfix"></div>'
 				);
 
-				$('.js-stat-widget1-title-wrapper').empty().append(fullName);
-				$('.js-stat-widget1-wrapper').empty().append(html);
-				$('.js-stat-widget2-wrapper').empty();
+				$('.stat-widget-title').empty().append(fullName);
+				$('.stat-widget-player-info').empty().append(html);
 			},
 
 			appendHtmlPlayerStatistic: function (data) {
@@ -600,9 +612,10 @@
 						'</tbody>' +
 					'</table>'
 				);
-				$('.js-stat-widget2-wrapper').empty();
+
+				$('.stat-widget-player-statistic').empty();
 				if (_tournamentIds.length === 1 && data.max_two_point_made !== null) {
-					$('.js-stat-widget2-wrapper').append(html);
+					$('.stat-widget-player-statistic').append(html);
 				}
 			},
 
@@ -654,6 +667,32 @@
 				_module.renderTournaments();
 				_module.renderSeasons();
 				_module.getPlayersStatistic();
+			},
+
+			renderPlayerInfo: function () {
+				var html = (
+					'<div class="stat-widget-wrap-stat">' +
+						'<div class="stat-widget-filters">' +
+							'<ul class="stat-widget-filter-tournaments"></ul>' +
+							'<ul>' +
+								'<li>' +
+									'<select class="stat-widget-filter-season"></select>' +
+								'</li>' +
+							'</ul>' +
+						'</div>' +
+						'<div class="stat-widget-title"></div>' +
+						'<div class="stat-widget-player-info"></div>' +
+						'<div class="stat-widget-player-statistic"></div>' +
+					'</div>'
+				);
+				$('.stat-widget-data').empty();
+				$('.stat-widget-data').append(html);
+
+				_module.renderTournaments();
+				_module.renderSeasons();
+				_module.getPlayerInfo();
+
+				$('.js-stat-widget-tab-players').addClass('active');
 			},
 
 			renderHistory: function () {
