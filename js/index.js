@@ -527,26 +527,26 @@
                             '<th class="stat-widget-season-statistic-table-cell-left stat-widget-season-statistic-table-cell-end">' + titles[cnt] + '</th>' +
                             '<td class="stat-widget-season-statistic-table-cell-end" alt="min">' + 00 + ':' + 00 + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_two_point_made'] + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_two_point_throw' + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_three_point_made' + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_three_point_throw' + '</td>' +
-                            // '<td class="stat-widget-season-statistic-table-cell">' + (parseInt(data[titles[cnt] + '_two_point_made') + parseInt(data[titles[cnt] + '_three_point_made')) + '</td>' +
-                            // '<td class="stat-widget-season-statistic-table-cell-end">' + (parseInt(data[titles[cnt] + '_two_point_throw') + parseInt(data[titles[cnt] + '_three_point_throw')) + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_free_made' + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_free_throw' + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_offensive_rebound' + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_deffensive_rebound' + '</td>' +
-                            // '<td class="stat-widget-season-statistic-table-cell-end">' + (parseInt(data[titles[cnt] + '_offensive_rebound') + parseInt(data[titles[cnt] + '_deffensive_rebound')) + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_assists' + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_commited_foul' + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_recieved_foul' + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_turnover' + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_steal' + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_in_fawor' + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_against' + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_effectiveness' + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_plus_minus' + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_points_scored' + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_two_point_throw'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_three_point_made'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_three_point_throw'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + (parseInt(data[titles[cnt] + '_two_point_made']) + parseInt(data[titles[cnt] + '_three_point_made'])) + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + (parseInt(data[titles[cnt] + '_two_point_throw']) + parseInt(data[titles[cnt] + '_three_point_throw'])) + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_free_made'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_free_throw'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_offensive_rebound'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_deffensive_rebound'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + (parseInt(data[titles[cnt] + '_offensive_rebound']) + parseInt(data[titles[cnt] + '_deffensive_rebound'])) + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_assists'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_commited_foul'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_recieved_foul'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_turnover'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_steal'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_in_fawor'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_against'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_effectiveness'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_plus_minus'] + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_points_scored'] + '</td>' +
 						'</tr>'
 					);
 					cnt++;
