@@ -215,13 +215,13 @@
 	width: 120px;
 	display: inline-block;
 	vertical-align: middle;
+	margin-right: 100px;
 }
 
 .stat-widget-game-player-statistic-table {
 	width: 60%;
 	display: inline-block;
 	vertical-align: top;
-	margin-left: 100px;
 }
 
 .stat-widget-player-info {
