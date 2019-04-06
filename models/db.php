@@ -3,7 +3,8 @@
 class DB {
 	
 	private $_db = null;
-	private $_host = '127.0.0.1:3306';
+	private $_host = '127.0.0.1';
+	private $_port = '3306';
 	private $_name = 'statistics';
 	private $_login = 'root';
 	private $_password = '';
@@ -18,7 +19,7 @@ class DB {
 	private function connect() {
 		try {
 			$this->_db = new PDO(
-				'mysql:dbname=' . $this->_name . ';host=' . $this->_host,
+				'mysql:dbname=' . $this->_name . ';host=' . $this->_host . ';port=' . $this->_port,
 				$this->_login,
 				$this->_password
 			);

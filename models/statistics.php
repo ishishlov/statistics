@@ -160,7 +160,7 @@ class StatisticsModel extends Main {
 		if (!$res) {
 			$tournamentIdsString = implode(',', $tournamentIds);
 			$sth = $this->_db->prepare(
-				'SELECT sg.game_id, DATE_FORMAT(sg.dt, "%d.%m.%Y") AS dt, tr.`name` AS tournament, tm.logo_url, tm.`name` AS opponent,  IF(sg.venue = 1, "дома", "в гостях") AS venue, sg.score
+				'SELECT sg.game_id, DATE_FORMAT(sg.dt, "%d.%m.%Y") AS dt, tr.`name` AS tournament, tm.logo_url, tm.`name` AS opponent,  IF(sg.venue = 1, "дома", "в гостях") AS venue, sg.score, tm.url
 				FROM `statistic_games` sg
 				JOIN tournaments tr ON tr.tournament_id = sg.tournament_id
 				JOIN teams tm ON tm.team_id = sg.team_id
@@ -179,7 +179,7 @@ class StatisticsModel extends Main {
 		if (!$res) {
 			$tournamentIdsString = implode(',', $tournamentIds);
 			$sth = $this->_db->prepare(
-				'SELECT sp.player_id, p.number, p.name, p.surname, DATE_FORMAT(p.birthdate , "%d.%m.%Y") AS birthdate, c.logo_src, c.alpha, c.name AS country, gp.name AS position, p.height, p.weight
+				'SELECT sp.player_id, p.number, p.name, p.surname, DATE_FORMAT(p.birthdate , "%d.%m.%Y") AS birthdate, c.logo_src, c.alpha, c.name AS country, gp.name AS position, p.height, p.weight, p.avatar_src
 					FROM statistic_games sg
 					JOIN statistic_players sp ON sp.game_id = sg.game_id
 					JOIN players p ON p.player_id = sp.player_id
@@ -202,7 +202,7 @@ class StatisticsModel extends Main {
         //$res = Cache::getPlayerInfo(self::CACHE_KEY_PLAYER_INFO, $playerId);
         if (!$res) {
             $sth = $this->_db->prepare(
-                'SELECT p.player_id, p.number, p.name, p.surname, DATE_FORMAT(p.birthdate , "%d.%m.%Y") AS birthdate, gp.name AS position, p.height, p.weight
+                'SELECT p.player_id, p.number, p.name, p.surname, DATE_FORMAT(p.birthdate , "%d.%m.%Y") AS birthdate, gp.name AS position, p.height, p.weight, avatar_src
 					FROM players p
 					LEFT JOIN game_positions gp ON gp.game_position_id = p.game_position_id
 					WHERE p.player_id = ?'

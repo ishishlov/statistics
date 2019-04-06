@@ -4,6 +4,7 @@
 	});
 	var statWidget = (function() {
 		var _module;
+		var _domenName = '';
 		var $_mainContainer;
 		var _tournamentIds = [2];
 		var _seasonId = 17;
@@ -18,8 +19,7 @@
 		return {
 			init: function() {
 				_module = this;
-				//_module.setDefaultAllSeasons();
-				//_module.setTournaments();
+				_module.setDomenName();
 				$_mainContainer = $('#stat-widget');
 				_module.renderWidget();
 
@@ -113,6 +113,12 @@
 				});
 			},
 
+			setDomenName: function () {
+				if (location.hostname === 'statistics.ivanshi.ru') {
+					_domenName = 'http://statistics.ivanshi.ru';
+				}
+			},
+
 			renderWidget: function () {
 				var html = _module.getWidgetHtml();
 				$_mainContainer.append(html);
@@ -138,7 +144,7 @@
 			},
 
 			getAllSeasons: function () {
-				var url = '/statistics/getAllSeasons';
+				var url = _domenName + '/statistics/getAllSeasons';
 				$.ajax({
 					url: url,
 					type: 'POST',
@@ -150,7 +156,7 @@
 
 			getTournaments: function () {
 				_module.showLoader();
-				var url = '/statistics/getTournaments';
+				var url = _domenName + '/statistics/getTournaments';
 				$.ajax({
 					url: url,
 					type: 'POST',
@@ -162,7 +168,7 @@
 
 			getCommandsStatistic: function () {
 				_module.showLoader();
-				var url = '/statistics/getCommandsStatistic';
+				var url = _domenName + '/statistics/getCommandsStatistic';
 				var ajaxParams = {
 					seasonId: _seasonId,
 					tournamentIds: _tournamentIds
@@ -181,7 +187,7 @@
 
 			getPlayersStatistic: function () {
 				_module.showLoader();
-				var url = '/statistics/getPlayersStatistic';
+				var url = _domenName + '/statistics/getPlayersStatistic';
 				var ajaxParams = {
 					seasonId: _seasonId,
 					tournamentIds: _tournamentIds
@@ -200,7 +206,7 @@
 
 			getPlayerInfo: function () {
 				_module.showLoader();
-				var url = '/statistics/getPlayerData';
+				var url = _domenName + '/statistics/getPlayerData';
 				var ajaxParams = {
 					playerId: _playerId,
 					seasonId: _seasonId,
@@ -353,16 +359,14 @@
 							'<td class="stat-widget-game-statistic-table-cell-left">' +
 								'<a class="stat-widget-game-statistic-team-logo"' +
 									'target="_blank"' +
-									'href="teamgames.html"' +
+									'href="' + val.url + '"' +
 									'style="background:url(' + val.logo_url + ') left center no-repeat;"' +
 								'>' +
 									val.opponent +
 								'</a>' +
 							'</td>' +
 							'<td class="stat-widget-game-statistic-table-cell-center">' + val.venue + '</td>' +
-							'<td class="stat-widget-game-statistic-table-cell-center">' +
-								'<a href="protocol.html">' + val.score + '</a>' +
-							'</td>' +
+							'<td class="stat-widget-game-statistic-table-cell-center">' + val.score + '</td>' +
 						'</tr>'
 					);
 				});
