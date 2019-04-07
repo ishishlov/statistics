@@ -114,7 +114,7 @@
 				});
 
 				//Инфа по игре
-				$_mainContainer.on('click', '.stat-widget-game-info', function (event) {
+				$_mainContainer.on('click', '.stat-widget-show-game-info', function (event) {
 					_gameId = $(event.target).data('game-id');
 					_module.renderGameInfo();
 				});
@@ -390,7 +390,7 @@
 								'</a>' +
 							'</td>' +
 							'<td class="stat-widget-game-statistic-table-cell-center">' + val.venue + '</td>' +
-							'<td class="stat-widget-game-statistic-table-cell-center stat-widget-game-info stat-widget-link" data-game-id="' + val.game_id + '">' + val.score + '</td>' +
+							'<td class="stat-widget-game-statistic-table-cell-center stat-widget-show-game-info stat-widget-link" data-game-id="' + val.game_id + '">' + val.score + '</td>' +
 						'</tr>'
 					);
 				});
@@ -424,9 +424,9 @@
 					'<div class="stat-widget-container﻿">' +
 						'<div class="stat-widget-wrap-main">' +
 							'<ul class="stat-widget-tabs">' +
-								'<li class="stat-widget-tab active" data-tab-id="1">КОМАНДНАЯ СТАТИСТИКА</li>' +
-								'<li class="stat-widget-tab" data-tab-id="2">ИГРОКИ</li>' +
-								'<li class="stat-widget-tab" data-tab-id="3">ИСТОРИЯ</li>' +
+								'<li class="stat-widget-tab stat-widget-tab-team active" data-tab-id="1">КОМАНДНАЯ СТАТИСТИКА</li>' +
+								'<li class="stat-widget-tab stat-widget-tab-players" data-tab-id="2">ИГРОКИ</li>' +
+								'<li class="stat-widget-tab stat-widget-tab-history" data-tab-id="3">ИСТОРИЯ</li>' +
 							'</ul>' +
 							'<div class="stat-widget-data"></div>' +
 						'</div>' +
@@ -822,7 +822,9 @@
 				_module.renderSeasons();
 				_module.getPlayerInfo();
 
-				$('.js-stat-widget-tab-players').addClass('active');
+				_tabId = 2;
+				$('.stat-widget-tab').removeClass('active');
+				$('.stat-widget-tab-players').addClass('active');
 			},
 			
 			renderGameInfo: function () {
