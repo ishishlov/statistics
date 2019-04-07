@@ -71,6 +71,13 @@ class Statistics extends Common {
         ]);
     }
 
+	public function getGameInfo() {
+		$gameId = (int) $_POST['gameId'];
+		$this->toJson([
+            'gameInfo'	=> $this->_model->getGameInfo($gameId),
+        ]);
+	}
+
 	public function getAllSeasons() {
 		$this->toJson([
 			'allSeasons' => $this->_model->getAllSeasons()

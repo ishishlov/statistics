@@ -243,7 +243,7 @@ class StatisticsModel extends Main {
 					MAX(sp.effectiveness) AS MAX_effectiveness,
 					MAX(sp.points_scored) AS MAX_points_scored,
 					MAX(sp.`plus_minus`) AS MAX_plus_minus,
-       
+
                     SUM(sp.`two_point_made`) AS SUM_two_point_made,
 					SUM(sp.`two_point_throw`) AS SUM_two_point_throw,
 					SUM(sp.`three_point_made`) AS SUM_three_point_made,
@@ -265,7 +265,7 @@ class StatisticsModel extends Main {
 					SUM(sp.effectiveness) AS SUM_effectiveness,
 					SUM(sp.points_scored) AS SUM_points_scored,
 					SUM(sp.`plus_minus`) AS SUM_plus_minus,
-       
+
                     ROUND(AVG(sp.`two_point_made`)) AS AVG_two_point_made,
 					ROUND(AVG(sp.`two_point_throw`)) AS AVG_two_point_throw,
 					ROUND(AVG(sp.`three_point_made`)) AS AVG_three_point_made,
@@ -299,6 +299,53 @@ class StatisticsModel extends Main {
 
         return $res;
     }
+	
+	public function getGameInfo($gameId) {
+		//$res = Cache::getPlayerStatistic(self::CACHE_KEY_PLAYER_STATISTIC, $playerId, $seasonId, $tournamentIds);
+        if (!$res) {
+            $sth = $this->_db->prepare(
+				'SELECT
+					p.player_id,
+					p.`name`,
+					p.`surname`,
+					sp.min,
+					sp.`two_point_made`,
+					sp.`two_point_throw`,
+					sp.`three_point_made`,
+					sp.`three_point_throw`,
+					sp.`two_point_made` + sp.`three_point_made` AS two_three_point_made,
+					sp.`two_point_throw` + sp.`three_point_throw` AS two_three_point_throw,
+					sp.free_made,
+					sp.free_throw,
+					sp.offensive_rebound,
+					sp.deffensive_rebound,
+					sp.assists,
+					sp.commited_foul,
+					sp.recieved_foul,
+					sp.turnover,
+					sp.steal,
+					sp.in_fawor,
+					sp.`against`,
+					sp.effectiveness,
+					sp.points_scored,
+					sp.`plus_minus`,
+					sg.score,
+					DATE_FORMAT(sg.dt, "%d.%m.%Y") AS dt,
+					t.`name` AS team_name
+				FROM statistic_games sg 
+				JOIN statistic_players sp ON sp.game_id = sg.game_id
+				JOIN players p ON p.player_id = sp.player_id
+				JOIN teams t ON t.team_id = sg.team_id
+				WHERE sg.game_id = ?'
+			);
+            $sth->execute([$gameId]);
+            $res = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+            //Cache::setPlayerStatistic(self::CACHE_KEY_PLAYER_STATISTIC, $res, $playerId, , $seasonId, $tournamentIds);
+        }
+
+        return $res;
+	}
 
 	public function getAllSeasons() {
 		//$res = Cache::getValue(self::CACHE_KEY_SEASONS);

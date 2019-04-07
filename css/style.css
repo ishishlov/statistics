@@ -232,3 +232,8 @@
 	padding: 9px;
 	text-align: center;
 }
+
+.stat-widget-game-statistic-table-name {
+	text-align: left;
+	padding-right: 5px;
+}
