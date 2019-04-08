@@ -456,7 +456,7 @@
 						'<tr>' +
 							'<td class="stat-widget-player-statistic-table-cell">' + val.number + '</td>' +
 							'<td class="stat-widget-player-statistic-table-cell">' +
-								'<img src="' + avatar + '" alt="' + fullName + '" width="50" title="' + fullName + '">' +
+								'<img src="' + _domenName + avatar + '" alt="' + fullName + '" width="50" title="' + fullName + '">' +
 							'</td>' +
 							'<td class="stat-widget-player-statistic-table-cell">' +
 								'<span class="stat-widget-link stat-widget-player-profile" data-player-id="' + val.player_id + '">' + fullName + '</span>' +
@@ -503,7 +503,7 @@
 
 				var html = (
 					'<div class="stat-widget-player-info-img">' +
-						'<img src="' + avatar + '" alt="' + fullName + '" title="' + fullName + '" width="120px">' +
+						'<img src="' + _domenName + avatar + '" alt="' + fullName + '" title="' + fullName + '" width="120px">' +
 					'</div>' +
 					'<table class="stat-widget-game-player-statistic-table">' +
 						'<colgroup>' +
@@ -854,7 +854,7 @@
 							'width:300px;' +
 							'z-index:3;' +
 							'">' +
-						'<img src="/images/loader.gif" />' +
+						'<img src="' + _domenName + '/images/loader.gif" />' +
 					'</div>'
 				);
 				$('.stat-widget-data').css('opacity', '0.5');
