@@ -121,7 +121,7 @@
 			},
 
 			setDomenName: function () {
-				if (location.hostname === 'statistics.ivanshi.ru') {
+				if (location.hostname !== 'statistic.ru') {
 					_domenName = 'http://statistics.ivanshi.ru';
 				}
 			},

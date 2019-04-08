@@ -41,6 +41,8 @@ class Statistics extends Common {
 	}
 
 	public function getCommandsStatistic() {
+        header('Access-Control-Allow-Origin: *');
+
 		$seasonId = (int) $_POST['seasonId'];
 		$tournamentIds = $this->arrayToInt($_POST['tournamentIds']);
 
@@ -51,6 +53,8 @@ class Statistics extends Common {
 	}
 
 	public function getPlayersStatistic() {
+        header('Access-Control-Allow-Origin: *');
+
 		$seasonId = (int) $_POST['seasonId'];
 		$tournamentIds = $this->arrayToInt($_POST['tournamentIds']);
 
@@ -61,6 +65,8 @@ class Statistics extends Common {
 	}
 
     public function getPlayerData() {
+        header('Access-Control-Allow-Origin: *');
+
         $playerId= (int) $_POST['playerId'];
         $seasonId = (int) $_POST['seasonId'];
         $tournamentIds = $this->arrayToInt($_POST['tournamentIds']);
@@ -72,6 +78,8 @@ class Statistics extends Common {
     }
 
 	public function getGameInfo() {
+        header('Access-Control-Allow-Origin: *');
+
 		$gameId = (int) $_POST['gameId'];
 		$this->toJson([
             'gameInfo'	=> $this->_model->getGameInfo($gameId),
@@ -79,12 +87,16 @@ class Statistics extends Common {
 	}
 
 	public function getAllSeasons() {
+        header('Access-Control-Allow-Origin: *');
+
 		$this->toJson([
 			'allSeasons' => $this->_model->getAllSeasons()
 		]);
 	}
 
 	public function getTournaments() {
+        header('Access-Control-Allow-Origin: *');
+
 		$this->toJson([
 			'tournaments' => $this->_model->getTournaments()
 		]);
