@@ -21,8 +21,7 @@ class Csv {
 	 */
 	public function getArray() {
 		$csvArray = $this->parseCsv();
-		$finalCsvArray = $this->getArrayByCsvArray($csvArray);
-		return $finalCsvArray;
+		return $this->getArrayByCsvArray($csvArray);
 	}
 
 	/**

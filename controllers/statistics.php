@@ -115,8 +115,8 @@ class Statistics extends Common {
 		if ($errors) {
 			$this->vd('Ошибка');exit;
 		}
+
 		$res = $this->_model->save($data);
-		//$this->vd($res);exit;
 	}
 
 	/**
@@ -144,11 +144,24 @@ class Statistics extends Common {
 		foreach ($data as $key1 => $row) {
 			foreach ($row as $key2 => $value) {
 				$finalData[$key1][StatisticsModel::FIELDS[$key2]] = mb_convert_encoding($value, "utf-8", "windows-1251");
+				// Конвертируем время в секунды
+				if ($key2 === 7) {
+					$finalData[$key1][StatisticsModel::FIELDS[$key2]] = $this->_convertMinToSec($value);
+				}
 			}
 			$finalData[$key1][StatisticsModel::FIELDS[29]] = StatisticsModel::STATUS_NOT_CONFIRMED;
 		}
 
 		return $finalData;
+	}
+	
+	private function _convertMinToSec($time) {
+		$time = substr($time, 0, -3);
+		$sec = (int) substr($time, -2, 2);
+		$min = substr($time, 0, 2);
+		$min = (int) trim($min, ':');
+
+		return $min * 60 + $sec;
 	}
 
 	/**
