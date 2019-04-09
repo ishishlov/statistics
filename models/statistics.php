@@ -30,7 +30,7 @@ class StatisticsModel extends Main {
 		4 => '`player_id`',
 		5 => '`season_id`',
 		6 => '`venue`',
-		7 => '`min`',
+		7 => '`seconds`',
 		8 => '`two_point_made`',
 		9 => '`two_point_throw`',
 		10 => '`three_point_made`',
@@ -101,15 +101,6 @@ class StatisticsModel extends Main {
 		return $res;
 	}
 
-	public function getById($gameId) {
-		$statistic = [];
-		$dataDB = $this->_getFromDB($gameId);
-		if ($dataDB) {
-			$statistic = $this->_getCalculateStatistic($dataDB);
-		}
-		return $statistic;
-	}
-
 	public function getSeasonsStatistic($seasonId, $tournamentIds) {
 		$res = Cache::getStatistic(self::CACHE_KEY_SEASONS_STATISTIC, $seasonId, $tournamentIds);
 		if (!$res) {
@@ -160,7 +151,15 @@ class StatisticsModel extends Main {
 		if (!$res) {
 			$tournamentIdsString = implode(',', $tournamentIds);
 			$sth = $this->_db->prepare(
-				'SELECT sg.game_id, DATE_FORMAT(sg.dt, "%d.%m.%Y") AS dt, tr.`name` AS tournament, tm.logo_url, tm.`name` AS opponent,  IF(sg.venue = 1, "дома", "в гостях") AS venue, sg.score, tm.url
+				'SELECT
+				    sg.game_id,
+                    DATE_FORMAT(sg.dt, "%d.%m.%Y") AS dt,
+                    tr.`name` AS tournament,
+                    tm.logo_url,
+                    tm.`name` AS opponent,
+                    IF(sg.venue = 1, "дома", "в гостях") AS venue,
+                    sg.score,
+                    tm.url
 				FROM `statistic_games` sg
 				JOIN tournaments tr ON tr.tournament_id = sg.tournament_id
 				JOIN teams tm ON tm.team_id = sg.team_id
@@ -179,15 +178,26 @@ class StatisticsModel extends Main {
 		if (!$res) {
 			$tournamentIdsString = implode(',', $tournamentIds);
 			$sth = $this->_db->prepare(
-				'SELECT sp.player_id, p.number, p.name, p.surname, DATE_FORMAT(p.birthdate , "%d.%m.%Y") AS birthdate, c.logo_src, c.alpha, c.name AS country, gp.name AS position, p.height, p.weight, p.avatar_src
-					FROM statistic_games sg
-					JOIN statistic_players sp ON sp.game_id = sg.game_id
-					JOIN players p ON p.player_id = sp.player_id
-					LEFT JOIN game_positions gp ON gp.game_position_id = p.game_position_id
-					LEFT JOIN countries c ON c.country_id = p.country_id
-					WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?
-					GROUP BY sp.player_id
-					ORDER BY p.number ASC'
+				'SELECT sp.player_id,
+                    p.number,
+                    p.name,
+                    p.surname,
+                    DATE_FORMAT(p.birthdate , "%d.%m.%Y") AS birthdate,
+                    c.logo_src,
+                    c.alpha,
+                    c.name AS country,
+                    gp.name AS position,
+                    p.height,
+                    p.weight,
+                    p.avatar_src
+                FROM statistic_games sg
+                JOIN statistic_players sp ON sp.game_id = sg.game_id
+                JOIN players p ON p.player_id = sp.player_id
+                JOIN game_positions gp ON gp.game_position_id = p.game_position_id
+                JOIN countries c ON c.country_id = p.country_id
+                WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?
+                GROUP BY sp.player_id
+                ORDER BY p.number ASC'
 			);
 			$sth->execute([$seasonId]);
 			$res = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -202,10 +212,19 @@ class StatisticsModel extends Main {
         $res = Cache::getPlayerInfo(self::CACHE_KEY_PLAYER_INFO, $playerId);
         if (!$res) {
             $sth = $this->_db->prepare(
-                'SELECT p.player_id, p.number, p.name, p.surname, DATE_FORMAT(p.birthdate , "%d.%m.%Y") AS birthdate, gp.name AS position, p.height, p.weight, avatar_src
-					FROM players p
-					LEFT JOIN game_positions gp ON gp.game_position_id = p.game_position_id
-					WHERE p.player_id = ?'
+                'SELECT
+                    p.player_id,
+                    p.number,
+                    p.name,
+                    p.surname,
+                    DATE_FORMAT(p.birthdate , "%d.%m.%Y") AS birthdate,
+                    gp.name AS position,
+                    p.height,
+                    p.weight,
+                    avatar_src
+                FROM players p
+                JOIN game_positions gp ON gp.game_position_id = p.game_position_id
+                WHERE p.player_id = ?'
             );
             $sth->execute([$playerId]);
             $res = $sth->fetch(PDO::FETCH_ASSOC);
@@ -222,6 +241,7 @@ class StatisticsModel extends Main {
             $tournamentIdsString = implode(',', $tournamentIds);
             $sth = $this->_db->prepare(
                 'SELECT
+                    MAX(sp.`seconds`) AS MAX_seconds,
                     MAX(sp.`two_point_made`) AS MAX_two_point_made,
 					MAX(sp.`two_point_throw`) AS MAX_two_point_throw,
 					MAX(sp.`three_point_made`) AS MAX_three_point_made,
@@ -244,6 +264,7 @@ class StatisticsModel extends Main {
 					MAX(sp.points_scored) AS MAX_points_scored,
 					MAX(sp.`plus_minus`) AS MAX_plus_minus,
 
+                    SUM(sp.`seconds`) AS SUM_seconds,
                     SUM(sp.`two_point_made`) AS SUM_two_point_made,
 					SUM(sp.`two_point_throw`) AS SUM_two_point_throw,
 					SUM(sp.`three_point_made`) AS SUM_three_point_made,
@@ -266,7 +287,8 @@ class StatisticsModel extends Main {
 					SUM(sp.points_scored) AS SUM_points_scored,
 					SUM(sp.`plus_minus`) AS SUM_plus_minus,
 
-                    ROUND(AVG(sp.`two_point_made`)) AS AVG_two_point_made,
+                    ROUND(AVG(sp.`seconds`)) AS AVG_seconds,
+					ROUND(AVG(sp.`two_point_made`)) AS AVG_two_point_made,
 					ROUND(AVG(sp.`two_point_throw`)) AS AVG_two_point_throw,
 					ROUND(AVG(sp.`three_point_made`)) AS AVG_three_point_made,
 					ROUND(AVG(sp.`three_point_throw`)) AS AVG_three_point_throw,
@@ -294,6 +316,10 @@ class StatisticsModel extends Main {
             $sth->execute([$seasonId, $playerId]);
             $res = $sth->fetch(PDO::FETCH_ASSOC);
 
+            $res['MAX_player_time'] = $this->getPlayerTime($res['MAX_seconds']);
+            $res['SUM_player_time'] = $this->getPlayerTime($res['SUM_seconds']);
+            $res['AVG_player_time'] = $this->getPlayerTime($res['AVG_seconds']);
+
             Cache::setPlayerStatistic(self::CACHE_KEY_PLAYER_STATISTIC, $res, $playerId, $seasonId, $tournamentIds);
         }
 
@@ -308,7 +334,7 @@ class StatisticsModel extends Main {
 					p.player_id,
 					p.`name`,
 					p.`surname`,
-					sp.min,
+					sp.seconds,
 					sp.`two_point_made`,
 					sp.`two_point_throw`,
 					sp.`three_point_made`,
@@ -341,6 +367,11 @@ class StatisticsModel extends Main {
             $sth->execute([$gameId]);
             $res = $sth->fetchAll(PDO::FETCH_ASSOC);
 
+            foreach ($res as &$game) {
+                $game['player_time'] = $this->getPlayerTime($game['seconds']);
+            }
+            unset($game);
+
             Cache::setGameInfo(self::CACHE_KEY_PLAYER_STATISTIC, $res, $playerId, $seasonId, $tournamentIds);
         }
 
@@ -355,10 +386,13 @@ class StatisticsModel extends Main {
 			$sth->execute([self::STATUS_CONFIRMED]);
 			$seasonIds = $sth->fetchAll(PDO::FETCH_COLUMN);
 			if (is_array($seasonIds)) {
-				$sth = $this->_db->prepare('SELECT season_id, name 
-											FROM seasons 
-											WHERE season_id IN (' . implode(', ', $seasonIds) . ')
-											ORDER BY season_id DESC');
+				$sth = $this->_db->prepare(
+				    'SELECT
+                        season_id,
+                        `name` 
+                    FROM seasons 
+                    WHERE season_id IN (' . implode(', ', $seasonIds) . ')
+                    ORDER BY season_id DESC');
 				$sth->execute();
 				$res = $sth->fetchAll(PDO::FETCH_ASSOC);
 			}
@@ -473,6 +507,16 @@ class StatisticsModel extends Main {
 		return true;
 	}
 
+	public function getPlayerTime($seconds) {
+	    if (!$seconds) {
+	        return '0:00';
+        }
+        $sec = date("s", $seconds);
+        $min = ($seconds - $sec)/60;
+
+        return $min . ':' . $sec;
+    }
+
 	/**
 	 * Получить массивы данных по статистике игры и статистике игроков
 	 * 
@@ -511,16 +555,6 @@ class StatisticsModel extends Main {
 			'statisticGame'		=> $finishStatisticGame,
 			'statisticPlayer'	=> $statisticPlayer
 		];
-	}
-
-	private function _getFromDB($gameId) {
-		$sth = $this->_db->prepare('SELECT * FROM `statistic_games` WHERE game_id = ?');
-		$sth->execute([$gameId]);
-		return $sth->fetch(PDO::FETCH_ASSOC);
-	}
-
-	private function _getCalculateStatistic($dataDB) {
-		
 	}
 
 	private function _saveStaticticGame($data) {

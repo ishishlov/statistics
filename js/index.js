@@ -121,7 +121,9 @@
 			},
 
 			setDomenName: function () {
-				if (location.hostname !== 'statistic.ru') {
+				if (location.hostname !== 'statistic.ru' &&
+					location.hostname !== '127.0.0.1'
+				) {
 					_domenName = 'http://statistics.ivanshi.ru';
 				}
 			},
@@ -148,6 +150,76 @@
 				);
 
 				$('.stat-widget-filter-tournaments').append(html);
+			},
+
+			renderGamesStatistic: function () {
+				var html = (
+					'<div class="stat-widget-wrap-stat">' +
+					_module.getFiltersHtml() +
+					'<div class="stat-season-table"></div>' +
+					'<div class="stat-widget-title">Игры</div>' +
+					'<div class="stat-games-table"></div>' +
+					'<div class="stat-widget-info">Euroleague — европейский баскетбольный турнир среди профессиональных мужских клубов из стран, являющихся членами ФИБА Европа.' +
+					'<br /><br />' +
+					'* В соответствии с Регламентом Евролиги 2018/2019 гг., все очки, набранные в овертайме(ах), не будут учитываться в турнирной таблице, а также для любой ситуации тай-брейков.<div class="stat-widget-info-link"><a target="_blank" href="http://www.euroleague.net/main/standings">http://www.euroleague.net/main/standings</a></div>' +
+					'</div>' +
+					'</div>'
+				);
+
+				$('.stat-widget-data').empty().append(html);
+				_module.renderTournaments();
+				_module.renderSeasons();
+				_module.renderCommandsStatistic();
+			},
+
+			renderPlayersStatistic: function () {
+				var html = (
+					'<div class="stat-widget-wrap-stat">' +
+					_module.getFiltersHtml() +
+					'<div class="stat-widget-title">Статистика игроков в соревновании</div>' +
+					'<div class="stat-players-table"></div>' +
+					'</div>'
+				);
+				$('.stat-widget-data').empty().append(html);
+				_module.renderTournaments();
+				_module.renderSeasons();
+				_module.getPlayersStatistic();
+			},
+
+			renderPlayerInfo: function () {
+				var html = (
+					'<div class="stat-widget-wrap-stat">' +
+					_module.getFiltersHtml() +
+					'<div class="stat-widget-title"></div>' +
+					'<div class="stat-widget-player-info"></div>' +
+					'<div class="stat-widget-player-statistic"></div>' +
+					'</div>'
+				);
+				$('.stat-widget-data').empty().append(html);
+
+				_module.renderTournaments();
+				_module.renderSeasons();
+				_module.getPlayerInfo();
+
+				_tabId = 2;
+				$('.stat-widget-tab').removeClass('active');
+				$('.stat-widget-tab-players').addClass('active');
+			},
+
+			renderGameInfo: function () {
+				var html = (
+					'<div class="stat-widget-wrap-stat">' +
+					'<div class="stat-widget-title"></div>' +
+					'<div class="stat-widget-game-info"></div>' +
+					'</div>'
+				);
+				$('.stat-widget-data').empty().append(html);
+
+				_module.getGameInfo();
+			},
+
+			renderHistory: function () {
+				$('.stat-widget-data').empty();
 			},
 
 			getAllSeasons: function () {
@@ -246,6 +318,34 @@
 					_module.hideLoader();
 					_module.appendHtmlGameInfo(response.gameInfo);
 				});
+			},
+
+			getWidgetHtml: function () {
+				return (
+					'<div class="stat-widget-container﻿">' +
+					'<div class="stat-widget-wrap-main">' +
+					'<ul class="stat-widget-tabs">' +
+					'<li class="stat-widget-tab stat-widget-tab-team active" data-tab-id="1">КОМАНДНАЯ СТАТИСТИКА</li>' +
+					'<li class="stat-widget-tab stat-widget-tab-players" data-tab-id="2">ИГРОКИ</li>' +
+					'<li class="stat-widget-tab stat-widget-tab-history" data-tab-id="3">ИСТОРИЯ</li>' +
+					'</ul>' +
+					'<div class="stat-widget-data"></div>' +
+					'</div>' +
+					'</div>'
+				);
+			},
+
+			getFiltersHtml: function () {
+				return (
+					'<div class="stat-widget-filters">' +
+					'<ul class="stat-widget-filter-tournaments"></ul>' +
+					'<ul>' +
+					'<li>' +
+					'<select class="stat-widget-filter-season"></select>' +
+					'</li>' +
+					'</ul>' +
+					'</div>'
+				);
 			},
 
 			appendHtmlSeasons: function (seasons) {
@@ -419,33 +519,7 @@
 				$('.stat-games-table').empty().append(html);
 			},
 
-			getWidgetHtml: function () {
-				return (
-					'<div class="stat-widget-container﻿">' +
-						'<div class="stat-widget-wrap-main">' +
-							'<ul class="stat-widget-tabs">' +
-								'<li class="stat-widget-tab stat-widget-tab-team active" data-tab-id="1">КОМАНДНАЯ СТАТИСТИКА</li>' +
-								'<li class="stat-widget-tab stat-widget-tab-players" data-tab-id="2">ИГРОКИ</li>' +
-								'<li class="stat-widget-tab stat-widget-tab-history" data-tab-id="3">ИСТОРИЯ</li>' +
-							'</ul>' +
-							'<div class="stat-widget-data"></div>' +
-						'</div>' +
-					'</div>'
-				);
-			},
 
-            getFiltersHtml: function () {
-			    return (
-                    '<div class="stat-widget-filters">' +
-                        '<ul class="stat-widget-filter-tournaments"></ul>' +
-                        '<ul>' +
-                            '<li>' +
-                                '<select class="stat-widget-filter-season"></select>' +
-                            '</li>' +
-                        '</ul>' +
-                    '</div>'
-                );
-            },
 
 			appendHtmlPlayersStatistic: function (data) {
 				var rows = '';
@@ -542,16 +616,10 @@
 				var cnt = 0;
 				var titles = ['SUM', 'MAX', 'AVG'];
 				$.each(titles, function(idx, val) {
-					// min = Math.floor(val.max_seconds/60);
-					// sec = val.max_seconds - min*60;
-					// if (sec < 10) {
-                    //     sec = '0' + sec;
-                    // }
-
 					rows += (
 						'<tr>' +
                             '<th class="stat-widget-season-statistic-table-cell-left stat-widget-season-statistic-table-cell-end">' + titles[cnt] + '</th>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end" alt="min">' + 00 + ':' + 00 + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end" alt="min">' + data[titles[cnt] + '_player_time'] + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_two_point_made'] + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_two_point_throw'] + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_three_point_made'] + '</td>' +
@@ -666,7 +734,7 @@
                             '<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name">' +
 								'<span class="stat-widget-link stat-widget-player-profile" data-player-id="' + val.player_id + '">' + fullName + '</span>' +
 							'</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end" alt="min">' + 00 + ':' + 00 + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end" alt="min">' + val.player_time + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell">' + val.two_point_made + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell-end">' + val.two_point_throw + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell">' + val.three_point_made + '</td>' +
@@ -773,76 +841,6 @@
 				$('.stat-widget-game-info').empty().append(html);
 			},
 
-			renderGamesStatistic: function () {
-				var html = (
-					'<div class="stat-widget-wrap-stat">' +
-						_module.getFiltersHtml() +
-						'<div class="stat-season-table"></div>' +
-						'<div class="stat-widget-title">Игры</div>' +
-						'<div class="stat-games-table"></div>' +
-						'<div class="stat-widget-info">Euroleague — европейский баскетбольный турнир среди профессиональных мужских клубов из стран, являющихся членами ФИБА Европа.' +
-							'<br /><br />' +
-							'* В соответствии с Регламентом Евролиги 2018/2019 гг., все очки, набранные в овертайме(ах), не будут учитываться в турнирной таблице, а также для любой ситуации тай-брейков.<div class="stat-widget-info-link"><a target="_blank" href="http://www.euroleague.net/main/standings">http://www.euroleague.net/main/standings</a></div>' +
-						'</div>' +
-					'</div>'
-				);
-
-				$('.stat-widget-data').empty().append(html);
-				_module.renderTournaments();
-				_module.renderSeasons();
-				_module.renderCommandsStatistic();
-			},
-
-			renderPlayersStatistic: function () {
-				var html = (
-					'<div class="stat-widget-wrap-stat">' +
-                        _module.getFiltersHtml() +
-						'<div class="stat-widget-title">Статистика игроков в соревновании</div>' +
-						'<div class="stat-players-table"></div>' +
-					'</div>'
-				);
-				$('.stat-widget-data').empty().append(html);
-				_module.renderTournaments();
-				_module.renderSeasons();
-				_module.getPlayersStatistic();
-			},
-
-			renderPlayerInfo: function () {
-				var html = (
-					'<div class="stat-widget-wrap-stat">' +
-                        _module.getFiltersHtml() +
-						'<div class="stat-widget-title"></div>' +
-						'<div class="stat-widget-player-info"></div>' +
-						'<div class="stat-widget-player-statistic"></div>' +
-					'</div>'
-				);
-				$('.stat-widget-data').empty().append(html);
-
-				_module.renderTournaments();
-				_module.renderSeasons();
-				_module.getPlayerInfo();
-
-				_tabId = 2;
-				$('.stat-widget-tab').removeClass('active');
-				$('.stat-widget-tab-players').addClass('active');
-			},
-			
-			renderGameInfo: function () {
-				var html = (
-					'<div class="stat-widget-wrap-stat">' +
-						'<div class="stat-widget-title"></div>' +
-						'<div class="stat-widget-game-info"></div>' +
-					'</div>'
-				);
-				$('.stat-widget-data').empty().append(html);
-				
-				_module.getGameInfo();
-			},
-
-			renderHistory: function () {
-				$('.stat-widget-data').empty();
-			},
-			
 			showLoader: function () {
 				var loaderHtml = (
 					'<div class="stat-loader"' +
