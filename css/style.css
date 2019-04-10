@@ -259,10 +259,6 @@
 	.stat-widget-title {
 		font-size: 16px;
 	}
-
-    .stat-widget-filter-tournament {
-        width: 100%;
-    }
 }
 
 @media (max-width: 576px) {
@@ -280,5 +276,9 @@
 
 	.stat-widget-player-birthday-cell {
 		display: none;
+	}
+
+	.stat-widget-filter-tournament {
+		width: 100%;
 	}
 }
