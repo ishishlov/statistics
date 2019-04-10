@@ -479,7 +479,7 @@
 					rows += (
 						'<tr>' +
 							'<td class="stat-widget-game-statistic-table-cell-left">' + val.dt + '</td>' +
-							'<td class="stat-widget-game-statistic-table-cell-center">' + val.tournament + '</td>' +
+							'<td class="stat-widget-game-statistic-table-cell-center stat-widget-game-tournament-cell">' + val.tournament + '</td>' +
 							'<td class="stat-widget-game-statistic-table-cell-left">' +
 								'<a class="stat-widget-game-statistic-team-logo"' +
 									'target="_blank"' +
@@ -489,7 +489,7 @@
 									val.opponent +
 								'</a>' +
 							'</td>' +
-							'<td class="stat-widget-game-statistic-table-cell-center">' + val.venue + '</td>' +
+							'<td class="stat-widget-game-statistic-table-cell-center stat-widget-game-venue-cell">' + val.venue + '</td>' +
 							'<td class="stat-widget-game-statistic-table-cell-center stat-widget-show-game-info stat-widget-link" data-game-id="' + val.game_id + '">' + val.score + '</td>' +
 						'</tr>'
 					);
@@ -507,9 +507,9 @@
 						'</colgroup>' +
 						'<tr>' +
 							'<th class="stat-widget-game-statistic-table-cell-left">ДАТА</th>' +
-							'<th class="stat-widget-game-statistic-table-cell-center">ТУРНИР</th>' +
+							'<th class="stat-widget-game-statistic-table-cell-center stat-widget-game-tournament-cell">ТУРНИР</th>' +
 							'<th class="stat-widget-game-statistic-table-cell-left">СОПЕРНИК</th>' +
-							'<th class="stat-widget-game-statistic-table-cell-center" title="Дома или в гостях">МЕСТО</th>' +
+							'<th class="stat-widget-game-statistic-table-cell-center stat-widget-game-venue-cell" title="Дома или в гостях">МЕСТО</th>' +
 							'<th class="stat-widget-game-statistic-table-cell-center">СЧЁТ</th>' +
 						'</tr>' +
 						rows +
@@ -529,13 +529,13 @@
 					rows += (
 						'<tr>' +
 							'<td class="stat-widget-player-statistic-table-cell">' + val.number + '</td>' +
-							'<td class="stat-widget-player-statistic-table-cell">' +
+							'<td class="stat-widget-player-statistic-table-cell stat-widget-player-avatar-cell">' +
 								'<img src="' + _domenName + avatar + '" alt="' + fullName + '" width="50" title="' + fullName + '">' +
 							'</td>' +
 							'<td class="stat-widget-player-statistic-table-cell">' +
 								'<span class="stat-widget-link stat-widget-player-profile" data-player-id="' + val.player_id + '">' + fullName + '</span>' +
 							'</td>' +
-							'<td class="stat-widget-player-statistic-table-cell">' + val.birthdate + '</td>' +
+							'<td class="stat-widget-player-statistic-table-cell stat-widget-player-birthday-cell">' + val.birthdate + '</td>' +
 							'<td class="stat-widget-player-statistic-table-cell">' + val.position + '</td>' +
 							'<td class="stat-widget-player-statistic-table-cell">' + val.height + ' cm</td>' +
 							'<td class="stat-widget-player-statistic-table-cell">' + val.weight + ' kg</td>' +
@@ -557,9 +557,9 @@
 						'</colgroup>' +
 						'<tr>' +
 							'<th class="stat-widget-player-statistic-table-cell">Номер</th>' +
-							'<th class="stat-widget-player-statistic-table-cell">&nbsp;</th>' +
+							'<th class="stat-widget-player-statistic-table-cell stat-widget-player-avatar-cell">&nbsp;</th>' +
 							'<th class="stat-widget-player-statistic-table-cell">Имя</th>' +
-							'<th class="stat-widget-player-statistic-table-cell">Дата рождения</th>' +
+							'<th class="stat-widget-player-statistic-table-cell stat-widget-player-birthday-cell">Дата рождения</th>' +
 							'<th class="stat-widget-player-statistic-table-cell">Позиция</th>' +
 							'<th class="stat-widget-player-statistic-table-cell">Рост</th>' +
 							'<th class="stat-widget-player-statistic-table-cell">Вес</th>' +

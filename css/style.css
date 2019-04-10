@@ -237,3 +237,36 @@
 	text-align: left;
 	padding-right: 5px;
 }
+
+@media (max-width: 768px) {
+	.stat-widget-season-statistic-table {
+		font-size: 10px;
+	}
+
+	.stat-widget-tab {
+		width: 100%;
+		border-bottom: 1px #ddd solid;
+	}
+
+	.stat-widget-player-avatar-cell {
+		display: none;
+	}
+}
+
+@media (max-width: 576px) {
+	.stat-widget-season-statistic-table {
+		font-size: 6px;
+	}
+
+	.stat-widget-game-venue-cell {
+		display: none;
+	}
+
+	.stat-widget-game-tournament-cell {
+		display: none;
+	}
+
+	.stat-widget-player-birthday-cell {
+		display: none;
+	}
+}
