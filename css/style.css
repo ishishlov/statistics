@@ -278,7 +278,16 @@
 		display: none;
 	}
 
+	.stat-widget-filter-tournaments {
+		width: 100%;
+	}
+
 	.stat-widget-filter-tournament {
+		width: 100%;
+	}
+
+	.stat-widget-filter-season {
+		margin: 10px 0 0 0;
 		width: 100%;
 	}
 }
