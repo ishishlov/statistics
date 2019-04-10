@@ -251,11 +251,19 @@
 	.stat-widget-player-avatar-cell {
 		display: none;
 	}
+
+	.stat-widget-game-statistic-table td {
+		font-size: 10px;
+	}
+
+	.stat-widget-title {
+		font-size: 16px;
+	}
 }
 
 @media (max-width: 576px) {
 	.stat-widget-season-statistic-table {
-		font-size: 6px;
+		font-size: 4px;
 	}
 
 	.stat-widget-game-venue-cell {
