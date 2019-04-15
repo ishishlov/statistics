@@ -10,15 +10,16 @@ class StatisticsModel extends Main {
 	const STATUS_NOT_CONFIRMED = 2;
 
 	/** Название таблицы статистики игроков */
-	const TABLE_NAME_STATISTIC_PLAYERS  = 'statistic_players';
+	const TABLE_NAME_STATISTIC_PLAYERS      = 'statistic_players';
 	/** Название таблицы статистики игр */
-	const TABLE_NAME_STATISTIC_GAMES    = 'statistic_games';
+	const TABLE_NAME_STATISTIC_GAMES        = 'statistic_games';
 
-	const CACHE_KEY_SEASONS_STATISTIC   = 'seasonsStatistic';
-	const CACHE_KEY_GAMES_STATISTIC     = 'gamesStatistic';
-	const CACHE_KEY_PLAYERS_STATISTIC   = 'playersStatistic';
-	const CACHE_KEY_PLAYER_STATISTIC    = 'playerStatistic';
-	const CACHE_KEY_PLAYER_INFO         = 'playerInfo';
+	const CACHE_KEY_SEASONS_STATISTIC       = 'seasonsStatistic';
+	const CACHE_KEY_GAMES_STATISTIC         = 'gamesStatistic';
+	const CACHE_KEY_PLAYERS_STATISTIC       = 'playersStatistic';
+	const CACHE_KEY_PLAYER_STATISTIC        = 'playerStatistic';
+	const CACHE_KEY_PLAYER_GAMES_STATISTIC  = 'playerGamesStatistic';
+	const CACHE_KEY_PLAYER_INFO             = 'playerInfo';
 
 	const CACHE_KEY_SEASONS = 'seasons';
 
@@ -325,7 +326,58 @@ class StatisticsModel extends Main {
 
         return $res;
     }
-	
+
+    public function getPlayerGamesStatistic($playerId, $seasonId, $tournamentIds)
+    {
+        $res = Cache::getGameInfo(self::CACHE_KEY_PLAYER_GAMES_STATISTIC, $playerId, $seasonId, $tournamentIds);
+        if (!$res) {
+            $tournamentIdsString = implode(',', $tournamentIds);
+            $sth = $this->_db->prepare(
+                'SELECT
+					sg.game_id,
+                    sp.seconds,
+					sp.`two_point_made`,
+					sp.`two_point_throw`,
+					sp.`three_point_made`,
+					sp.`three_point_throw`,
+					sp.`two_point_made` + sp.`three_point_made` AS two_three_point_made,
+					sp.`two_point_throw` + sp.`three_point_throw` AS two_three_point_throw,
+					sp.free_made,
+					sp.free_throw,
+					sp.offensive_rebound,
+					sp.deffensive_rebound,
+					sp.assists,
+					sp.commited_foul,
+					sp.recieved_foul,
+					sp.turnover,
+					sp.steal,
+					sp.in_fawor,
+					sp.`against`,
+					sp.effectiveness,
+					sp.points_scored,
+					sp.`plus_minus`,
+					sg.score,
+					DATE_FORMAT(sg.dt, "%d.%m.%Y") AS dt,
+					t.`name` AS team_name
+				FROM statistic_games sg 
+				JOIN statistic_players sp ON sp.game_id = sg.game_id
+				JOIN teams t ON t.team_id = sg.team_id
+				WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ? AND sp.player_id = ?'
+            );
+            $sth->execute([$seasonId, $playerId]);
+            $res = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($res as &$game) {
+                $game['player_time'] = $this->getPlayerTime($game['seconds']);
+            }
+            unset($game);
+
+            Cache::setGameInfo(self::CACHE_KEY_PLAYER_GAMES_STATISTIC, $res, $playerId, $seasonId, $tournamentIds);
+        }
+
+        return $res;
+    }
+
 	public function getGameInfo($gameId) {
 		$res = Cache::getGameInfo(self::CACHE_KEY_PLAYER_STATISTIC, $playerId, $seasonId, $tournamentIds);
         if (!$res) {

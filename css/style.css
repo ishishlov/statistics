@@ -238,6 +238,10 @@
 	padding-right: 5px;
 }
 
+.stat-widget-player-games-statistic {
+    margin-top: 48px;
+}
+
 @media (max-width: 768px) {
 	.stat-widget-season-statistic-table {
 		font-size: 10px;
