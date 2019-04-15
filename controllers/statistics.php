@@ -230,7 +230,7 @@ class Statistics extends Common {
 	private function _checkDuplicationGameId($data, &$errors) {
         $newGameIds = [];
         foreach ($data as $row) {
-            $newGameIds[] = (int) $row[$this->_model::FIELDS[0]];
+            $newGameIds[] = (int) $row[StatisticsModel::FIELDS[0]];
         }
         $newGameIds = array_unique($newGameIds);
         $duplicateGameIds = $this->_model->getGameIds($newGameIds);
