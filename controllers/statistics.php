@@ -25,8 +25,11 @@ class Statistics extends Common {
 		if (isset($_POST['confirmed'])) {
 			$this->_model->confirmedProtocol();
 		}
+        if (isset($_POST['errors'])) {
+            $this->_data['errors'] = $_POST['errors'];
+        }
+
 		$notConfirmedData = $this->_model->getNotConfirmedSeasonsStatistic();
-		//$this->vd($notConfirmedData);exit;
 
 		$this->_data['isShowLoadButton'] = (bool)!$notConfirmedData;
 		$this->_data['notConfirmedData'] = $notConfirmedData;
@@ -112,12 +115,18 @@ class Statistics extends Common {
 		$data = $this->_getCorrectKeyArray($data);
 		$data = $this->_removeFirstRow($data);
 		$errors = $this->_validateArrayData($data);
-		//$this->vd($data);exit;
-		if ($errors) {
-			$this->vd('Ошибка');exit;
-		}
 
-		$res = $this->_model->save($data);
+		if ($errors) {
+		    $_POST['errors'] = $errors;
+		} else {
+            if (!$this->_model->save($data)) {
+                $_POST['errors'][] = [
+                    'text'  => 'No saved. Please try again',
+                    'value' => ''
+                ];
+            }
+
+        }
 	}
 
 	/**
@@ -187,9 +196,53 @@ class Statistics extends Common {
 	 */
 	private function _validateArrayData($data) {
 		$errors = [];
-		
+
+        $this->_checkEmptyData($data, $errors);
+        $this->_checkDuplicationGameId($data, $errors);
+
 		return $errors;
 	}
+
+    /**
+     * Проверка на пустоту
+     *
+     * @param array $data
+     * @param array $errors
+     */
+    private function _checkEmptyData($data, &$errors)
+    {
+
+        if (!$data) {
+            $error = [
+                'text'      => 'No data for insert',
+                'value'    => ''
+            ];
+            $errors[] = $error;
+        }
+	}
+
+    /**
+     * Проверка на дубли (данные внесены ранее)
+     *
+     * @param array $data
+     * @param array $errors
+     */
+	private function _checkDuplicationGameId($data, &$errors) {
+        $newGameIds = [];
+        foreach ($data as $row) {
+            $newGameIds[] = (int) $row[$this->_model::FIELDS[0]];
+        }
+        $newGameIds = array_unique($newGameIds);
+        $duplicateGameIds = $this->_model->getGameIds($newGameIds);
+
+        if ($duplicateGameIds) {
+            $error = [
+                'text'      => 'Some games have been saved previously',
+                'value'    => implode(', ', $duplicateGameIds)
+            ];
+            $errors[] = $error;
+        }
+    }
 
 	/**
 	 * Временный метод для чистки всего кеша

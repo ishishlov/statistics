@@ -32,6 +32,10 @@ class Main {
 	 * @return array
 	 */
 	private function _prepareDataForInsert($data) {
+	    if (!$data) {
+	        return [];
+        }
+
 		$titles = implode(', ', array_keys($data[0]));
 		$countValues = count($data[0]);
 		$countRows = count($data);

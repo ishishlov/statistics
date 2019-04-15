@@ -133,6 +133,16 @@
 					</table>
 				</div>
 			{% endif %}
+			{% if errors %}
+				<div class="errors">
+					{% for error in errors %}
+						<div class="error">
+							<div class="error-text">{{ error.text }}</div>
+							<div class="error-value">{{ error.value }}</div>
+						</div>
+					{% endfor %}
+				</div>
+			{% endif %}
 		</div>
 	</body>
 </html>

@@ -47,6 +47,11 @@
 	padding: 20px 0 0 50px;
 }
 
+.errors {
+	text-align: center;
+	color: #a52a2a;
+}
+
 .btn-save {
 	background:linear-gradient(to bottom, #FFFFFF, #E6E6E6) #F5F5F5 repeat-x;
 	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) #B3B3B3;

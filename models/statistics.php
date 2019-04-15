@@ -102,7 +102,25 @@ class StatisticsModel extends Main {
 		return $res;
 	}
 
-	public function getSeasonsStatistic($seasonId, $tournamentIds) {
+	public function getGameIds($gameIds)
+    {
+        $gameIdsString = implode(',', $gameIds);
+        $sth = $this->_db->prepare('SELECT game_id FROM statistic_games WHERE game_id IN (' . $gameIdsString . ')');
+        $sth->execute();
+
+        $res = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+        $gameId = [];
+        if ($res) {
+            foreach ($res as $id) {
+                $gameId[] = (int) $id['game_id'];
+            }
+        }
+
+        return $gameId;
+    }
+
+    public function getSeasonsStatistic($seasonId, $tournamentIds) {
 		$res = Cache::getStatistic(self::CACHE_KEY_SEASONS_STATISTIC, $seasonId, $tournamentIds);
 		if (!$res) {
 			$tournamentIdsString = implode(',', $tournamentIds);
