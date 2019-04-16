@@ -15,7 +15,14 @@
 			players: 2,
 			history: 3
 		};
-		var _tabId = _tabs.commandStatistic;
+		var _activeTabId = _tabs.commandStatistic;
+
+		var _historyTabs = {
+			tables: 1,
+			records: 2,
+			total: 3
+		};
+		var _activeHistoryTabId = _historyTabs.tables;
 
 		return {
 			init: function() {
@@ -31,8 +38,8 @@
 					_tournamentIds = [2];
 					_seasonId = 17;
 					_playerId = 0;
-					_tabId = $(event.target).data('tab-id');
-					switch (_tabId) {
+					_activeTabId = $(event.target).data('tab-id');
+					switch (_activeTabId) {
 						case _tabs.commandStatistic:
 							_module.renderGamesStatistic();
 							break;
@@ -61,7 +68,7 @@
 					} else {
 						_tournamentIds = [tournamentId];
 					}
-					switch (_tabId) {
+					switch (_activeTabId) {
 						case _tabs.commandStatistic:
 							_module.getCommandsStatistic();
 							break;
@@ -87,7 +94,7 @@
 				//Смена сезона
 				$_mainContainer.on('change', '.stat-widget-filter-season', function (event) {
 					_seasonId = $(event.target).val();
-					switch (_tabId) {
+					switch (_activeTabId) {
 						case _tabs.commandStatistic:
 							_module.getCommandsStatistic();
 							break;
@@ -142,6 +149,10 @@
 				_module.getCommandsStatistic();
 			},
 
+			renderHistoryData: function () {
+				_module.getHistoryData();
+			},
+
 			renderTournaments: function () {
 				var html = (
 					'<li class="stat-widget-filter-tournament active" data-tournament-id="2" >Евролига</li>' +
@@ -150,6 +161,18 @@
 				);
 
 				$('.stat-widget-filter-tournaments').append(html);
+			},
+
+			renderHistoryTabs: function () {
+				var html = (
+					'<ul class="stat-widget-history-tabs">' +
+						'<li class="stat-widget-history-tab active" data-history-tab-id="1">Таблицы</li>' +
+						'<li class="stat-widget-history-tab" data-history-tab-id="2">Рекорды</li>' +
+						'<li class="stat-widget-history-tab" data-history-tab-id="3">Суммарные показатели</li>' +
+					'</ul>'
+				);
+
+				$('.stat-widget-history-tabs').append(html);
 			},
 
 			renderGamesStatistic: function () {
@@ -175,9 +198,9 @@
 			renderPlayersStatistic: function () {
 				var html = (
 					'<div class="stat-widget-wrap-stat">' +
-					_module.getFiltersHtml() +
-					'<div class="stat-widget-title">Статистика игроков в соревновании</div>' +
-					'<div class="stat-players-table"></div>' +
+						_module.getFiltersHtml() +
+						'<div class="stat-widget-title">Статистика игроков в соревновании</div>' +
+						'<div class="stat-players-table"></div>' +
 					'</div>'
 				);
 				$('.stat-widget-data').empty().append(html);
@@ -202,7 +225,7 @@
 				_module.renderSeasons();
 				_module.getPlayerInfo();
 
-				_tabId = 2;
+				_activeTabId = _tabs.players;
 				$('.stat-widget-tab').removeClass('active');
 				$('.stat-widget-tab-players').addClass('active');
 			},
@@ -210,8 +233,8 @@
 			renderGameInfo: function () {
 				var html = (
 					'<div class="stat-widget-wrap-stat">' +
-					'<div class="stat-widget-title"></div>' +
-					'<div class="stat-widget-game-info"></div>' +
+						'<div class="stat-widget-title"></div>' +
+						'<div class="stat-widget-game-info"></div>' +
 					'</div>'
 				);
 				$('.stat-widget-data').empty().append(html);
@@ -222,7 +245,21 @@
 			},
 
 			renderHistory: function () {
-				$('.stat-widget-data').empty();
+				var html = (
+					'<div class="stat-widget-wrap-stat">' +
+						_module.getFiltersHtml() +
+						'<div class="stat-widget-history-tabs"></div>' +
+						'<div class="stat-widget-title"></div>' +
+						'<div class="stat-widget-history-data"></div>' +
+					'</div>'
+				);
+
+				$('.stat-widget-data').empty().append(html);
+
+				_module.renderTournaments();
+				_module.renderSeasons();
+				_module.renderHistoryTabs();
+				_module.renderHistoryData();
 			},
 
 			getAllSeasons: function () {
@@ -324,6 +361,23 @@
 				});
 			},
 
+			getHistoryData: function () {
+				_module.showLoader();
+				var url = _domenName + '/statistics/getHistoryData';
+				var ajaxParams = {
+					gameId: _gameId
+				};
+				$.ajax({
+					url: url,
+					data: ajaxParams,
+					type: 'POST',
+					dataType: 'json'
+				}).done(function(response) {
+					_module.hideLoader();
+					_module.appendHtmlHistoryData(response);
+				});
+			},
+
 			getWidgetHtml: function () {
 				return (
 					'<div class="stat-widget-container﻿">' +
@@ -342,12 +396,12 @@
 			getFiltersHtml: function () {
 				return (
 					'<div class="stat-widget-filters">' +
-					'<ul class="stat-widget-filter-tournaments"></ul>' +
-					'<ul>' +
-					'<li>' +
-					'<select class="stat-widget-filter-season"></select>' +
-					'</li>' +
-					'</ul>' +
+						'<ul class="stat-widget-filter-tournaments"></ul>' +
+						'<ul>' +
+							'<li>' +
+								'<select class="stat-widget-filter-season"></select>' +
+							'</li>' +
+						'</ul>' +
 					'</div>'
 				);
 			},
@@ -956,6 +1010,10 @@
 				var title = 'ХИМКИ - ' + data[0].team_name + ' / ' + data[0].score + ' / ' + data[0].dt;
 				$('.stat-widget-title').empty().append(title);
 				$('.stat-widget-game-info').empty().append(html);
+			},
+
+			appendHtmlHistoryData: function () {
+
 			},
 
 			showLoader: function () {

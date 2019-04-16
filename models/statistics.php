@@ -474,11 +474,22 @@ class StatisticsModel extends Main {
 	}
 	
 	public function getTournaments() {
-		$sth = $this->_db->prepare('SELECT tournament_id, name FROM tournaments');
+		$sth = $this->_db->prepare('SELECT tournament_id, `name` FROM tournaments');
 		$sth->execute();
 		return $sth->fetchAll(PDO::FETCH_ASSOC);
 	}
-	
+
+    public function getHistoryTables($seasonId, $tournamentIds) {
+        return [];
+    }
+
+    public function getHistoryRecords($seasonId, $tournamentIds) {
+        return [];
+    }
+
+    public function getHistoryTotal($seasonId, $tournamentIds) {
+        return [];
+    }
 
 	/**
 	 * Получить данные по неподтвержденному протоколу

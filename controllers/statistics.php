@@ -85,10 +85,24 @@ class Statistics extends Common {
         header('Access-Control-Allow-Origin: *');
 
 		$gameId = (int) $_POST['gameId'];
+
 		$this->toJson([
             'gameInfo'	=> $this->_model->getGameInfo($gameId),
         ]);
 	}
+
+    public function getHistoryData() {
+        header('Access-Control-Allow-Origin: *');
+
+        $seasonId = (int) $_POST['seasonId'];
+        $tournamentIds = $this->arrayToInt($_POST['tournamentIds']);
+
+        $this->toJson([
+            'historyTables'     => $this->_model->getHistoryTables($seasonId, $tournamentIds),
+            'historyRecords'    => $this->_model->getHistoryRecords($seasonId, $tournamentIds),
+            'historyTotal'      => $this->_model->getHistoryTotal($seasonId, $tournamentIds),
+        ]);
+    }
 
 	public function getAllSeasons() {
         header('Access-Control-Allow-Origin: *');
