@@ -39,7 +39,7 @@ INSERT INTO `teams` VALUES ('6', 'БАСКОНИЯ', '/images/command_logos/basc
 INSERT INTO `teams` VALUES ('7', 'БК ХИМКИ', '/images/command_logos/bkchimki.jpg', '');
 INSERT INTO `teams` VALUES ('8', 'БРОЗЕ', '', '');
 INSERT INTO `teams` VALUES ('9', 'БУДУЧНОСТЬ', '/images/command_logos/buduchnost.jpg', 'https://www.kkbuducnost.me/');
-INSERT INTO `teams` VALUES ('10', 'ВАЛЕНСИИЯ', '', '');
+INSERT INTO `teams` VALUES ('10', 'ВАЛЕНСИЯ', '', '');
 INSERT INTO `teams` VALUES ('11', 'ВЭФ', '', '');
 INSERT INTO `teams` VALUES ('12', 'ГРАН-КАНАРИЯ', '/images/command_logos/gran_kanaria.jpg', 'https://cbgrancanaria.net/en/');
 INSERT INTO `teams` VALUES ('13', 'ДАРЮШШАФАКА', '/images/command_logos/darushshafaka.jpg', 'http://www.darussafakabasketbol.com/');

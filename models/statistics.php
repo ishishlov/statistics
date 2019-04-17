@@ -353,6 +353,7 @@ class StatisticsModel extends Main {
             $sth = $this->_db->prepare(
                 'SELECT
 					sg.game_id,
+                    DATE_FORMAT(sg.dt, "%d.%m.%Y") AS dt,
                     sp.seconds,
 					sp.`two_point_made`,
 					sp.`two_point_throw`,
@@ -380,7 +381,8 @@ class StatisticsModel extends Main {
 				FROM statistic_games sg 
 				JOIN statistic_players sp ON sp.game_id = sg.game_id
 				JOIN teams t ON t.team_id = sg.team_id
-				WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ? AND sp.player_id = ?'
+				WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ? AND sp.player_id = ?
+				ORDER BY sg.dt DESC'
             );
             $sth->execute([$seasonId, $playerId]);
             $res = $sth->fetchAll(PDO::FETCH_ASSOC);

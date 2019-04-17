@@ -246,6 +246,12 @@
     margin-top: 48px;
 }
 
+.stat-widget-game-statistic-table-dt {
+    display: block;
+    text-align: left;
+    margin-bottom: 3px;
+}
+
 @media (max-width: 768px) {
 	.stat-widget-season-statistic-table {
 		font-size: 10px;
