@@ -91,6 +91,18 @@
 					}
 				});
 
+				//Смена вкладки в Истории
+				$_mainContainer.on('click', '.stat-widget-history-tab', function (event) {
+					$('.stat-widget-history-tab').removeClass('active');
+					$(event.target).addClass('active');
+
+					var historyTab = $(event.target).data('history-tab');
+					if (historyTab) {
+						$('.stat-widget-history-data').addClass('hide');
+						$('.stat-widget-history-data-' + historyTab).removeClass('hide');
+					}
+				});
+
 				//Смена сезона
 				$_mainContainer.on('change', '.stat-widget-filter-season', function (event) {
 					_seasonId = $(event.target).val();
@@ -166,13 +178,13 @@
 			renderHistoryTabs: function () {
 				var html = (
 					'<ul class="stat-widget-history-tabs">' +
-						'<li class="stat-widget-history-tab active" data-history-tab-id="1">Таблицы</li>' +
-						'<li class="stat-widget-history-tab" data-history-tab-id="2">Рекорды</li>' +
-						'<li class="stat-widget-history-tab" data-history-tab-id="3">Суммарные показатели</li>' +
+						'<li class="stat-widget-history-tab active" data-history-tab="tables">Таблицы</li>' +
+						'<li class="stat-widget-history-tab" data-history-tab="records">Рекорды</li>' +
+						'<li class="stat-widget-history-tab" data-history-tab="total">Суммарные показатели</li>' +
 					'</ul>'
 				);
 
-				$('.stat-widget-history-tabs').append(html);
+				$('.stat-widget-history-sections').append(html);
 			},
 
 			renderGamesStatistic: function () {
@@ -248,9 +260,13 @@
 				var html = (
 					'<div class="stat-widget-wrap-stat">' +
 						_module.getFiltersHtml() +
-						'<div class="stat-widget-history-tabs"></div>' +
+						'<div class="stat-widget-history-sections"></div>' +
 						'<div class="stat-widget-title"></div>' +
-						'<div class="stat-widget-history-data"></div>' +
+						'<div class="stat-widget-history-content">' +
+							'<div class="stat-widget-history-data stat-widget-history-data-tables"></div>' +
+							'<div class="stat-widget-history-data stat-widget-history-data-records hide"></div>' +
+							'<div class="stat-widget-history-data stat-widget-history-data-total hide"></div>' +
+						'</div>' +
 					'</div>'
 				);
 
@@ -788,7 +804,6 @@
 				$.each(data, function(idx, val) {
 					rows += (
 						'<tr>' +
-							//'<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-dt">' + val.dt + '</td>' +
 							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name">' +
 								'<span class="stat-widget-show-game-info stat-widget-link" data-game-id="' + val.game_id + '">' + val.team_name + '</span>' +
 								'<span class="stat-widget-game-statistic-table-dt">' + val.dt + '</span>' +
