@@ -381,7 +381,8 @@
 				_module.showLoader();
 				var url = _domenName + '/statistics/getHistoryData';
 				var ajaxParams = {
-					gameId: _gameId
+					seasonId: _seasonId,
+					tournamentIds: _tournamentIds
 				};
 				$.ajax({
 					url: url,

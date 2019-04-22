@@ -20,6 +20,7 @@ class StatisticsModel extends Main {
 	const CACHE_KEY_PLAYER_STATISTIC        = 'playerStatistic';
 	const CACHE_KEY_PLAYER_GAMES_STATISTIC  = 'playerGamesStatistic';
 	const CACHE_KEY_PLAYER_INFO             = 'playerInfo';
+	const CACHE_KEY_RECORDS                 = 'records';
 
 	const CACHE_KEY_SEASONS = 'seasons';
 
@@ -474,8 +475,8 @@ class StatisticsModel extends Main {
 
 		return $res;
 	}
-	
-	public function getTournaments() {
+
+    public function getTournaments() {
 		$sth = $this->_db->prepare('SELECT tournament_id, `name` FROM tournaments');
 		$sth->execute();
 		return $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -486,7 +487,15 @@ class StatisticsModel extends Main {
     }
 
     public function getHistoryRecords($seasonId, $tournamentIds) {
-        return [];
+        $res = Cache::getValue(self::CACHE_KEY_RECORDS);
+        if (!$res) {
+            $allRecordsData = $this->_getAllRecordsData($seasonId, $tournamentIds);
+            $res = $this->_getCalculateRecords($allRecordsData);
+
+            Cache::setValue(self::CACHE_KEY_RECORDS, $res);
+        }
+
+        return $res;
     }
 
     public function getHistoryTotal($seasonId, $tournamentIds) {
@@ -598,6 +607,102 @@ class StatisticsModel extends Main {
         $min = ($seconds - $sec)/60;
 
         return $min . ':' . $sec;
+    }
+
+    private function _getAllRecordsData($seasonId, $tournamentIds) {
+        $tournamentIdsString = implode(',', $tournamentIds);
+        $sth = $this->_db->prepare(
+            'SELECT
+                p.player_id,
+                p.`name`,
+                p.`surname`,
+                sg.game_id,
+                DATE_FORMAT(sg.dt, "%d.%m.%Y") AS dt,
+                sp.seconds,
+                sp.`two_point_made`,
+                sp.`two_point_throw`,
+                sp.`three_point_made`,
+                sp.`three_point_throw`,
+                sp.`two_point_made` + sp.`three_point_made` AS two_three_point_made,
+                sp.`two_point_throw` + sp.`three_point_throw` AS two_three_point_throw,
+                ROUND(sp.`two_point_made` * 100 / sp.`two_point_throw`, 1) AS two_point_percent,
+                ROUND(sp.`three_point_made` * 100 / sp.`three_point_throw`, 1) AS three_point_percent,
+                ROUND((sp.`two_point_made` + sp.`three_point_made`) * 100 / (sp.`two_point_throw` + sp.`three_point_throw`), 1) AS two_three_point_percent,
+                sp.free_made,
+                sp.free_throw,
+                sp.offensive_rebound,
+                sp.deffensive_rebound,
+                sp.assists,
+                sp.commited_foul,
+                sp.recieved_foul,
+                sp.turnover,
+                sp.steal,
+                sp.in_fawor,
+                sp.`against`,
+                sp.effectiveness,
+                sp.points_scored,
+                sp.`plus_minus`,
+                sg.score,
+                DATE_FORMAT(sg.dt, "%d.%m.%Y") AS dt
+            FROM statistic_games sg 
+            JOIN statistic_players sp ON sp.game_id = sg.game_id
+            JOIN players p ON p.player_id = sp.player_id
+            WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?'
+        );
+        $sth->execute([$seasonId]);
+
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function _getCalculateRecords($allRecordsData) {
+        foreach ($allRecordsData as &$row) {
+            $row['player_time'] = $this->getPlayerTime($row['seconds']);
+        }
+        unset($row);
+
+	    $records = [
+	        'game'      => [],
+	        'player'    => [],
+        ];
+	    $recordGameFields = [
+	        'seconds',
+	        'two_point_made',
+            'two_point_throw',
+            'three_point_made',
+            'three_point_throw',
+            'two_three_point_made',
+            'two_three_point_throw',
+            'two_point_percent',
+            'three_point_percent',
+            'two_three_point_percent',
+            'free_made',
+            'free_throw',
+            'offensive_rebound',
+            'deffensive_rebound',
+            'assists',
+            'commited_foul',
+            'recieved_foul',
+            'turnover',
+            'steal',
+            'in_fawor',
+            'against',
+            'effectiveness',
+            'points_scored',
+            'plus_minus',
+            'score'
+        ];
+
+        foreach ($allRecordsData as $row) {
+            foreach ($recordGameFields as $field) {
+                if ($row[$field] > $records['player'][$field][$field]) {
+                    $records['player'][$field] = $row;
+                }
+            }
+        }
+
+        //ToDo доделать логику подсчета рекордов игр
+
+	    return $records;
     }
 
 	/**
