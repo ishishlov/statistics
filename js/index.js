@@ -1030,7 +1030,93 @@
 				$('.stat-widget-game-info').empty().append(html);
 			},
 
-			appendHtmlHistoryData: function () {
+			appendHtmlHistoryData: function (data) {
+				_module.appendHtmlHistoryTables(data.historyTables);
+				_module.appendHtmlHistoryRecords(data.historyRecords);
+				_module.appendHtmlHistoryTotal(data.historyTotal);
+			},
+
+			appendHtmlHistoryTables: function (historyTables) {
+				var html = '';
+
+				$('.stat-widget-history-data-tables').empty().append(html);
+
+			},
+
+			appendHtmlHistoryRecords: function (historyRecords) {
+				var rowsGames = '';
+				$.each(historyRecords.games, function(category, val) {
+					rowsGames += (
+						'<tr>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + category + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + historyRecords.games[category].dt + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + historyRecords.games[category].opponent + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell">' + historyRecords.games[category][category] + '</td>' +
+						'</tr>'
+					);
+				});
+
+                var rowsPlayers = '';
+                $.each(historyRecords.players, function(category, val) {
+                    var fullName = historyRecords.players[category].name + ' ' + historyRecords.players[category].surname;
+                    rowsPlayers += (
+                        '<tr>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + category + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + fullName + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + historyRecords.players[category][category] + '</td>' +
+                        '</tr>'
+                    );
+                });
+
+				var html = (
+					'<div class="stat-widget-records-comand">' +
+						'<div class="stat-widget-records-title">Рекорды команды</div>' +
+						'<table class="stat-widget-season-statistic-table">' +
+							'<colgroup>' +
+								'<col width="50" />' +
+								'<col width="50" />' +
+								'<col width="80" />' +
+								'<col width="50" />' +
+								'</colgroup>' +
+							'<tbody>' +
+								'<tr>' +
+									'<th class="stat-widget-season-statistic-table-cell-head">Категория</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-head">Дата</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-head">Соперник</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-head-end">Результат</th>' +
+								'</tr>' +
+								rowsGames +
+							'</tbody>' +
+						'</table>' +
+					'</div>' +
+					'<div class="stat-widget-records-players">' +
+						'<div class="stat-widget-records-title">Рекорды игроков</div>' +
+                        '<table class="stat-widget-season-statistic-table">' +
+                            '<colgroup>' +
+                                '<col width="50" />' +
+                                '<col width="80" />' +
+                                '<col width="50" />' +
+                            '</colgroup>' +
+                            '<tbody>' +
+                                '<tr>' +
+                                    '<th class="stat-widget-season-statistic-table-cell-head">Категория</th>' +
+                                    '<th class="stat-widget-season-statistic-table-cell-head">Игрок</th>' +
+                                    '<th class="stat-widget-season-statistic-table-cell-head-end">Результат</th>' +
+                                '</tr>' +
+                                rowsPlayers +
+                            '</tbody>' +
+                        '</table>' +
+					'</div>'
+				);
+
+				$('.stat-widget-history-data-records').empty().append(html);
+
+			},
+
+			appendHtmlHistoryTotal: function (historyTotal) {
+				var html = '';
+
+				$('.stat-widget-history-data-total').empty().append(html);
 
 			},
 

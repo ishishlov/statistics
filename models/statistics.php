@@ -616,6 +616,8 @@ class StatisticsModel extends Main {
             'SELECT
                 sg.game_id,
                 DATE_FORMAT(sg.dt, "%d.%m.%Y") AS dt,
+                t.team_id,
+                t.name AS opponent,
                 SUM(sp.`two_point_made`) AS two_point_made,
                 SUM(sp.`two_point_throw`) AS two_point_throw,
                 SUM(sp.`three_point_made`) AS three_point_made,
@@ -642,6 +644,7 @@ class StatisticsModel extends Main {
                 SUM(sg.score) AS score
             FROM statistic_games sg
             JOIN statistic_players sp ON sp.game_id = sg.game_id
+            JOIN teams t ON sg.team_id = t.team_id
             WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?
             GROUP BY sg.game_id'
         );
@@ -704,7 +707,6 @@ class StatisticsModel extends Main {
     private function _getCalculateGamesRecords($gamesRecordData) {
 	    $recordsGames = [];
         $recordGamesFields = [
-            'game_id',
             'two_point_made',
             'two_point_throw',
             'three_point_made',
