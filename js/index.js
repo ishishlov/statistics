@@ -1048,7 +1048,7 @@
 				$.each(historyRecords.games, function(category, val) {
 					rowsGames += (
 						'<tr>' +
-							'<td class="stat-widget-season-statistic-table-cell-end">' + category + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + historyRecords.games[category].alias + '</td>' +
 							'<td class="stat-widget-season-statistic-table-cell-end">' + historyRecords.games[category].dt + '</td>' +
 							'<td class="stat-widget-season-statistic-table-cell-end">' + historyRecords.games[category].opponent + '</td>' +
 							'<td class="stat-widget-season-statistic-table-cell">' + historyRecords.games[category][category] + '</td>' +

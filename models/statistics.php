@@ -707,36 +707,37 @@ class StatisticsModel extends Main {
     private function _getCalculateGamesRecords($gamesRecordData) {
 	    $recordsGames = [];
         $recordGamesFields = [
-            'two_point_made',
-            'two_point_throw',
-            'three_point_made',
-            'three_point_throw',
-            'two_three_point_made',
-            'two_three_point_throw',
-            'two_point_percent',
-            'three_point_percent',
-            'two_three_point_percent',
-            'free_made',
-            'free_throw',
-            'offensive_rebound',
-            'deffensive_rebound',
-            'assists',
-            'commited_foul',
-            'recieved_foul',
-            'turnover',
-            'steal',
-            'in_fawor',
-            'against',
-            'effectiveness',
-            'points_scored',
-            'plus_minus',
-            'score'
+            'two_point_made' => '2-очк З',
+            'two_point_throw' => '2-очк Б',
+            'three_point_made' => '3-очк З',
+            'three_point_throw' => '3-очк Б',
+            'two_three_point_made' => 'Бр З',
+            'two_three_point_throw' => 'Бр Б',
+            'two_point_percent' => '2-очк %',
+            'three_point_percent' => '3-очк %',
+            'two_three_point_percent' => 'Бр %',
+            'free_made' => 'ШТ З',
+            'free_throw' => 'ШТ Б',
+            'offensive_rebound' => 'Пд Ч',
+            'deffensive_rebound' => 'Пд С',
+            'assists' => 'Пд В',
+            'commited_foul' => 'Ф иг',
+            'recieved_foul' => 'Ф на',
+            'turnover' => '11',
+            'steal' => '22',
+            'in_fawor' => '33',
+            'against' => '44',
+            'effectiveness' => '55',
+            'points_scored' => '66',
+            'plus_minus' => '77',
+            'score' => 'О'
         ];
 
         foreach ($gamesRecordData as $row) {
-            foreach ($recordGamesFields as $field) {
+            foreach ($recordGamesFields as $field => $alias) {
                 if ($row[$field] > $recordsGames[$field][$field]) {
                     $recordsGames[$field] = $row;
+                    $recordsGames[$field]['alias'] = $alias;
                 }
             }
         }
