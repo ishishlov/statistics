@@ -489,8 +489,9 @@ class StatisticsModel extends Main {
     public function getHistoryRecords($seasonId, $tournamentIds) {
         $res = Cache::getValue(self::CACHE_KEY_RECORDS);
         if (!$res) {
-            $allRecordsData = $this->_getAllRecordsData($seasonId, $tournamentIds);
-            $res = $this->_getCalculateRecords($allRecordsData);
+            $gamesRecordData = $this->_getGamesRecordData($seasonId, $tournamentIds);
+            $playersRecordData = $this->_getPlayersRecordData($seasonId, $tournamentIds);
+            $res = $this->_getCalculateRecords($gamesRecordData, $playersRecordData);
 
             Cache::setValue(self::CACHE_KEY_RECORDS, $res);
         }
@@ -609,64 +610,102 @@ class StatisticsModel extends Main {
         return $min . ':' . $sec;
     }
 
-    private function _getAllRecordsData($seasonId, $tournamentIds) {
+    private function _getGamesRecordData($seasonId, $tournamentIds) {
         $tournamentIdsString = implode(',', $tournamentIds);
         $sth = $this->_db->prepare(
             'SELECT
-                p.player_id,
-                p.`name`,
-                p.`surname`,
                 sg.game_id,
                 DATE_FORMAT(sg.dt, "%d.%m.%Y") AS dt,
-                sp.seconds,
-                sp.`two_point_made`,
-                sp.`two_point_throw`,
-                sp.`three_point_made`,
-                sp.`three_point_throw`,
-                sp.`two_point_made` + sp.`three_point_made` AS two_three_point_made,
-                sp.`two_point_throw` + sp.`three_point_throw` AS two_three_point_throw,
-                ROUND(sp.`two_point_made` * 100 / sp.`two_point_throw`, 1) AS two_point_percent,
-                ROUND(sp.`three_point_made` * 100 / sp.`three_point_throw`, 1) AS three_point_percent,
-                ROUND((sp.`two_point_made` + sp.`three_point_made`) * 100 / (sp.`two_point_throw` + sp.`three_point_throw`), 1) AS two_three_point_percent,
-                sp.free_made,
-                sp.free_throw,
-                sp.offensive_rebound,
-                sp.deffensive_rebound,
-                sp.assists,
-                sp.commited_foul,
-                sp.recieved_foul,
-                sp.turnover,
-                sp.steal,
-                sp.in_fawor,
-                sp.`against`,
-                sp.effectiveness,
-                sp.points_scored,
-                sp.`plus_minus`,
-                sg.score,
-                DATE_FORMAT(sg.dt, "%d.%m.%Y") AS dt
-            FROM statistic_games sg 
+                SUM(sp.`two_point_made`) AS two_point_made,
+                SUM(sp.`two_point_throw`) AS two_point_throw,
+                SUM(sp.`three_point_made`) AS three_point_made,
+                SUM(sp.`three_point_throw`) AS three_point_throw,
+                SUM(sp.`two_point_made` + sp.`three_point_made`) AS two_three_point_made,
+                SUM(sp.`two_point_throw` + sp.`three_point_throw`) AS two_three_point_throw,
+                SUM(ROUND(sp.`two_point_made` * 100 / sp.`two_point_throw`, 1)) AS two_point_percent,
+                SUM(ROUND(sp.`three_point_made` * 100 / sp.`three_point_throw`, 1)) AS three_point_percent,
+                SUM(ROUND((sp.`two_point_made` + sp.`three_point_made`) * 100 / (sp.`two_point_throw` + sp.`three_point_throw`), 1)) AS two_three_point_percent,
+                SUM(sp.free_made) AS free_made,
+                SUM(sp.free_throw) AS free_throw,
+                SUM(sp.offensive_rebound) AS offensive_rebound,
+                SUM(sp.deffensive_rebound) AS deffensive_rebound,
+                SUM(sp.assists) AS assists,
+                SUM(sp.commited_foul) AS commited_foul,
+                SUM(sp.recieved_foul) AS recieved_foul,
+                SUM(sp.turnover) AS turnover,
+                SUM(sp.steal) AS steal,
+                SUM(sp.in_fawor) AS in_fawor,
+                SUM(sp.`against`) AS against,
+                SUM(sp.effectiveness) AS effectiveness,
+                SUM(sp.points_scored) AS points_scored,
+                SUM(sp.`plus_minus`) AS plus_minus,
+                SUM(sg.score) AS score
+            FROM statistic_games sg
             JOIN statistic_players sp ON sp.game_id = sg.game_id
-            JOIN players p ON p.player_id = sp.player_id
-            WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?'
+            WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?
+            GROUP BY sg.game_id'
         );
         $sth->execute([$seasonId]);
 
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    private function _getCalculateRecords($allRecordsData) {
-        foreach ($allRecordsData as &$row) {
-            $row['player_time'] = $this->getPlayerTime($row['seconds']);
-        }
-        unset($row);
+    private function _getPlayersRecordData($seasonId, $tournamentIds) {
+        $tournamentIdsString = implode(',', $tournamentIds);
+        $sth = $this->_db->prepare(
+            'SELECT
+                p.player_id,
+                p.name,
+                p.surname,
+                count(sp.player_id) AS count_games,
+                SUM(sp.`seconds`) AS seconds,
+                SUM(sp.`two_point_made`) AS two_point_made,
+                SUM(sp.`two_point_throw`) AS two_point_throw,
+                SUM(sp.`three_point_made`) AS three_point_made,
+                SUM(sp.`three_point_throw`) AS three_point_throw,
+                SUM(sp.`two_point_made` + sp.`three_point_made`) AS two_three_point_made,
+                SUM(sp.`two_point_throw` + sp.`three_point_throw`) AS two_three_point_throw,
+                SUM(ROUND(sp.`two_point_made` * 100 / sp.`two_point_throw`, 1)) AS two_point_percent,
+                SUM(ROUND(sp.`three_point_made` * 100 / sp.`three_point_throw`, 1)) AS three_point_percent,
+                SUM(ROUND((sp.`two_point_made` + sp.`three_point_made`) * 100 / (sp.`two_point_throw` + sp.`three_point_throw`), 1)) AS two_three_point_percent,
+                SUM(sp.free_made) AS free_made,
+                SUM(sp.free_throw) AS free_throw,
+                SUM(sp.offensive_rebound) AS offensive_rebound,
+                SUM(sp.deffensive_rebound) AS deffensive_rebound,
+                SUM(sp.assists) AS assists,
+                SUM(sp.commited_foul) AS commited_foul,
+                SUM(sp.recieved_foul) AS recieved_foul,
+                SUM(sp.turnover) AS turnover,
+                SUM(sp.steal) AS steal,
+                SUM(sp.in_fawor) AS in_fawor,
+                SUM(sp.`against`) AS against,
+                SUM(sp.effectiveness) AS effectiveness,
+                SUM(sp.points_scored) AS points_scored,
+                SUM(sp.`plus_minus`) AS plus_minus,
+                SUM(sg.score) AS score
+            FROM statistic_players sp
+            JOIN statistic_games sg ON sp.game_id = sg.game_id
+            JOIN players p ON p.player_id = sp.player_id
+            WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?
+            GROUP BY p.player_id'
+        );
+        $sth->execute([$seasonId]);
 
-	    $records = [
-	        'game'      => [],
-	        'player'    => [],
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function _getCalculateRecords($gamesRecordData, $playersRecordData) {
+	    return [
+            'games'   => $this->_getCalculateGamesRecords($gamesRecordData),
+	        'players' => $this->_getCalculatePlayersRecords($playersRecordData)
         ];
-	    $recordGameFields = [
-	        'seconds',
-	        'two_point_made',
+    }
+
+    private function _getCalculateGamesRecords($gamesRecordData) {
+	    $recordsGames = [];
+        $recordGamesFields = [
+            'game_id',
+            'two_point_made',
             'two_point_throw',
             'three_point_made',
             'three_point_throw',
@@ -692,17 +731,61 @@ class StatisticsModel extends Main {
             'score'
         ];
 
-        foreach ($allRecordsData as $row) {
-            foreach ($recordGameFields as $field) {
-                if ($row[$field] > $records['player'][$field][$field]) {
-                    $records['player'][$field] = $row;
+        foreach ($gamesRecordData as $row) {
+            foreach ($recordGamesFields as $field) {
+                if ($row[$field] > $recordsGames[$field][$field]) {
+                    $recordsGames[$field] = $row;
                 }
             }
         }
 
-        //ToDo доделать логику подсчета рекордов игр
+        return $recordsGames;
+    }
 
-	    return $records;
+    private function _getCalculatePlayersRecords($playersRecordData) {
+        $recordsPlayers = [];
+        $recordPlayersFields = [
+            'seconds',
+            'two_point_made',
+            'two_point_throw',
+            'three_point_made',
+            'three_point_throw',
+            'two_three_point_made',
+            'two_three_point_throw',
+            'two_point_percent',
+            'three_point_percent',
+            'two_three_point_percent',
+            'free_made',
+            'free_throw',
+            'offensive_rebound',
+            'deffensive_rebound',
+            'assists',
+            'commited_foul',
+            'recieved_foul',
+            'turnover',
+            'steal',
+            'in_fawor',
+            'against',
+            'effectiveness',
+            'points_scored',
+            'plus_minus',
+            'score'
+        ];
+
+        foreach ($playersRecordData as $row) {
+            $tempPlayer = $row;
+
+            foreach ($recordPlayersFields as $field) {
+                $tempPlayer[$field] = round($tempPlayer[$field] / $tempPlayer['count_games'], 1);
+
+                if ($tempPlayer[$field] > $recordsPlayers[$field][$field]) {
+                    $recordsPlayers[$field] = $tempPlayer;
+                }
+            }
+        }
+        $recordsPlayers['seconds']['player_time'] = $this->getPlayerTime($recordsPlayers['seconds']['seconds']);
+
+        return $recordsPlayers;
     }
 
 	/**
