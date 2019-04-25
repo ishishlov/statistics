@@ -720,17 +720,16 @@ class StatisticsModel extends Main {
             'free_throw' => 'ШТ Б',
             'offensive_rebound' => 'Пд Ч',
             'deffensive_rebound' => 'Пд С',
-            'assists' => 'Пд В',
+            'assists' => 'РП',
             'commited_foul' => 'Ф иг',
             'recieved_foul' => 'Ф на',
-            'turnover' => '11',
-            'steal' => '22',
-            'in_fawor' => '33',
-            'against' => '44',
-            'effectiveness' => '55',
-            'points_scored' => '66',
-            'plus_minus' => '77',
-            'score' => 'О'
+            'turnover' => 'Пт',
+            'steal' => 'Пх',
+            'in_fawor' => 'Бш иг',
+            'against' => 'Бш на',
+            'effectiveness' => 'Эфф',
+            'plus_minus' => '+/-',
+            'points_scored' => 'О',
         ];
 
         foreach ($gamesRecordData as $row) {
@@ -748,41 +747,41 @@ class StatisticsModel extends Main {
     private function _getCalculatePlayersRecords($playersRecordData) {
         $recordsPlayers = [];
         $recordPlayersFields = [
-            'seconds',
-            'two_point_made',
-            'two_point_throw',
-            'three_point_made',
-            'three_point_throw',
-            'two_three_point_made',
-            'two_three_point_throw',
-            'two_point_percent',
-            'three_point_percent',
-            'two_three_point_percent',
-            'free_made',
-            'free_throw',
-            'offensive_rebound',
-            'deffensive_rebound',
-            'assists',
-            'commited_foul',
-            'recieved_foul',
-            'turnover',
-            'steal',
-            'in_fawor',
-            'against',
-            'effectiveness',
-            'points_scored',
-            'plus_minus',
-            'score'
+            'seconds' => 'Минут за игру',
+            'two_point_made' => '2-очк З за игру',
+            'two_point_throw' => '2-очк Б за игру',
+            'three_point_made' => '3-очк З за игру',
+            'three_point_throw' => '3-очк Б за игру',
+            'two_three_point_made' => 'Забитые с игры',
+            'two_three_point_throw' => 'Броски с игры',
+            'two_point_percent' => '2-очк %',
+            'three_point_percent' => '3-очк %',
+            'two_three_point_percent' => 'Б %',
+            'free_made' => 'ШТ З за игру',
+            'free_throw' => 'ШТ Б за игру',
+            'offensive_rebound' => 'Подборов на чужом щите',
+            'deffensive_rebound' => 'Подборов на своем щите',
+            'assists' => 'Передачи за игру',
+            'commited_foul' => 'Всего фолов за игру',
+            'recieved_foul' => 'Всего фолов на игроке за игру',
+            'turnover' => 'Потери за игру',
+            'steal' => 'Перехваты',
+            'in_fawor' => 'Блоки за игру',
+            'against' => 'Блоки на игроке за игру',
+            'effectiveness' => 'Эфф за игру',
+            'plus_minus' => '+/-',
+            'points_scored' => 'Очки за игру',
         ];
 
         foreach ($playersRecordData as $row) {
             $tempPlayer = $row;
 
-            foreach ($recordPlayersFields as $field) {
+            foreach ($recordPlayersFields as $field => $alias) {
                 $tempPlayer[$field] = round($tempPlayer[$field] / $tempPlayer['count_games'], 1);
 
                 if ($tempPlayer[$field] > $recordsPlayers[$field][$field]) {
                     $recordsPlayers[$field] = $tempPlayer;
+                    $recordsPlayers[$field]['alias'] = $alias;
                 }
             }
         }

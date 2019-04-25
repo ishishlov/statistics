@@ -1048,9 +1048,9 @@
 				$.each(historyRecords.games, function(category, val) {
 					rowsGames += (
 						'<tr>' +
-							'<td class="stat-widget-season-statistic-table-cell-end">' + historyRecords.games[category].alias + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end">' + historyRecords.games[category].dt + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end">' + historyRecords.games[category].opponent + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell stat-widget-record-category">' + historyRecords.games[category].alias + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell">' + historyRecords.games[category].dt + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell">' + historyRecords.games[category].opponent + '</td>' +
 							'<td class="stat-widget-season-statistic-table-cell">' + historyRecords.games[category][category] + '</td>' +
 						'</tr>'
 					);
@@ -1061,8 +1061,8 @@
                     var fullName = historyRecords.players[category].name + ' ' + historyRecords.players[category].surname;
                     rowsPlayers += (
                         '<tr>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end">' + category + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end">' + fullName + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell stat-widget-record-category">' + historyRecords.players[category].alias + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + fullName + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell">' + historyRecords.players[category][category] + '</td>' +
                         '</tr>'
                     );
@@ -1073,16 +1073,16 @@
 						'<div class="stat-widget-records-title">Рекорды команды</div>' +
 						'<table class="stat-widget-season-statistic-table">' +
 							'<colgroup>' +
-								'<col width="50" />' +
-								'<col width="50" />' +
-								'<col width="80" />' +
-								'<col width="50" />' +
+								'<col width="10" />' +
+								'<col width="10" />' +
+								'<col width="10" />' +
+								'<col width="10" />' +
 								'</colgroup>' +
 							'<tbody>' +
 								'<tr>' +
-									'<th class="stat-widget-season-statistic-table-cell-head">Категория</th>' +
-									'<th class="stat-widget-season-statistic-table-cell-head">Дата</th>' +
-									'<th class="stat-widget-season-statistic-table-cell-head">Соперник</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-head-end">Категория</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-head-end">Дата</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-head-end">Соперник</th>' +
 									'<th class="stat-widget-season-statistic-table-cell-head-end">Результат</th>' +
 								'</tr>' +
 								rowsGames +
@@ -1093,14 +1093,14 @@
 						'<div class="stat-widget-records-title">Рекорды игроков</div>' +
                         '<table class="stat-widget-season-statistic-table">' +
                             '<colgroup>' +
-                                '<col width="50" />' +
-                                '<col width="80" />' +
-                                '<col width="50" />' +
+                                '<col width="10" />' +
+                                '<col width="10" />' +
+                                '<col width="10" />' +
                             '</colgroup>' +
                             '<tbody>' +
                                 '<tr>' +
-                                    '<th class="stat-widget-season-statistic-table-cell-head">Категория</th>' +
-                                    '<th class="stat-widget-season-statistic-table-cell-head">Игрок</th>' +
+                                    '<th class="stat-widget-season-statistic-table-cell-head-end">Категория</th>' +
+                                    '<th class="stat-widget-season-statistic-table-cell-head-end">Игрок</th>' +
                                     '<th class="stat-widget-season-statistic-table-cell-head-end">Результат</th>' +
                                 '</tr>' +
                                 rowsPlayers +

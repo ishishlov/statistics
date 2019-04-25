@@ -285,6 +285,20 @@
     display: none;
 }
 
+.stat-widget-records-title {
+    font-size: 24px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.stat-widget-history-data-records .stat-widget-season-statistic-table {
+    width: 100%;
+}
+
+.tat-widget-record-category {
+    text-align: left;
+}
+
 @media (max-width: 768px) {
 	.stat-widget-season-statistic-table {
 		font-size: 10px;
