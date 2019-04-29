@@ -503,7 +503,54 @@ class StatisticsModel extends Main {
     }
 
     public function getHistoryTotal($seasonId, $tournamentIds) {
-        return [];
+        $res = Cache::getGameInfo(self::CACHE_KEY_PLAYER_STATISTIC, $playerId, $seasonId, $tournamentIds);
+        if (!$res) {
+            $tournamentIdsString = implode(',', $tournamentIds);
+            $sth = $this->_db->prepare(
+                'SELECT
+                    p.player_id,
+                    p.`name`,
+                    p.`surname`,
+                    SUM(sp.`seconds`) AS seconds,
+                    SUM(sp.`two_point_made`) AS two_point_made,
+                    SUM(sp.`two_point_throw`) AS two_point_throw,
+                    SUM(sp.`three_point_made`) AS three_point_made,
+                    SUM(sp.`three_point_throw`) AS three_point_throw,
+                    SUM(sp.`two_point_made` + sp.`three_point_made`) AS two_three_point_made,
+                    SUM(sp.`two_point_throw` + sp.`three_point_throw`) AS two_three_point_throw,
+                    SUM(sp.free_made) AS free_made,
+                    SUM(sp.free_throw) AS free_throw,
+                    SUM(sp.offensive_rebound) AS offensive_rebound,
+                    SUM(sp.deffensive_rebound) AS deffensive_rebound,
+                    SUM(sp.offensive_rebound + sp.deffensive_rebound) AS rebound,
+                    SUM(sp.assists) AS assists,
+                    SUM(sp.commited_foul) AS commited_foul,
+                    SUM(sp.recieved_foul) AS recieved_foul,
+                    SUM(sp.turnover) AS turnover,
+                    SUM(sp.steal) AS steal,
+                    SUM(sp.in_fawor) AS in_fawor,
+                    SUM(sp.`against`) AS against,
+                    SUM(sp.effectiveness) AS effectiveness,
+                    SUM(sp.points_scored) AS points_scored,
+                    SUM(sp.`plus_minus`) AS plus_minus
+                FROM statistic_games sg
+                JOIN statistic_players sp ON sp.game_id = sg.game_id
+                JOIN players p ON p.player_id = sp.player_id
+                WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?
+                GROUP BY p.player_id'
+            );
+            $sth->execute([$seasonId]);
+            $res = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($res as &$player) {
+                $player['player_time'] = $this->getPlayerTime($player['seconds']);
+            }
+            unset($player);
+
+            Cache::setGameInfo(self::CACHE_KEY_PLAYER_STATISTIC, $res, $seasonId, $tournamentIds);
+        }
+
+        return $res;
     }
 
 	/**
