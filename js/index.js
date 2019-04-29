@@ -916,7 +916,7 @@
 			
 			appendHtmlGameInfo: function (data) {
 				var rows = '';
-				$.each(data, function(idx, val) {
+				$.each(data.player, function(idx, val) {
 					var fullName = val.name + ' ' + val.surname;
 					rows += (
 						'<tr>' +
@@ -1021,11 +1021,36 @@
 								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">+/-</td>' +
 								'<td class="stat-widget-season-statistic-table-cell-bold">Оч</td>' +
 							'</tr>' + rows +
+							'<tr>' +
+								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name">Сумма</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-end">' + data['sum'].player_time + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell">' + data['sum'].two_point_made + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-end">' + data['sum']['two_point_throw'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell">' + data['sum']['three_point_made'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-end">' + data['sum']['three_point_throw'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell">' + (parseInt(data['sum']['two_point_made']) + parseInt(data['sum']['three_point_made'])) + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-end">' + (parseInt(data['sum']['two_point_throw']) + parseInt(data['sum']['three_point_throw'])) + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell">' + data['sum']['free_made'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-end">' + data['sum']['free_throw'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell">' + data['sum']['offensive_rebound'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell">' + data['sum']['deffensive_rebound'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-end">' + (parseInt(data['sum']['offensive_rebound']) + parseInt(data['sum']['deffensive_rebound'])) + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-end">' + data['sum']['assists'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell">' + data['sum']['commited_foul'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-end">' + data['sum']['recieved_foul'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-end">' + data['sum']['turnover'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-end">' + data['sum']['steal'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-end">' + data['sum']['in_fawor'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-end">' + data['sum']['against'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-end">' + data['sum']['effectiveness'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-end">' + data['sum']['plus_minus'] + '</td>' +
+								'<td class="stat-widget-season-statistic-table-cell">' + data['sum']['points_scored'] + '</td>' +
+							'</tr>' +
 						'</tbody>' +
 					'</table>'
 				);
 
-				var title = 'ХИМКИ - ' + data[0].team_name + ' / ' + data[0].score + ' / ' + data[0].dt;
+				var title = 'ХИМКИ - ' + data['player'][0].team_name + ' / ' + data['player'][0].score + ' / ' + data['player'][0].dt;
 				$('.stat-widget-title').empty().append(title);
 				$('.stat-widget-game-info').empty().append(html);
 			},

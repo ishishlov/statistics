@@ -438,9 +438,12 @@ class StatisticsModel extends Main {
 				WHERE sg.game_id = ?'
 			);
             $sth->execute([$gameId]);
-            $res = $sth->fetchAll(PDO::FETCH_ASSOC);
+            $res['player'] = $sth->fetchAll(PDO::FETCH_ASSOC);
 
-            foreach ($res as &$game) {
+            $res['sum'] = $this->_getSumColumns($res['player']);
+            $res['sum']['player_time'] = $this->getPlayerTime($res['sum']['seconds']);
+
+            foreach ($res['player'] as &$game) {
                 $game['player_time'] = $this->getPlayerTime($game['seconds']);
             }
             unset($game);
@@ -695,6 +698,31 @@ class StatisticsModel extends Main {
         $sth->execute([$seasonId]);
 
         return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function _getSumColumns($data)
+    {
+        $sum = [];
+        $ignoreCategory = [
+            'dt',
+            'name',
+            'score',
+            'surname',
+            'team_name',
+            'player_id',
+        ];
+
+        foreach ($data as $player) {
+            foreach ($player as $category => $res) {
+                if (!in_array($category, $ignoreCategory)) {
+                    $sum[$category] += (int) $res;
+                }
+
+            }
+
+        }
+
+        return $sum;
     }
 
     private function _getCalculateRecords($gamesRecordData, $playersRecordData) {
