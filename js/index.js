@@ -22,7 +22,8 @@
 			records: 2,
 			total: 3
 		};
-		var _activeHistoryTabId = _historyTabs.tables;
+		var _gameLink = 'swgameid';
+		var _playerLink = 'swplayerid';
 
 		return {
 			init: function() {
@@ -30,6 +31,9 @@
 				_module.setDomenName();
 				$_mainContainer = $('#stat-widget');
 				_module.renderWidget();
+
+				//Переход по ссылке
+				_module.goToLink();
 
 				//Смена вкладки
 				$_mainContainer.on('click', '.stat-widget-tab', function (event) {
@@ -137,6 +141,39 @@
 					_gameId = $(event.target).data('game-id');
 					_module.renderGameInfo();
 				});
+
+				//копирование ссылки
+				$_mainContainer.on('click', '.stat-widget-copy-link-button', function (event) {
+					$(event.target).text('Скопировано в буфер');
+
+				});
+			},
+
+			goToLink: function(sParam) {
+				var gameId = _module.getUrlParameter(_gameLink);
+				var playerId = _module.getUrlParameter(_playerLink);
+				if (gameId) {
+					_gameId = gameId;
+					_module.renderGameInfo();
+				} else if (playerId) {
+					_playerId = playerId;
+					_module.renderPlayerInfo();
+				}
+			},
+
+			getUrlParameter: function(sParam) {
+				var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+					sURLVariables = sPageURL.split('&'),
+					sParameterName,
+					i;
+
+				for (i = 0; i < sURLVariables.length; i++) {
+					sParameterName = sURLVariables[i].split('=');
+
+					if (sParameterName[0] === sParam) {
+						return sParameterName[1] === undefined ? true : sParameterName[1];
+					}
+				}
 			},
 
 			setDomenName: function () {
@@ -246,6 +283,7 @@
 				var html = (
 					'<div class="stat-widget-wrap-stat">' +
 						'<div class="stat-widget-title"></div>' +
+						'<div class="stat-widget-copy-link-button">Копировать ссылку</div>' +
 						'<div class="stat-widget-game-info"></div>' +
 					'</div>'
 				);

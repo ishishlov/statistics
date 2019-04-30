@@ -11,8 +11,8 @@ class Route {
 		} else {
 			$urlArray = explode('/', $url);
 			$controllerName = trim($urlArray[1]);
-			$method = trim($urlArray[2]);
-			
+			$methodArray = explode('?', trim($urlArray[2]));
+            $method = $methodArray[0];
 		}
 
 		$file = mb_strtolower('controllers/' . $controllerName . '.php');
