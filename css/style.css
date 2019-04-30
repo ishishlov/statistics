@@ -18,7 +18,6 @@
 .stat-widget-title {
 	font-size: 24px;
 	margin-top: 40px;
-    display: inline-block;
 }
 
 .stat-widget-wrap-stat {
@@ -288,6 +287,7 @@
 
 .stat-widget-records-title {
     font-size: 24px;
+    margin-top: 20px;
     text-align: center;
 }
 
@@ -309,10 +309,15 @@
 	width: 50%;
 }
 
-.stat-widget-copy-link-button {
-    float: right;
-    background: #ccc;
-    padding: 0 4px;
+.stat-widget-copy-link {
+	margin-top: 20px;
+}
+
+.stat-widget-copy-link-edit {
+	margin-left: 15px;
+	padding-left: 3px;
+	font-size: 14px;
+	width: 515px;
 }
 
 @media (max-width: 975px) {
@@ -352,6 +357,12 @@
 
 	.stat-widget-records-title {
 		font-size: 14px;
+	}
+
+	.stat-widget-copy-link-edit {
+		font-size: 12px;
+		width: 100%;
+		margin-left: 0;
 	}
 }
 
@@ -397,7 +408,11 @@
 		font-size: 12px;
 	}
 
-    .stat-widget-copy-link-button {
-        font-size: 12px;
-    }
+	.stat-widget-copy-link {
+		font-size: 12px;
+	}
+
+	.stat-widget-copy-link-edit {
+		font-size: 8px;
+	}
 }

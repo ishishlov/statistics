@@ -141,12 +141,6 @@
 					_gameId = $(event.target).data('game-id');
 					_module.renderGameInfo();
 				});
-
-				//копирование ссылки
-				$_mainContainer.on('click', '.stat-widget-copy-link-button', function (event) {
-					$(event.target).text('Скопировано в буфер');
-
-				});
 			},
 
 			goToLink: function(sParam) {
@@ -266,6 +260,9 @@
 						'<div class="stat-widget-player-info"></div>' +
 						'<div class="stat-widget-player-statistic"></div>' +
 						'<div class="stat-widget-player-games-statistic"></div>' +
+                        '<div class="stat-widget-copy-link">Ссылка на профиль' +
+                            '<input class="stat-widget-copy-link-edit" type="text" value="' + window.location.href + '?' + _playerLink + '=' + _playerId + '" disabled/>' +
+                        '</div>' +
 					'</div>'
 				);
 				$('.stat-widget-data').empty().append(html);
@@ -283,8 +280,10 @@
 				var html = (
 					'<div class="stat-widget-wrap-stat">' +
 						'<div class="stat-widget-title"></div>' +
-						'<div class="stat-widget-copy-link-button">Копировать ссылку</div>' +
 						'<div class="stat-widget-game-info"></div>' +
+						'<div class="stat-widget-copy-link">Ссылка на отчет' +
+                            '<input class="stat-widget-copy-link-edit" type="text" value="' + window.location.href + '?' + _gameLink + '=' + _gameId + '" disabled/>' +
+                        '</div>' +
 					'</div>'
 				);
 				$('.stat-widget-data').empty().append(html);
