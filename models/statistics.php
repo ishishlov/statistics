@@ -486,7 +486,57 @@ class StatisticsModel extends Main {
 	}
 
     public function getHistoryTables($seasonId, $tournamentIds) {
-        return [];
+	    $res['result'] = [
+	        [
+                'teamNameOne' => 'Химки',
+                'teamUrlOne' => 'https://bckhimki.ru/',
+                'teamLogoUrlOne' => '/images/command_logos/cska.jpg',
+                'teamNameTwo' => 'Бобруйские Витязи',
+                'teamLinkTwo' => 'https://testru/',
+                'teamLogoUrlTwo' => '/images/command_logos/barselona.jpg',
+                'dt'          => '27.04.2018',
+                'score'       => '74:37',
+            ], [
+                'teamNameOne' => 'Банный лист',
+                'teamUrlOne' => 'https://bckhimki.ru/',
+                'teamNameTwo' => 'Пактахор',
+                'teamLinkTwo' => 'https://testru/',
+                'dt'          => '26.04.2018',
+                'score'       => '74:37',
+                'teamLogoUrlOne' => '/images/command_logos/cska.jpg',
+                'teamLogoUrlTwo' => '/images/command_logos/barselona.jpg',
+            ], [
+                'teamNameOne' => 'Химки',
+                'teamUrlOne' => 'https://bckhimki.ru/',
+                'teamNameTwo' => 'Ручеек',
+                'teamLinkTwo' => 'https://testru/',
+                'dt'          => '25.04.2018',
+                'score'       => '74:37',
+                'teamLogoUrlOne' => '/images/command_logos/cska.jpg',
+                'teamLogoUrlTwo' => '/images/command_logos/barselona.jpg',
+            ], [
+                'teamNameOne' => 'Банан',
+                'teamUrlOne' => 'https://bckhimki.ru/',
+                'teamNameTwo' => 'Огурец',
+                'teamLinkTwo' => 'https://testru/',
+                'dt'          => '24.04.2018',
+                'score'       => '74:37',
+                'teamLogoUrlOne' => '/images/command_logos/cska.jpg',
+                'teamLogoUrlTwo' => '/images/command_logos/barselona.jpg',
+            ]
+        ];
+//
+//        $res['chess'] = [
+//            '' => ,
+//	        '' => ,
+//	        '' => ,
+//	        '' => ,
+//	        '' => ,
+//        ];
+
+
+
+        return $res;
     }
 
     public function getHistoryRecords($seasonId, $tournamentIds) {

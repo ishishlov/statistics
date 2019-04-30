@@ -1220,7 +1220,50 @@
 			},
 
 			appendHtmlHistoryTables: function (historyTables) {
-				var html = '';
+				var rows = '';
+				$.each(historyTables.result, function(idx, val) {
+					rows += (
+						'<tr>' +
+							'<td class="stat-widget-game-statistic-table-cell-left">' + val.dt + '</td>' +
+							'<td class="stat-widget-game-statistic-table-cell-left">' +
+								'<a class="stat-widget-game-statistic-team-logo"' +
+									'target="_blank"' +
+									'href="' + val.teamUrlOne + '"' +
+									'style="background:url(' + val.teamLogoUrlOne + ') left center no-repeat;"' +
+								'>' +
+									val.teamNameOne +
+								'</a>' +
+							'</td>' +
+							'<td class="stat-widget-game-statistic-table-cell-left">' +
+								'<a class="stat-widget-game-statistic-team-logo"' +
+									'target="_blank"' +
+									'href="' + val.teamUrlTwo + '"' +
+									'style="background:url(' + val.teamLogoUrlTwo + ') left center no-repeat;"' +
+								'>' +
+									val.teamNameTwo +
+								'</a>' +
+							'</td>' +
+							'<td class="stat-widget-game-statistic-table-cell-center">' + val.score + '</td>' +
+						'</tr>'
+					);
+				});
+				var html = (
+					'<table class="stat-widget-game-statistic-table">' +
+					'<colgroup>' +
+						'<col width="15%" />' +
+						'<col width="35%" />' +
+						'<col width="35%" />' +
+						'<col width="15%" />' +
+					'</colgroup>' +
+					'<tr>' +
+						'<th class="stat-widget-game-statistic-table-cell-left">ДАТА</th>' +
+						'<th class="stat-widget-game-statistic-table-cell-center stat-widget-game-tournament-cell"></th>' +
+						'<th class="stat-widget-game-statistic-table-cell-left"></th>' +
+						'<th class="stat-widget-game-statistic-table-cell-center">СЧЁТ</th>' +
+					'</tr>' +
+					rows +
+					'</table>'
+				);
 
 				$('.stat-widget-history-data-tables').empty().append(html);
 
