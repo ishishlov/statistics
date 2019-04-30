@@ -253,6 +253,9 @@
 			},
 
 			renderPlayerInfo: function () {
+			    var url = window.location.href;
+                url = url.split('?')[0];
+
 				var html = (
 					'<div class="stat-widget-wrap-stat">' +
 						_module.getFiltersHtml() +
@@ -261,7 +264,7 @@
 						'<div class="stat-widget-player-statistic"></div>' +
 						'<div class="stat-widget-player-games-statistic"></div>' +
                         '<div class="stat-widget-copy-link">Ссылка на профиль' +
-                            '<input class="stat-widget-copy-link-edit" type="text" value="' + window.location.href + '?' + _playerLink + '=' + _playerId + '" disabled/>' +
+                            '<input class="stat-widget-copy-link-edit" type="text" value="' + url + '?' + _playerLink + '=' + _playerId + '" disabled/>' +
                         '</div>' +
 					'</div>'
 				);
@@ -277,12 +280,15 @@
 			},
 
 			renderGameInfo: function () {
+                var url = window.location.href;
+                url = url.split('?')[0];
+
 				var html = (
 					'<div class="stat-widget-wrap-stat">' +
 						'<div class="stat-widget-title"></div>' +
 						'<div class="stat-widget-game-info"></div>' +
 						'<div class="stat-widget-copy-link">Ссылка на отчет' +
-                            '<input class="stat-widget-copy-link-edit" type="text" value="' + window.location.href + '?' + _gameLink + '=' + _gameId + '" disabled/>' +
+                            '<input class="stat-widget-copy-link-edit" type="text" value="' + url + '?' + _gameLink + '=' + _gameId + '" disabled/>' +
                         '</div>' +
 					'</div>'
 				);

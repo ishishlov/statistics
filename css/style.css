@@ -314,10 +314,9 @@
 }
 
 .stat-widget-copy-link-edit {
-	margin-left: 15px;
 	padding-left: 3px;
 	font-size: 14px;
-	width: 515px;
+    width: 100%;
 }
 
 @media (max-width: 975px) {
@@ -359,10 +358,12 @@
 		font-size: 14px;
 	}
 
+    .stat-widget-copy-link {
+        font-size: 14px;
+    }
+
 	.stat-widget-copy-link-edit {
 		font-size: 12px;
-		width: 100%;
-		margin-left: 0;
 	}
 }
 
@@ -409,7 +410,7 @@
 	}
 
 	.stat-widget-copy-link {
-		font-size: 12px;
+		font-size: 10px;
 	}
 
 	.stat-widget-copy-link-edit {
