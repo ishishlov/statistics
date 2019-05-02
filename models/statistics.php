@@ -121,6 +121,18 @@ class StatisticsModel extends Main {
         return $gameId;
     }
 
+    public function getTeams() {
+        $sth = $this->_db->prepare(
+            'SELECT
+                team_id,
+                `name`
+			FROM teams
+            ORDER BY `name` ASC'
+        );
+        $sth->execute([$seasonId]);
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getSeasonsStatistic($seasonId, $tournamentIds) {
 		$res = Cache::getStatistic(self::CACHE_KEY_SEASONS_STATISTIC, $seasonId, $tournamentIds);
 		if (!$res) {

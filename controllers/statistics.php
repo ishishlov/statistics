@@ -36,7 +36,29 @@ class Statistics extends Common {
 		$this->display('index.tpl');
 	}
 
-	/**
+    /**
+     * Страница показа формы для добавления результата игры
+     */
+    public function addGameResult()
+    {
+        $this->_data['teams'] = $this->_model->getTeams();
+        $this->_data['nowDate'] = date('Y-m-d');
+
+        $this->display('addgameresult.tpl');
+    }
+
+    /**
+     * Добавления результата игры
+     */
+    public function ajaxAddGameResult()
+    {
+        $this->toJson([
+            'result'    => true,
+            'error'     => 'Ошибка при добавлении'
+        ]);
+    }
+
+    /**
 	 * Страница командной статистики
 	 */
 	public function commandsStatistic() {
