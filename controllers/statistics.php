@@ -39,10 +39,11 @@ class Statistics extends Common {
     /**
      * Страница показа формы для добавления результата игры
      */
-    public function addGameResult()
-    {
+    public function addGameResult() {
         $this->_data['teams'] = $this->_model->getTeams();
         $this->_data['nowDate'] = date('Y-m-d');
+        $this->_data['seasons'] = $this->_model->getAllSeasons();
+        $this->_data['tournaments'] = $this->_model->getTournaments();
 
         $this->display('addgameresult.tpl');
     }
@@ -50,8 +51,15 @@ class Statistics extends Common {
     /**
      * Добавления результата игры
      */
-    public function ajaxAddGameResult()
-    {
+    public function ajaxAddGameResult() {
+		$teamIdOne = (int) $_POST['teamIdOne'];
+		$teamIdTwo = (int) $_POST['teamIdTwo'];
+		$scoreOne = (int) $_POST['scoreOne'];
+		$scoreTwo = (int) $_POST['scoreTwo'];
+		$dt = $_POST['dt'];
+		$tournamentId = $_POST['tournamentId'];
+		$seasonId = $_POST['seasonId'];
+
         $this->toJson([
             'result'    => true,
             'error'     => 'Ошибка при добавлении'

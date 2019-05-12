@@ -129,7 +129,7 @@ class StatisticsModel extends Main {
 			FROM teams
             ORDER BY `name` ASC'
         );
-        $sth->execute([$seasonId]);
+        $sth->execute();
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -469,21 +469,14 @@ class StatisticsModel extends Main {
 	public function getAllSeasons() {
 		$res = Cache::getValue(self::CACHE_KEY_SEASONS);
 		if (!$res) {
-			$res = [];
-			$sth = $this->_db->prepare('SELECT season_id FROM statistic_games WHERE status = ? GROUP BY season_id');
-			$sth->execute([self::STATUS_CONFIRMED]);
-			$seasonIds = $sth->fetchAll(PDO::FETCH_COLUMN);
-			if (is_array($seasonIds)) {
-				$sth = $this->_db->prepare(
-				    'SELECT
-                        season_id,
-                        `name` 
-                    FROM seasons 
-                    WHERE season_id IN (' . implode(', ', $seasonIds) . ')
-                    ORDER BY season_id DESC');
-				$sth->execute();
-				$res = $sth->fetchAll(PDO::FETCH_ASSOC);
-			}
+			$sth = $this->_db->prepare(
+				'SELECT
+					season_id,
+					`name` 
+				FROM seasons 
+				ORDER BY season_id DESC');
+			$sth->execute();
+			$res = $sth->fetchAll(PDO::FETCH_ASSOC);
 
 			Cache::setValue(self::CACHE_KEY_SEASONS, $res);
 		}
@@ -498,57 +491,33 @@ class StatisticsModel extends Main {
 	}
 
     public function getHistoryTables($seasonId, $tournamentIds) {
-	    $res['result'] = [
-	        [
-                'teamNameOne' => 'Химки',
-                'teamUrlOne' => 'https://bckhimki.ru/',
-                'teamLogoUrlOne' => '/images/command_logos/cska.jpg',
-                'teamNameTwo' => 'Бобруйские Витязи',
-                'teamLinkTwo' => 'https://testru/',
-                'teamLogoUrlTwo' => '/images/command_logos/barselona.jpg',
-                'dt'          => '27.04.2018',
-                'score'       => '74:37',
-            ], [
-                'teamNameOne' => 'Банный лист',
-                'teamUrlOne' => 'https://bckhimki.ru/',
-                'teamNameTwo' => 'Пактахор',
-                'teamLinkTwo' => 'https://testru/',
-                'dt'          => '26.04.2018',
-                'score'       => '74:37',
-                'teamLogoUrlOne' => '/images/command_logos/cska.jpg',
-                'teamLogoUrlTwo' => '/images/command_logos/barselona.jpg',
-            ], [
-                'teamNameOne' => 'Химки',
-                'teamUrlOne' => 'https://bckhimki.ru/',
-                'teamNameTwo' => 'Ручеек',
-                'teamLinkTwo' => 'https://testru/',
-                'dt'          => '25.04.2018',
-                'score'       => '74:37',
-                'teamLogoUrlOne' => '/images/command_logos/cska.jpg',
-                'teamLogoUrlTwo' => '/images/command_logos/barselona.jpg',
-            ], [
-                'teamNameOne' => 'Банан',
-                'teamUrlOne' => 'https://bckhimki.ru/',
-                'teamNameTwo' => 'Огурец',
-                'teamLinkTwo' => 'https://testru/',
-                'dt'          => '24.04.2018',
-                'score'       => '74:37',
-                'teamLogoUrlOne' => '/images/command_logos/cska.jpg',
-                'teamLogoUrlTwo' => '/images/command_logos/barselona.jpg',
-            ]
-        ];
-//
-//        $res['chess'] = [
-//            '' => ,
-//	        '' => ,
-//	        '' => ,
-//	        '' => ,
-//	        '' => ,
-//        ];
+		$tournamentIdsString = implode(',', $tournamentIds);
+        $sth = $this->_db->prepare(
+			'SELECT
+				tm1.`name` AS team_name_one,
+				tm1.url AS team_url_one,
+				tm1.logo_url AS team_logo_url_one,
+				tm2.`name` AS team_name_two,
+				tm2.url AS team_url_two,
+				tm2.logo_url AS team_logo_url_two,
+				h.dt,
+				h.score_one,
+				h.score_two,
+				h.tournament_id,
+				h.season_id,
+				t.`name` AS tournament_name,
+				s.`name` AS season_name
+			FROM history h
+ 			JOIN teams tm1 ON tm1.team_id = h.team_id_one
+			JOIN teams tm2 ON tm2.team_id = h.team_id_two
+			JOIN tournaments t ON t.tournament_id = h.tournament_id
+			JOIN seasons s ON s.season_id = h.season_id
+			WHERE h.tournament_id IN (' . $tournamentIdsString . ') AND h.season_id = ?
+			ORDER BY dt ASC'
+		);
+        $sth->execute([$seasonId]);
 
-
-
-        return $res;
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getHistoryRecords($seasonId, $tournamentIds) {

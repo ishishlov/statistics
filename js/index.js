@@ -1221,29 +1221,29 @@
 
 			appendHtmlHistoryTables: function (historyTables) {
 				var rows = '';
-				$.each(historyTables.result, function(idx, val) {
+				$.each(historyTables, function(idx, val) {
 					rows += (
 						'<tr>' +
 							'<td class="stat-widget-game-statistic-table-cell-left">' + val.dt + '</td>' +
 							'<td class="stat-widget-game-statistic-table-cell-left">' +
 								'<a class="stat-widget-game-statistic-team-logo"' +
 									'target="_blank"' +
-									'href="' + val.teamUrlOne + '"' +
-									'style="background:url(' + val.teamLogoUrlOne + ') left center no-repeat;"' +
+									'href="' + val.team_url_one + '"' +
+									'style="background:url(' + val.team_logo_url_one + ') left center no-repeat;"' +
 								'>' +
-									val.teamNameOne +
+									val.team_name_one +
 								'</a>' +
 							'</td>' +
 							'<td class="stat-widget-game-statistic-table-cell-left">' +
 								'<a class="stat-widget-game-statistic-team-logo"' +
 									'target="_blank"' +
-									'href="' + val.teamUrlTwo + '"' +
-									'style="background:url(' + val.teamLogoUrlTwo + ') left center no-repeat;"' +
+									'href="' + val.team_url_two + '"' +
+									'style="background:url(' + val.team_logo_url_two + ') left center no-repeat;"' +
 								'>' +
-									val.teamNameTwo +
+									val.team_name_two +
 								'</a>' +
 							'</td>' +
-							'<td class="stat-widget-game-statistic-table-cell-center">' + val.score + '</td>' +
+							'<td class="stat-widget-game-statistic-table-cell-center">' + val.score_one + ':' + val.score_two + '</td>' +
 						'</tr>'
 					);
 				});
