@@ -122,7 +122,7 @@
 							}
 							break;
 						case _tabs.history:
-
+							_module.renderHistoryData();
 							break;
 						default:
 							_module.getCommandsStatistic();
