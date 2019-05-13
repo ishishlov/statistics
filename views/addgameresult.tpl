@@ -15,11 +15,14 @@
 					<a href="https://bckhimki.ru/" class="logo">
 						<img src="https://bckhimki.ru/i/v7/icons/bckhimki_logo.png" alt="Баскетбольный клуб Химки">
 					</a>
+					<form class="header-button" action="/" method="post">
+						<input type="submit" name="submit" value="Вернуться" />
+					</form>
 				</div>
 			</div>
 
 			<div class="add-result">
-				<input type="date" value="{{ nowDate }}" />
+				<input class="dt" type="date" value="{{ nowDate }}" />
 				<select class="team1">
 					{% for team in teams %}
 						<option value="{{ team.team_id }}">{{ team.name }}</option>
@@ -30,7 +33,17 @@
 				<input class="score2" type="text" maxlength="3" />
 				<select class="team2">
 					{% for team in teams %}
-					<option value="{{ team.team_id }}">{{ team.name }}</option>
+						<option value="{{ team.team_id }}">{{ team.name }}</option>
+					{% endfor %}
+				</select>
+				<select class="seasons">
+					{% for season in seasons %}
+						<option value="{{ season.season_id }}">{{ season.name }}</option>
+					{% endfor %}
+				</select>
+				<select class="tournaments">
+					{% for tournament in tournaments %}
+					<option value="{{ tournament.tournament_id }}">{{ tournament.name }}</option>
 					{% endfor %}
 				</select>
 				<input class="add-game-result-button" type="button" value="Добавить" />

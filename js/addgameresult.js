@@ -13,16 +13,36 @@
 
 				//Добавление игры
 				$_mainContainer.on('click', '.add-game-result-button', function (event) {
-					_module.addGameResult();
+					var data = {
+						teamIdOne: $('.team1').val(),
+						teamIdTwo: $('.team2').val(),
+						dt: $('.dt').val(),
+						scoreOne: $('.score1').val(),
+						scoreTwo: $('.score2').val(),
+						tournamentId: $('.tournaments').val(),
+						seasonId: $('.seasons').val(),
+					};
+
+					if (data.teamIdOne === data.teamIdTwo) {
+						alert('Выберите разные команды');
+						return false;
+					}
+
+					if (!data.dt || !data.scoreOne || !data.scoreTwo) {
+						alert('Заполните все поля');
+						return false;
+					}
+					_module.addGameResult(data);
 				});
 			},
 
-			addGameResult: function () {
+			addGameResult: function (data) {
 				_module.showLoader();
-				var url = '/statistics/ajaxAddGameResult';
+				var url = '/statistics/ajaxAddHistoryGame';
 				$.ajax({
 					url: url,
 					type: 'POST',
+					data: data,
 					dataType: 'json'
 				}).done(function(response) {
 					_module.hideLoader();

@@ -15,8 +15,11 @@
 					<a href="https://bckhimki.ru/" class="logo">
 						<img src="https://bckhimki.ru/i/v7/icons/bckhimki_logo.png" alt="Баскетбольный клуб Химки">
 					</a>
-					<form class="load-protocol" action="statistics/loadprotocol" method="post" enctype="multipart/form-data">
+					<form class="header-button" action="statistics/loadprotocol" method="post" enctype="multipart/form-data">
 						<input id="loadProtocol" type="submit" name="submit" value="Образец протокола" />
+					</form>
+					<form class="header-button" action="statistics/addGameResult" method="post">
+						<input type="submit" name="submit" value="Добавить результат игры" />
 					</form>
 				</div>
 			</div>

@@ -51,17 +51,19 @@ class Statistics extends Common {
     /**
      * Добавления результата игры
      */
-    public function ajaxAddGameResult() {
-		$teamIdOne = (int) $_POST['teamIdOne'];
-		$teamIdTwo = (int) $_POST['teamIdTwo'];
-		$scoreOne = (int) $_POST['scoreOne'];
-		$scoreTwo = (int) $_POST['scoreTwo'];
-		$dt = $_POST['dt'];
-		$tournamentId = $_POST['tournamentId'];
-		$seasonId = $_POST['seasonId'];
+    public function ajaxAddHistoryGame() {
+        $data[0] = [
+            'team_id_one'   => (int) $_POST['teamIdOne'],
+            'team_id_two'   => (int) $_POST['teamIdTwo'],
+            'score_one'     => (int) $_POST['scoreOne'],
+            'score_two'     => (int) $_POST['scoreTwo'],
+            'tournament_id' => (int) $_POST['tournamentId'],
+            'season_id'     => (int) $_POST['seasonId'],
+            'dt'            => $_POST['dt'],
+        ];
 
         $this->toJson([
-            'result'    => true,
+            'result'    => $this->_model->addHistoryGame($data),
             'error'     => 'Ошибка при добавлении'
         ]);
     }

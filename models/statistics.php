@@ -13,6 +13,8 @@ class StatisticsModel extends Main {
 	const TABLE_NAME_STATISTIC_PLAYERS      = 'statistic_players';
 	/** Название таблицы статистики игр */
 	const TABLE_NAME_STATISTIC_GAMES        = 'statistic_games';
+    /** Название таблицы игр истории */
+    const TABLE_NAME_HISTORY_GAMES          = 'history';
 
 	const CACHE_KEY_SEASONS_STATISTIC       = 'seasonsStatistic';
 	const CACHE_KEY_GAMES_STATISTIC         = 'gamesStatistic';
@@ -485,7 +487,12 @@ class StatisticsModel extends Main {
 	}
 
     public function getTournaments() {
-		$sth = $this->_db->prepare('SELECT tournament_id, `name` FROM tournaments');
+		$sth = $this->_db->prepare(
+		    'SELECT
+		        tournament_id,
+                `name`
+            FROM tournaments'
+        );
 		$sth->execute();
 		return $sth->fetchAll(PDO::FETCH_ASSOC);
 	}
@@ -584,7 +591,16 @@ class StatisticsModel extends Main {
         return $res;
     }
 
-	/**
+    /**
+     * @param $data
+     * @return bool
+     */
+    public function addHistoryGame($data)
+    {
+        return $this->insert(self::TABLE_NAME_HISTORY_GAMES, $data);
+    }
+
+    /**
 	 * Получить данные по неподтвержденному протоколу
 	 * 
 	 * @return array

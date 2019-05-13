@@ -51,9 +51,9 @@ class Main {
 			$values .= '(' . $tempValues . ')' . $separator;
 		}
 
-		foreach ($data as $key => $statistics) {
-			foreach ($statistics as $title => $statistic) {
-				$executeData[] = $statistic !== '' ? $statistic : null;
+		foreach ($data as $rows) {
+			foreach ($rows as $title => $value) {
+				$executeData[] = $value !== '' ? $value : null;
 			}
 		}
 

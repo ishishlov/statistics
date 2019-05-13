@@ -42,7 +42,7 @@
 	text-align: center;
 }
 
-.load-protocol {
+.header-button {
 	float: left;
 	padding: 20px 0 0 50px;
 }
@@ -140,6 +140,11 @@
 .stat-widget-season-statistic-table-cell {
 	text-align: center;
 	white-space: nowrap;
+}
+
+.add-result {
+	margin-top: 30px;
+	text-align: center;
 }
 
 /* loader */
