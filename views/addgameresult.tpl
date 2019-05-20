@@ -15,7 +15,7 @@
 					<a href="https://bckhimki.ru/" class="logo">
 						<img src="https://bckhimki.ru/i/v7/icons/bckhimki_logo.png" alt="Баскетбольный клуб Химки">
 					</a>
-					<form class="header-button" action="/" method="post">
+					<form class="header-button" action="/admin/index" method="post">
 						<input type="submit" name="submit" value="Вернуться" />
 					</form>
 				</div>

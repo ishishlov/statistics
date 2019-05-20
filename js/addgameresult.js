@@ -38,7 +38,7 @@
 
 			addGameResult: function (data) {
 				_module.showLoader();
-				var url = '/statistics/ajaxAddHistoryGame';
+				var url = '/admin/ajaxAddHistoryGame';
 				$.ajax({
 					url: url,
 					type: 'POST',

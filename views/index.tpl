@@ -15,21 +15,21 @@
 					<a href="https://bckhimki.ru/" class="logo">
 						<img src="https://bckhimki.ru/i/v7/icons/bckhimki_logo.png" alt="Баскетбольный клуб Химки">
 					</a>
-					<form class="header-button" action="statistics/loadprotocol" method="post" enctype="multipart/form-data">
+					<form class="header-button" action="/admin/loadprotocol" method="post" enctype="multipart/form-data">
 						<input id="loadProtocol" type="submit" name="submit" value="Образец протокола" />
 					</form>
-					<form class="header-button" action="statistics/addGameResult" method="post">
+					<form class="header-button" action="/admin/addGameResult" method="post">
 						<input type="submit" name="submit" value="Добавить результат игры" />
 					</form>
 				</div>
 			</div>
 			{% if isShowLoadButton %}
-				<form class="save-protocol" action="/" method="post" enctype="multipart/form-data">
+				<form class="save-protocol" action="/admin/index" method="post" enctype="multipart/form-data">
 					<input class="btn-center" type="file" name="csv" value="" />
 					<input class="btn-save" type="submit" name="saveProtocol" value="Сохранить" />
 				</form>
 			{% else %}
-				<form action="/" method="post">
+				<form action="/admin/index" method="post">
 					<input class="btn-save" type="submit" name="cancel" value="Отмена" />
 					<input class="btn-save" type="submit" name="confirmed" value="Сохранить" />
 				</form>
