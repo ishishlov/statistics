@@ -16,16 +16,6 @@ class StatisticsModel extends Main {
     /** Название таблицы игр истории */
     const TABLE_NAME_HISTORY_GAMES          = 'history';
 
-	const CACHE_KEY_SEASONS_STATISTIC       = 'seasonsStatistic';
-	const CACHE_KEY_GAMES_STATISTIC         = 'gamesStatistic';
-	const CACHE_KEY_PLAYERS_STATISTIC       = 'playersStatistic';
-	const CACHE_KEY_PLAYER_STATISTIC        = 'playerStatistic';
-	const CACHE_KEY_PLAYER_GAMES_STATISTIC  = 'playerGamesStatistic';
-	const CACHE_KEY_PLAYER_INFO             = 'playerInfo';
-	const CACHE_KEY_RECORDS                 = 'records';
-
-	const CACHE_KEY_SEASONS = 'seasons';
-
 	const FIELDS = [
 		0 => '`game_id`',
 		1 => '`dt`',
@@ -136,7 +126,7 @@ class StatisticsModel extends Main {
     }
 
     public function getSeasonsStatistic($seasonId, $tournamentIds) {
-		$res = Cache::getStatistic(self::CACHE_KEY_SEASONS_STATISTIC, $seasonId, $tournamentIds);
+		$res = Cache::getStatistic(Cache::CACHE_KEY_SEASONS_STATISTIC, $seasonId, $tournamentIds);
 		if (!$res) {
 			$tournamentIdsString = implode(',', $tournamentIds);
 			$sth = $this->_db->prepare(
@@ -175,13 +165,13 @@ class StatisticsModel extends Main {
 			$sth->execute([$seasonId]);
 			$res = $sth->fetch(PDO::FETCH_ASSOC);
 
-			Cache::setStatistic(self::CACHE_KEY_SEASONS_STATISTIC, $res, $seasonId, $tournamentIds);
+			Cache::setStatistic(Cache::CACHE_KEY_SEASONS_STATISTIC, $res, $seasonId, $tournamentIds);
 		}
 		return $res;
 	}
 
 	public function getGamesData($seasonId, $tournamentIds) {
-		$res = Cache::getStatistic(self::CACHE_KEY_GAMES_STATISTIC, $seasonId, $tournamentIds);
+		$res = Cache::getStatistic(Cache::CACHE_KEY_GAMES_STATISTIC, $seasonId, $tournamentIds);
 		if (!$res) {
 			$tournamentIdsString = implode(',', $tournamentIds);
 			$sth = $this->_db->prepare(
@@ -202,13 +192,13 @@ class StatisticsModel extends Main {
 			);
 			$sth->execute([$seasonId]);
 			$res = $sth->fetchAll(PDO::FETCH_ASSOC);
-			Cache::setStatistic(self::CACHE_KEY_GAMES_STATISTIC, $res, $seasonId, $tournamentIds);
+			Cache::setStatistic(Cache::CACHE_KEY_GAMES_STATISTIC, $res, $seasonId, $tournamentIds);
 		}
 		return $res;
 	}
 
 	public function getPlayers($seasonId, $tournamentIds) {
-		$res = Cache::getStatistic(self::CACHE_KEY_PLAYERS_STATISTIC, $seasonId, $tournamentIds);
+		$res = Cache::getStatistic(Cache::CACHE_KEY_PLAYERS_STATISTIC, $seasonId, $tournamentIds);
 		if (!$res) {
 			$tournamentIdsString = implode(',', $tournamentIds);
 			$sth = $this->_db->prepare(
@@ -236,14 +226,14 @@ class StatisticsModel extends Main {
 			$sth->execute([$seasonId]);
 			$res = $sth->fetchAll(PDO::FETCH_ASSOC);
 
-			Cache::setStatistic(self::CACHE_KEY_PLAYERS_STATISTIC, $res, $seasonId, $tournamentIds);
+			Cache::setStatistic(Cache::CACHE_KEY_PLAYERS_STATISTIC, $res, $seasonId, $tournamentIds);
 		}
 
 		return $res;
 	}
 
     public function getPlayer($playerId) {
-        $res = Cache::getPlayerInfo(self::CACHE_KEY_PLAYER_INFO, $playerId);
+        $res = Cache::getInfo(Cache::CACHE_KEY_PLAYER_INFO, $playerId);
         if (!$res) {
             $sth = $this->_db->prepare(
                 'SELECT
@@ -263,14 +253,14 @@ class StatisticsModel extends Main {
             $sth->execute([$playerId]);
             $res = $sth->fetch(PDO::FETCH_ASSOC);
 
-            Cache::setPlayerInfo(self::CACHE_KEY_PLAYER_INFO, $playerId);
+            Cache::setInfo(Cache::CACHE_KEY_PLAYER_INFO, $res, $playerId);
         }
 
         return $res;
     }
 
     public function getPlayerStatistic($playerId, $seasonId, $tournamentIds) {
-        $res = Cache::getPlayerStatistic(self::CACHE_KEY_PLAYER_STATISTIC, $playerId, $seasonId, $tournamentIds);
+        $res = Cache::getPlayerStatistic(Cache::CACHE_KEY_PLAYER_STATISTIC, $playerId, $seasonId, $tournamentIds);
         if (!$res) {
             $tournamentIdsString = implode(',', $tournamentIds);
             $sth = $this->_db->prepare(
@@ -354,7 +344,7 @@ class StatisticsModel extends Main {
             $res['SUM_player_time'] = $this->getPlayerTime($res['SUM_seconds']);
             $res['AVG_player_time'] = $this->getPlayerTime($res['AVG_seconds']);
 
-            Cache::setPlayerStatistic(self::CACHE_KEY_PLAYER_STATISTIC, $res, $playerId, $seasonId, $tournamentIds);
+            Cache::setPlayerStatistic(Cache::CACHE_KEY_PLAYER_STATISTIC, $res, $playerId, $seasonId, $tournamentIds);
         }
 
         return $res;
@@ -362,7 +352,7 @@ class StatisticsModel extends Main {
 
     public function getPlayerGamesStatistic($playerId, $seasonId, $tournamentIds)
     {
-        $res = Cache::getGameInfo(self::CACHE_KEY_PLAYER_GAMES_STATISTIC, $playerId, $seasonId, $tournamentIds);
+        $res = Cache::getPlayerStatistic(Cache::CACHE_KEY_PLAYER_GAMES_STATISTIC, $playerId, $seasonId, $tournamentIds);
         if (!$res) {
             $tournamentIdsString = implode(',', $tournamentIds);
             $sth = $this->_db->prepare(
@@ -407,14 +397,14 @@ class StatisticsModel extends Main {
             }
             unset($game);
 
-            Cache::setGameInfo(self::CACHE_KEY_PLAYER_GAMES_STATISTIC, $res, $playerId, $seasonId, $tournamentIds);
+            Cache::setPlayerStatistic(Cache::CACHE_KEY_PLAYER_GAMES_STATISTIC, $res, $playerId, $seasonId, $tournamentIds);
         }
 
         return $res;
     }
 
 	public function getGameInfo($gameId) {
-		$res = Cache::getGameInfo(self::CACHE_KEY_PLAYER_STATISTIC, $playerId, $seasonId, $tournamentIds);
+		$res = Cache::getInfo(Cache::CACHE_KEY_PLAYER_STATISTIC, $gameId);
         if (!$res) {
             $sth = $this->_db->prepare(
 				'SELECT
@@ -462,14 +452,14 @@ class StatisticsModel extends Main {
             }
             unset($game);
 
-            Cache::setGameInfo(self::CACHE_KEY_PLAYER_STATISTIC, $res, $playerId, $seasonId, $tournamentIds);
+            Cache::setInfo(Cache::CACHE_KEY_PLAYER_STATISTIC, $res, $gameId);
         }
 
         return $res;
 	}
 
 	public function getAllSeasons() {
-		$res = Cache::getValue(self::CACHE_KEY_SEASONS);
+		$res = Cache::getValue(Cache::CACHE_KEY_SEASONS);
 		if (!$res) {
 			$sth = $this->_db->prepare(
 				'SELECT
@@ -480,68 +470,81 @@ class StatisticsModel extends Main {
 			$sth->execute();
 			$res = $sth->fetchAll(PDO::FETCH_ASSOC);
 
-			Cache::setValue(self::CACHE_KEY_SEASONS, $res);
+			Cache::setValue(Cache::CACHE_KEY_SEASONS, $res);
 		}
 
 		return $res;
 	}
 
     public function getTournaments() {
-		$sth = $this->_db->prepare(
-		    'SELECT
-		        tournament_id,
-                `name`
-            FROM tournaments'
-        );
-		$sth->execute();
-		return $sth->fetchAll(PDO::FETCH_ASSOC);
+        $res = Cache::getValue(Cache::CACHE_KEY_TOURNAMENTS);
+        if (!$res) {
+            $sth = $this->_db->prepare(
+                'SELECT
+                    tournament_id,
+                    `name`
+                FROM tournaments'
+            );
+            $sth->execute();
+            $res = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+            Cache::setValue(Cache::CACHE_KEY_TOURNAMENTS, $res);
+        }
+
+        return $res;
 	}
 
     public function getHistoryTables($seasonId, $tournamentIds) {
-		$tournamentIdsString = implode(',', $tournamentIds);
-        $sth = $this->_db->prepare(
-			'SELECT
-				tm1.`name` AS team_name_one,
-				tm1.url AS team_url_one,
-				tm1.logo_url AS team_logo_url_one,
-				tm2.`name` AS team_name_two,
-				tm2.url AS team_url_two,
-				tm2.logo_url AS team_logo_url_two,
-				h.dt,
-				h.score_one,
-				h.score_two,
-				h.tournament_id,
-				h.season_id,
-				t.`name` AS tournament_name,
-				s.`name` AS season_name
-			FROM history h
- 			JOIN teams tm1 ON tm1.team_id = h.team_id_one
-			JOIN teams tm2 ON tm2.team_id = h.team_id_two
-			JOIN tournaments t ON t.tournament_id = h.tournament_id
-			JOIN seasons s ON s.season_id = h.season_id
-			WHERE h.tournament_id IN (' . $tournamentIdsString . ') AND h.season_id = ?
-			ORDER BY dt ASC'
-		);
-        $sth->execute([$seasonId]);
+        $res = Cache::getStatistic(Cache::CACHE_KEY_HISTORY, $seasonId, $tournamentIds);
+        if (!$res) {
+            $tournamentIdsString = implode(',', $tournamentIds);
+            $sth = $this->_db->prepare(
+                'SELECT
+                    tm1.`name` AS team_name_one,
+                    tm1.url AS team_url_one,
+                    tm1.logo_url AS team_logo_url_one,
+                    tm2.`name` AS team_name_two,
+                    tm2.url AS team_url_two,
+                    tm2.logo_url AS team_logo_url_two,
+                    h.dt,
+                    h.score_one,
+                    h.score_two,
+                    h.tournament_id,
+                    h.season_id,
+                    t.`name` AS tournament_name,
+                    s.`name` AS season_name
+                FROM history h
+                JOIN teams tm1 ON tm1.team_id = h.team_id_one
+                JOIN teams tm2 ON tm2.team_id = h.team_id_two
+                JOIN tournaments t ON t.tournament_id = h.tournament_id
+                JOIN seasons s ON s.season_id = h.season_id
+                WHERE h.tournament_id IN (' . $tournamentIdsString . ') AND h.season_id = ?
+                ORDER BY dt ASC'
+            );
+            $sth->execute([$seasonId]);
+            $res = $sth->fetchAll(PDO::FETCH_ASSOC);
 
-        return $sth->fetchAll(PDO::FETCH_ASSOC);
+            Cache::setStatistic(Cache::CACHE_KEY_HISTORY, $res, $seasonId, $tournamentIds);
+        }
+
+        return $res;
     }
 
     public function getHistoryRecords($seasonId, $tournamentIds) {
-        $res = Cache::getValue(self::CACHE_KEY_RECORDS);
+        $res = Cache::getStatistic(Cache::CACHE_KEY_RECORDS, $seasonId, $tournamentIds);
         if (!$res) {
             $gamesRecordData = $this->_getGamesRecordData($seasonId, $tournamentIds);
             $playersRecordData = $this->_getPlayersRecordData($seasonId, $tournamentIds);
             $res = $this->_getCalculateRecords($gamesRecordData, $playersRecordData);
 
-            Cache::setValue(self::CACHE_KEY_RECORDS, $res);
+            Cache::setStatistic(Cache::CACHE_KEY_RECORDS, $res, $seasonId, $tournamentIds);
         }
 
         return $res;
     }
 
     public function getHistoryTotal($seasonId, $tournamentIds) {
-        $res = Cache::getGameInfo(self::CACHE_KEY_PLAYER_STATISTIC, $playerId, $seasonId, $tournamentIds);
+        $res = Cache::getStatistic(Cache::CACHE_KEY_TOTAL, $seasonId, $tournamentIds);
         if (!$res) {
             $tournamentIdsString = implode(',', $tournamentIds);
             $sth = $this->_db->prepare(
@@ -585,7 +588,7 @@ class StatisticsModel extends Main {
             }
             unset($player);
 
-            Cache::setGameInfo(self::CACHE_KEY_PLAYER_STATISTIC, $res, $seasonId, $tournamentIds);
+            Cache::setStatistic(Cache::CACHE_KEY_TOTAL, $res, $seasonId, $tournamentIds);
         }
 
         return $res;
@@ -671,10 +674,7 @@ class StatisticsModel extends Main {
 			$res = $stmt->execute([self::STATUS_CONFIRMED]);
 		}
 		if ($res) {
-			Cache::deleteValue(StatisticsModel::CACHE_KEY_SEASONS_STATISTIC);
-			Cache::deleteValue(StatisticsModel::CACHE_KEY_GAMES_STATISTIC);
-			Cache::deleteValue(StatisticsModel::CACHE_KEY_PLAYERS_STATISTIC);
-			Cache::deleteValue(StatisticsModel::CACHE_KEY_SEASONS);
+            Cache::clearAllCache();
 		}
 		return $res;
 	}

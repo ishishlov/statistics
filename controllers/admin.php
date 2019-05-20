@@ -71,12 +71,11 @@ class Admin extends Common {
     /**
      * Метод для чистки всего кеша
      */
-    public function tempDeleteAllCache() {
-        Cache::deleteValue(StatisticsModel::CACHE_KEY_SEASONS_STATISTIC);
-        Cache::deleteValue(StatisticsModel::CACHE_KEY_GAMES_STATISTIC);
-        Cache::deleteValue(StatisticsModel::CACHE_KEY_PLAYERS_STATISTIC);
-        Cache::deleteValue(StatisticsModel::CACHE_KEY_SEASONS);
-        var_dump('Delete is completed');exit;
+    public function clearAllCache() {
+        if (Cache::clearAllCache()) {
+            var_dump('Delete is completed');exit;
+        }
+        var_dump('Error');exit;
     }
 
     /**
@@ -111,7 +110,6 @@ class Admin extends Common {
 
         }
     }
-
 
     /**
      * Установка корректных названий элементам массива и добавление поле "статус"
@@ -157,7 +155,7 @@ class Admin extends Common {
     /**
      * Проверка на корректность заполнения полей
      *
-     * @param type $data
+     * @param array $data
      * @return array
      */
     private function _validateArrayData($data) {
@@ -185,9 +183,7 @@ class Admin extends Common {
      * @param array $data
      * @param array $errors
      */
-    private function _checkEmptyData($data, &$errors)
-    {
-
+    private function _checkEmptyData($data, &$errors) {
         if (!$data) {
             $error = [
                 'text'      => 'No data for insert',
