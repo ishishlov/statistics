@@ -82,7 +82,7 @@ class Statistics extends Common {
 		$tournamentIds = $this->arrayToInt($_POST['tournamentIds']);
 
 		$this->toJson([
-			'seasonsStatistic'	=> $this->_model->getSeasonsStatistic($seasonId, $tournamentIds),
+			//'seasonsStatistic'	=> $this->_model->getSeasonsStatistic($seasonId, $tournamentIds),
 			'gamesData'         => $this->_model->getGamesData($seasonId, $tournamentIds)
 		]);
 	}
@@ -94,7 +94,7 @@ class Statistics extends Common {
 		$tournamentIds = $this->arrayToInt($_POST['tournamentIds']);
 
 		$this->toJson([
-			'seasonsStatistic'	=> $this->_model->getSeasonsStatistic($seasonId, $tournamentIds),
+			//'seasonsStatistic'	=> $this->_model->getSeasonsStatistic($seasonId, $tournamentIds),
 			'playersStatistic'	=> $this->_model->getPlayers($seasonId, $tournamentIds)
 		]);	
 	}

@@ -358,7 +358,7 @@
 					dataType: 'json'
 				}).done(function(response) {
 					_module.hideLoader();
-					_module.appendHtmlSeasonStatistic(response.seasonsStatistic);
+					//_module.appendHtmlSeasonStatistic(response.seasonsStatistic);
 					_module.appendHtmlGames(response.gamesData);
 				});
 			},
@@ -377,7 +377,7 @@
 					dataType: 'json'
 				}).done(function(response) {
 					_module.hideLoader();
-					_module.appendHtmlSeasonStatistic(response.seasonsStatistic);
+					//_module.appendHtmlSeasonStatistic(response.seasonsStatistic);
 					_module.appendHtmlPlayersStatistic(response.playersStatistic);
 				});
 			},
@@ -733,10 +733,11 @@
 				var rows = '';
 				var cnt = 0;
 				var titles = ['SUM', 'MAX', 'AVG'];
+				var titlesAlias = ['СУММ', 'МАКС', 'СРЕДН'];
 				$.each(titles, function(idx, val) {
 					rows += (
 						'<tr>' +
-                            '<th class="stat-widget-season-statistic-table-cell-left stat-widget-season-statistic-table-cell-end">' + titles[cnt] + '</th>' +
+                            '<th class="stat-widget-season-statistic-table-cell-left stat-widget-season-statistic-table-cell-end">' + titlesAlias[cnt] + '</th>' +
                             '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_player_time'] + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell">' + data[titles[cnt] + '_two_point_made'] + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell-end">' + data[titles[cnt] + '_two_point_throw'] + '</td>' +
@@ -813,7 +814,7 @@
 							'</tr>' +
 							'<tr>' +
 								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end"></td>' +
-								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">min</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">мин</td>' +
 								'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
 								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Б</td>' +
 								'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
@@ -927,7 +928,7 @@
 						'</tr>' +
 						'<tr>' +
 							'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end"></td>' +
-							'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">min</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">мин</td>' +
 							'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
 							'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Б</td>' +
 							'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
@@ -1041,7 +1042,7 @@
 							'</tr>' +
 							'<tr>' +
 								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end"></td>' +
-								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">min</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">мин</td>' +
 								'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
 								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Б</td>' +
 								'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
@@ -1182,7 +1183,7 @@
                             '</tr>' +
                             '<tr>' +
                                 '<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end"></td>' +
-                                '<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">min</td>' +
+                                '<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">мин</td>' +
                                 '<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
                                 '<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Б</td>' +
                                 '<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
