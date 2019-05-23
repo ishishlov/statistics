@@ -135,6 +135,138 @@
 						</tbody>
 					</table>
 				</div>
+				{% for gameInfo in gamesInfo %}			
+					<div class="confirm-save">
+						<table class="stat-widget-season-statistic-table">
+							<colgroup>
+								<col width="70" />
+								<col width="60" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+								<col width="50" />
+							</colgroup>
+							<tbody>
+								<tr>
+									<th class="stat-widget-season-statistic-table-cell-head"></th>
+									<th class="stat-widget-season-statistic-table-cell-head"></th>
+									<th class="stat-widget-season-statistic-table-cell-head" colspan="2">2-ОЧК</th>
+									<th class="stat-widget-season-statistic-table-cell-head" colspan="2">3-ОЧК</th>
+									<th class="stat-widget-season-statistic-table-cell-head" colspan="2">2+3-ОЧК</th>
+									<th class="stat-widget-season-statistic-table-cell-head" colspan="2">ШТР</th>
+									<th class="stat-widget-season-statistic-table-cell-head" colspan="3">ПД</th>
+									<th class="stat-widget-season-statistic-table-cell-head"></th>
+									<th class="stat-widget-season-statistic-table-cell-head" colspan="2">Ф</th>
+									<th class="stat-widget-season-statistic-table-cell-head"></th>
+									<th class="stat-widget-season-statistic-table-cell-head"></th>
+									<th class="stat-widget-season-statistic-table-cell-head" colspan="2"></th>
+									<th class="stat-widget-season-statistic-table-cell-head"></th>
+									<th class="stat-widget-season-statistic-table-cell-head"></th>
+									<th class="stat-widget-season-statistic-table-cell-head-end"></th>
+								</tr>
+								<tr>
+									<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end"></td>
+									<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">мин</td>
+									<td class="stat-widget-season-statistic-table-cell-bold">З</td>
+									<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Б</td>
+									<td class="stat-widget-season-statistic-table-cell-bold">З</td>
+									<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Б</td>
+									<td class="stat-widget-season-statistic-table-cell-bold">З</td>
+									<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Б</td>
+									<td class="stat-widget-season-statistic-table-cell-bold">З</td>
+									<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Б</td>
+									<td class="stat-widget-season-statistic-table-cell-bold">Ч</td>
+									<td class="stat-widget-season-statistic-table-cell-bold">С</td>
+									<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">В</td>
+									<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">РП</td>
+									<td class="stat-widget-season-statistic-table-cell-bold">Ф</td>
+									<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">ФС</td>
+									<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Пт</td>
+									<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Пх</td>
+									<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">БШ</td>
+									<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">БШ НА</td>
+									<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Эфф</td>
+									<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">+/-</td>
+									<td class="stat-widget-season-statistic-table-cell-bold">Оч</td>
+								</tr>
+								{% for row in gameInfo.player %}	
+									<tr>
+										<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name">
+											<span class="stat-widget-link stat-widget-player-profile">{{ row.name }} {{ row.surname }}</span>
+										</td>
+										<td class="stat-widget-season-statistic-table-cell-end">{{ row.player_time }}</td>
+										<td class="stat-widget-season-statistic-table-cell">{{ row.two_point_made }}</td>
+										<td class="stat-widget-season-statistic-table-cell-end">{{ row.two_point_throw }}</td>
+										<td class="stat-widget-season-statistic-table-cell">{{ row.three_point_made }}</td>
+										<td class="stat-widget-season-statistic-table-cell-end">{{ row.three_point_throw }}</td>
+										<td class="stat-widget-season-statistic-table-cell"> --- </td>
+										<td class="stat-widget-season-statistic-table-cell-end"> --- </td>
+										<td class="stat-widget-season-statistic-table-cell">{{ row.free_made }}</td>
+										<td class="stat-widget-season-statistic-table-cell-end">{{ row.free_throw }}</td>
+										<td class="stat-widget-season-statistic-table-cell">{{ row.offensive_rebound }}</td>
+										<td class="stat-widget-season-statistic-table-cell">{{ row.deffensive_rebound }}</td>
+										<td class="stat-widget-season-statistic-table-cell-end"> --- </td>
+										<td class="stat-widget-season-statistic-table-cell-end">{{ row.assists }}</td>
+										<td class="stat-widget-season-statistic-table-cell">{{ row.commited_foul }}</td>
+										<td class="stat-widget-season-statistic-table-cell-end">{{ row.recieved_foul }}</td>
+										<td class="stat-widget-season-statistic-table-cell-end">{{ row.turnover }}</td>
+										<td class="stat-widget-season-statistic-table-cell-end">{{ row.steal }}</td>
+										<td class="stat-widget-season-statistic-table-cell-end">{{ row.in_fawor }}</td>
+										<td class="stat-widget-season-statistic-table-cell-end">{{ row.against }}</td>
+										<td class="stat-widget-season-statistic-table-cell-end">{{ row.effectiveness }}</td>
+										<td class="stat-widget-season-statistic-table-cell-end">{{ row.plus_minus }}</td>
+										<td class="stat-widget-season-statistic-table-cell">{{ row.points_scored }}</td>
+									</tr>
+								{% endfor %}	
+								<tr>
+									<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name">Сумма</td>
+									<td class="stat-widget-season-statistic-table-cell-end">{{ gameInfo.sum.player_time }}</td>
+									<td class="stat-widget-season-statistic-table-cell">{{ gameInfo.sum.two_point_made }}</td>
+									<td class="stat-widget-season-statistic-table-cell-end">{{ gameInfo.sum.two_point_throw }}</td>
+									<td class="stat-widget-season-statistic-table-cell">{{ gameInfo.sum.three_point_made }}</td>
+									<td class="stat-widget-season-statistic-table-cell-end">{{ gameInfo.sum.three_point_throw }}</td>
+									<td class="stat-widget-season-statistic-table-cell"> --- </td>
+									<td class="stat-widget-season-statistic-table-cell-end"> --- </td>
+									<td class="stat-widget-season-statistic-table-cell">{{ gameInfo.sum.free_made }}</td>
+									<td class="stat-widget-season-statistic-table-cell-end">{{ gameInfo.sum.free_throw }}</td>
+									<td class="stat-widget-season-statistic-table-cell">{{ gameInfo.sum.offensive_rebound }}</td>
+									<td class="stat-widget-season-statistic-table-cell">{{ gameInfo.sum.deffensive_rebound }}</td>
+									<td class="stat-widget-season-statistic-table-cell-end"> --- </td>
+									<td class="stat-widget-season-statistic-table-cell-end">{{ gameInfo.sum.assists }}</td>
+									<td class="stat-widget-season-statistic-table-cell">{{ gameInfo.sum.commited_foul }}</td>
+									<td class="stat-widget-season-statistic-table-cell-end">{{ gameInfo.sum.recieved_foul }}</td>
+									<td class="stat-widget-season-statistic-table-cell-end">{{ gameInfo.sum.turnover }}</td>
+									<td class="stat-widget-season-statistic-table-cell-end">{{ gameInfo.sum.steal }}</td>
+									<td class="stat-widget-season-statistic-table-cell-end">{{ gameInfo.sum.in_fawor }}</td>
+									<td class="stat-widget-season-statistic-table-cell-end">{{ gameInfo.sum.against }}</td>
+									<td class="stat-widget-season-statistic-table-cell-end">{{ gameInfo.sum.effectiveness }}</td>
+									<td class="stat-widget-season-statistic-table-cell-end">{{ gameInfo.sum.plus_minus }}</td>
+									<td class="stat-widget-season-statistic-table-cell">{{ gameInfo.sum.points_scored }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				{% endfor %}
 			{% endif %}
 			{% if errors %}
 				<div class="errors">

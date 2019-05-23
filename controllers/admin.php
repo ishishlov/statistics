@@ -33,6 +33,8 @@ class Admin extends Common {
 
 		$this->_data['isShowLoadButton'] = (bool)!$notConfirmedData;
 		$this->_data['notConfirmedData'] = $notConfirmedData;
+		$this->_data['gamesInfo'] = $this->_model->getGamesInfo();
+
 		$this->display('index.tpl');
 	}
 

@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : statistics
-Source Server Version : 50638
-Source Host           : localhost:3306
-Source Database       : statistics
+Source Server         : originstatistic
+Source Server Version : 50643
+Source Host           : VH247.spaceweb.ru:3306
+Source Database       : ivanshiru_stat
 
 Target Server Type    : MYSQL
-Target Server Version : 50638
+Target Server Version : 50643
 File Encoding         : 65001
 
-Date: 2019-01-31 22:45:36
+Date: 2019-05-23 21:49:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,7 +28,5 @@ CREATE TABLE `seasons` (
 -- ----------------------------
 -- Records of seasons
 -- ----------------------------
-
 INSERT INTO `seasons` VALUES ('16', '2016-2017');
 INSERT INTO `seasons` VALUES ('17', '2017-2018');
-

@@ -459,6 +459,19 @@ class StatisticsModel extends Main {
         return $res;
 	}
 
+	public function getGamesInfo() {
+		$data = [];
+		$gameIds = $this->getNotConfirmedGameIds();
+		if ($gameIds && is_array($gameIds)) {
+			$gameIds = array_unique($gameIds);
+			foreach ($gameIds as $gameId) {
+				$data[] = $this->getGameInfo($gameId);
+			}
+		}
+
+		return $data;
+	}
+	
 	public function getAllSeasons() {
 		$res = Cache::getValue(Cache::CACHE_KEY_SEASONS);
 		if (!$res) {
