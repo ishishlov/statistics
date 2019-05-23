@@ -9,6 +9,8 @@ class DB {
 	private $_login = 'root';
 	private $_password = '';
 
+	const DEBUG_ENABLED = true;
+
 	public function getInstance() {
 		if (!$this->_db) {
 			$this->connect();
@@ -17,11 +19,13 @@ class DB {
 	}
 
 	private function connect() {
+	    $debug = self::DEBUG_ENABLED ? [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION] : [];
 		try {
 			$this->_db = new PDO(
 				'mysql:dbname=' . $this->_name . ';host=' . $this->_host . ';port=' . $this->_port,
 				$this->_login,
-				$this->_password
+				$this->_password,
+                $debug
 			);
 			$this->_db->query("SET NAMES 'utf8'");
 		} catch (PDOException $e) {

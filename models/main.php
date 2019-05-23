@@ -22,6 +22,7 @@ class Main {
 	public function insert($tableName, $data) {
 		$prepareData = $this->_prepareDataForInsert($data);
 		$stmt = $this->_db->prepare('INSERT INTO ' . $tableName . ' (' . $prepareData['titles'] . ') VALUES ' . $prepareData['values']);
+
 		return $stmt->execute($prepareData['executeData']);
 	}
 

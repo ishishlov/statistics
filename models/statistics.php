@@ -92,6 +92,7 @@ class StatisticsModel extends Main {
 		if ($res) {
 			$res = $this->_saveStaticticGame($statisticGameAndPlayer['statisticGame']);
 		}
+
 		return $res;
 	}
 
@@ -924,11 +925,15 @@ class StatisticsModel extends Main {
 		foreach ($data as $key => $statistics) {
 			foreach ($statistics as $title => $statistic) {
 				if (in_array($title, self::FIELD_FOR_STATICTIC_GAME)) {
+				    // Фикс для некоторых бд
+                    if ($title === self::FIELDS[6]) {
+                        $statistic = (int) $statistic;
+                    }
 					$statisticGame[$key][$title] = $statistic;
 				}
 
 				if (in_array($title, self::FIELD_FOR_STATICTIC_PLAYER)) {
-					$statisticPlayer[$key][$title] = $statistic;
+					$statisticPlayer[$key][$title] = $statistic ?: 0;
 				}
 			}
 		}
