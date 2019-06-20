@@ -187,6 +187,12 @@
 	display: block;
 }
 
+.stat-widget-game-statistic-team-name {
+    color: #696969;
+    line-height: 2em;
+    display: none;
+}
+
 .stat-widget-info {
 	font-size: 13px;
 	margin: 30px 0;
@@ -372,9 +378,13 @@
 }
 
 @media (max-width: 576px) {
-	/*.stat-widget-season-statistic-table {*/
-		/*font-size: 4px;*/
-	/*}*/
+    .stat-widget-game-statistic-team-logo {
+        display: none;
+    }
+
+    .stat-widget-game-statistic-team-name {
+        display: block;
+    }
 
 	.stat-widget-table-second {
 		display: inline-block;

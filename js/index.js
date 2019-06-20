@@ -606,6 +606,12 @@
 								'>' +
 									val.opponent +
 								'</a>' +
+                                '<a class="stat-widget-game-statistic-team-name"' +
+                                    'target="_blank"' +
+                                    'href="' + val.url + '"' +
+                                '>' +
+                                    val.opponent +
+                                '</a>' +
 							'</td>' +
 							'<td class="stat-widget-game-statistic-table-cell-center stat-widget-game-venue-cell">' + val.venue + '</td>' +
 							'<td class="stat-widget-game-statistic-table-cell-center stat-widget-show-game-info stat-widget-link" data-game-id="' + val.game_id + '">' + val.score + '</td>' +
@@ -1273,6 +1279,12 @@
 								'>' +
 									val.team_name_one +
 								'</a>' +
+                                '<a class="stat-widget-game-statistic-team-name"' +
+                                    'target="_blank"' +
+                                    'href="' + val.team_url_one + '"' +
+                                '>' +
+                                    val.team_name_one +
+                                '</a>' +
 							'</td>' +
 							'<td class="stat-widget-game-statistic-table-cell-left">' +
 								'<a class="stat-widget-game-statistic-team-logo"' +
@@ -1282,6 +1294,12 @@
 								'>' +
 									val.team_name_two +
 								'</a>' +
+                                '<a class="stat-widget-game-statistic-team-name"' +
+                                    'target="_blank"' +
+                                    'href="' + val.team_url_two + '"' +
+                                '>' +
+                                    val.team_name_two +
+                                '</a>' +
 							'</td>' +
 							'<td class="stat-widget-game-statistic-table-cell-center">' + val.score_one + ':' + val.score_two + '</td>' +
 						'</tr>'
@@ -1297,7 +1315,7 @@
 					'</colgroup>' +
 					'<tr>' +
 						'<th class="stat-widget-game-statistic-table-cell-left">ДАТА</th>' +
-						'<th class="stat-widget-game-statistic-table-cell-center stat-widget-game-tournament-cell"></th>' +
+						'<th class="stat-widget-game-statistic-table-cell-center"></th>' +
 						'<th class="stat-widget-game-statistic-table-cell-left"></th>' +
 						'<th class="stat-widget-game-statistic-table-cell-center">СЧЁТ</th>' +
 					'</tr>' +
