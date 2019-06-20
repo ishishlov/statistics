@@ -319,6 +319,10 @@
     width: 100%;
 }
 
+.stat-widget-table-second {
+	display: none;
+}
+
 @media (max-width: 975px) {
 	.stat-widget-records-comand {
 		display: block;
@@ -332,7 +336,7 @@
 
 }
 
-@media (max-width: 768px) {
+@media (max-width: 845px) {
 	.stat-widget-season-statistic-table {
 		font-size: 10px;
 	}
@@ -368,8 +372,35 @@
 }
 
 @media (max-width: 576px) {
-	.stat-widget-season-statistic-table {
-		font-size: 4px;
+	/*.stat-widget-season-statistic-table {*/
+		/*font-size: 4px;*/
+	/*}*/
+
+	.stat-widget-table-second {
+		display: inline-block;
+		width: calc(100% - 94px);
+		overflow-y: hidden;
+	}
+
+	.stat-widget-table-second .stat-widget-table-first-column {
+		display: none;
+	}
+
+	.stat-widget-table-second .stat-widget-table-row-stretch {
+		height: 27px;
+	}
+
+	.stat-widget-table-first {
+		width: 94px;
+		display: inline-block;
+	}
+
+	.stat-widget-table-first .stat-widget-table-not-first-column {
+		display: none;
+	}
+
+	.stat-widget-table-first .stat-widget-table-head-row {
+		display: none;
 	}
 
 	.stat-widget-game-venue-cell {
