@@ -96,8 +96,13 @@
 }
 
 .stat-widget-filter-season {
-	margin:0 0 0 10px;
-	height:37px;
+	margin: 0 0 0 10px;
+	height: 37px;
+}
+
+.stat-widget-filter-histoty-tournament {
+	margin: 0 0 0 10px;
+	height: 37px;
 }
 
 .stat-widget-season-statistic-table {
@@ -442,6 +447,11 @@
     }
 
 	.stat-widget-filter-season {
+		margin: 10px 0 0 0;
+		width: 100%;
+	}
+
+	.stat-widget-filter-histoty-tournament {
 		margin: 10px 0 0 0;
 		width: 100%;
 	}
