@@ -490,16 +490,18 @@ class StatisticsModel extends Main {
 		return $res;
 	}
 
-    public function getTournaments() {
-        $res = Cache::getValue(Cache::CACHE_KEY_TOURNAMENTS);
+    public function getTournaments($seasonId) {
+        $res = Cache::getTournaments(Cache::CACHE_KEY_TOURNAMENTS, $seasonId);
         if (!$res) {
             $sth = $this->_db->prepare(
                 'SELECT
-                    tournament_id,
-                    `name`
-                FROM tournaments'
+                    DISTINCT(t.tournament_id),
+                    t.`name`
+                FROM statistic_games sg
+                JOIN tournaments t ON sg.tournament_id = t.tournament_id
+                WHERE sg.season_id = ?'
             );
-            $sth->execute();
+            $sth->execute([$seasonId]);
             $res = $sth->fetchAll(PDO::FETCH_ASSOC);
 
             Cache::setValue(Cache::CACHE_KEY_TOURNAMENTS, $res);

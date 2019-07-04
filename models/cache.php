@@ -165,6 +165,10 @@ class Cache {
         return $res;
     }
 
+    public static function getTournaments($key, $id) {
+        return self::getInfo($key, $id);
+    }
+
     public static function setInfo($key, $data, $id, $flag = 0, $expire = 604800) {
         $finishData = self::getValue($key);
         if ($finishData) {

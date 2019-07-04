@@ -89,8 +89,9 @@ class Statistics extends Common {
 	public function getTournaments() {
         header('Access-Control-Allow-Origin: *');
 
+        $seasonId = (int) $_POST['seasonId'];
 		$this->toJson([
-			'tournaments' => $this->_model->getTournaments()
+			'tournaments' => $this->_model->getTournaments($seasonId)
 		]);
 	}
 }

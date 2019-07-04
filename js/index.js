@@ -6,7 +6,7 @@
 		var _module;
 		var _domenName = '';
 		var $_mainContainer;
-		var _tournamentIds = [2];
+		var _tournamentIds = [1];
 		var _seasonId = 17;
 		var _playerId = 0;
 		var _gameId = 0;
@@ -16,12 +16,6 @@
 			history: 3
 		};
 		var _activeTabId = _tabs.commandStatistic;
-
-		var _historyTabs = {
-			tables: 1,
-			records: 2,
-			total: 3
-		};
 		var _gameLink = 'swgameid';
 		var _playerLink = 'swplayerid';
 
@@ -39,8 +33,8 @@
 				$_mainContainer.on('click', '.stat-widget-tab', function (event) {
 					$('.stat-widget-tab').removeClass('active');
 					$(event.target).addClass('active');
-					_tournamentIds = [2];
-					_seasonId = 17;
+					//_tournamentIds = [2];
+                    _module.setSeasonId();
 					_playerId = 0;
 					_activeTabId = $(event.target).data('tab-id');
 					switch (_activeTabId) {
@@ -143,7 +137,7 @@
 				});
 			},
 
-			goToLink: function(sParam) {
+			goToLink: function() {
 				var gameId = _module.getUrlParameter(_gameLink);
 				var playerId = _module.getUrlParameter(_playerLink);
 				if (gameId) {
@@ -169,6 +163,10 @@
 					}
 				}
 			},
+
+            setSeasonId: function() {
+                _seasonId = 17;
+            },
 
 			setDomenName: function () {
 				if (location.hostname !== 'statistic.ru' &&
@@ -196,12 +194,23 @@
 				_module.getHistoryData();
 			},
 
-			renderTournaments: function () {
-				var html = (
-					'<li class="stat-widget-filter-tournament active" data-tournament-id="2" >Евролига</li>' +
-					'<li class="stat-widget-filter-tournament" data-tournament-id="1">Единая Лига ВТБ</li>' +
-					'<li class="stat-widget-filter-tournament" data-tournament-id="999">Все игры сезона</li>'
-				);
+            renderTournaments: function () {
+                _module.getTournaments();
+            },
+
+			appendHtmlTournaments: function (tournaments) {
+                var html = '';
+
+                $.each(tournaments.tournaments, function(idx, val) {
+                    var active = '';
+                    if (idx === 0) {
+                        active = 'active';
+                        _tournamentIds = [Number(val.tournament_id)];
+                    }
+                    html +=	'<li class="stat-widget-filter-tournament ' + active + '" data-tournament-id="' + val.tournament_id + '" >' + val.name + '</li>';
+                });
+
+				html += '<li class="stat-widget-filter-tournament" data-tournament-id="999">Все игры сезона</li>';
 
 				$('.stat-widget-filter-tournaments').append(html);
 			},
@@ -234,7 +243,7 @@
 
 				$('.stat-widget-data').empty().append(html);
 				_module.renderTournaments();
-				_module.renderSeasons();
+				//_module.renderSeasons();
 				_module.renderCommandsStatistic();
 			},
 
@@ -248,7 +257,7 @@
 				);
 				$('.stat-widget-data').empty().append(html);
 				_module.renderTournaments();
-				_module.renderSeasons();
+				//_module.renderSeasons();
 				_module.getPlayersStatistic();
 			},
 
@@ -271,7 +280,7 @@
 				$('.stat-widget-data').empty().append(html);
 
 				_module.renderTournaments();
-				_module.renderSeasons();
+				//_module.renderSeasons();
 				_module.getPlayerInfo();
 
 				_activeTabId = _tabs.players;
@@ -335,12 +344,17 @@
 			getTournaments: function () {
 				_module.showLoader();
 				var url = _domenName + '/statistics/getTournaments';
+                var ajaxParams = {
+                    seasonId: _seasonId
+                };
 				$.ajax({
 					url: url,
+                    data: ajaxParams,
 					type: 'POST',
 					dataType: 'json'
 				}).done(function(response) {
 					_module.hideLoader();
+					_module.appendHtmlTournaments(response);
 				});
 			},
 
@@ -351,6 +365,7 @@
 					seasonId: _seasonId,
 					tournamentIds: _tournamentIds
 				};
+
 				$.ajax({
 					url: url,
 					data: ajaxParams,
@@ -457,21 +472,27 @@
 				return (
 					'<div class="stat-widget-filters">' +
 						'<ul class="stat-widget-filter-tournaments"></ul>' +
-						'<ul>' +
-							'<li>' +
-								'<select class="stat-widget-filter-season"></select>' +
-							'</li>' +
-						'</ul>' +
 					'</div>'
 				);
 			},
 
 			appendHtmlSeasons: function (seasons) {
-				var html = '';
+				var optionsHtml = '';
 				$.each(seasons, function(idx, val) {
-					html +=	'<option value="' + val.season_id + '">' + val.name + '</option>';
+                    optionsHtml +=	'<option value="' + val.season_id + '">' + val.name + '</option>';
 				});
-				$('.stat-widget-filter-season').append(html);
+
+                var html = (
+                    '<ul>' +
+                        '<li>' +
+                            '<select class="stat-widget-filter-season">' +
+                                optionsHtml +
+                            '</select>' +
+                        '</li>' +
+                    '</ul>'
+                );
+
+				$('.stat-widget-filters').append(html);
 			},
 
 			/**

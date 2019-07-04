@@ -30,3 +30,11 @@ CREATE TABLE `tournaments` (
 -- ----------------------------
 INSERT INTO `tournaments` VALUES ('1', 'Единая Лига ВТБ');
 INSERT INTO `tournaments` VALUES ('2', 'Евролига');
+INSERT INTO `tournaments` VALUES ('3', 'Еврокубок');
+INSERT INTO `tournaments` VALUES ('4', 'ПБЛ');
+INSERT INTO `tournaments` VALUES ('5', 'Чемпионат России');
+INSERT INTO `tournaments` VALUES ('6', 'Кубок вызова');
+INSERT INTO `tournaments` VALUES ('7', 'Кубок России');
+INSERT INTO `tournaments` VALUES ('8', 'Высшая лига');
+INSERT INTO `tournaments` VALUES ('9', 'Кубок Корача');
+INSERT INTO `tournaments` VALUES ('10', 'Кубок ФИБА Европа');
