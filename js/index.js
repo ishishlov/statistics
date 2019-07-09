@@ -3,11 +3,66 @@
 		statWidget.init();
 	});
 	var statWidget = (function() {
+		var TOURNAMENTS = {
+			vtb: {
+				id: 1,
+				name: 'Единая лига ВТБ'
+			},
+			euroLeague: {
+				id: 2,
+				name: 'Евролига'
+			},
+			euroCup: {
+				id: 3,
+				name: 'Еврокубок'
+			},
+			pbl: {
+				id: 4,
+				name: 'ПБЛ'
+			},
+			championshipRussia: {
+				id: 5,
+				name: 'Чемпионат России'
+			},
+			challengeCup: {
+				id: 6,
+				name: 'Кубок вызова'
+			},
+			russianCup: {
+				id: 7,
+				name: 'Кубок России'
+			},
+			topLeague: {
+				id: 8,
+				name: 'Высшая лига'
+			},
+			corachCup: {
+				id: 9,
+				name: 'Кубок Корача'
+			},
+			fibaEuroCup: {
+				id: 10,
+				name: 'Кубок ФИБА Европа'
+			}
+		};
+
+		var CURRENT_SEASON = 17;
+		var TOURNAMENTS_CONFIG = {
+			16: {
+				0: TOURNAMENTS.euroCup,
+				1: TOURNAMENTS.vtb
+			},
+			17: {
+				0: TOURNAMENTS.euroLeague,
+				1: TOURNAMENTS.vtb
+			}
+		};
+
 		var _module;
 		var _domenName = '';
 		var $_mainContainer;
 		var _tournamentIds = [2];
-		var _seasonId = 17;
+		var _seasonId = CURRENT_SEASON;
 		var _playerId = 0;
 		var _gameId = 0;
 		var _tabs = {
@@ -20,8 +75,6 @@
 		var _gameLink = 'swgameid';
 		var _playerLink = 'swplayerid';
 
-		var TOURNAMENTS_EURO_ALIAS = 998;
-		var TOURNAMENTS_EURO_IDS = [2, 3];
 		var ALL_TOURNAMENTS_ALIAS = 999;
 		var ALL_TOURNAMENTS_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -40,7 +93,7 @@
 					$('.stat-widget-tab').removeClass('active');
 					$(event.target).addClass('active');
 					_tournamentIds = [2];
-					_seasonId = 17;
+					_seasonId = CURRENT_SEASON;
 					_playerId = 0;
 					_activeTabId = $(event.target).data('tab-id');
 					switch (_activeTabId) {
@@ -69,11 +122,10 @@
 					var tournamentId = $(event.target).data('tournament-id');
 					if (tournamentId == ALL_TOURNAMENTS_ALIAS) {
 						_tournamentIds = ALL_TOURNAMENTS_IDS;
-					} else if (tournamentId == TOURNAMENTS_EURO_ALIAS) {
-						_tournamentIds = TOURNAMENTS_EURO_IDS;
 					} else {
 						_tournamentIds = [tournamentId];
 					}
+
 					switch (_activeTabId) {
 						case _tabs.commandStatistic:
 							_module.getCommandsStatistic();
@@ -105,6 +157,10 @@
 					} else {
 						_tournamentIds = [tournamentId];
 					}
+
+					_seasonId = CURRENT_SEASON;
+					$('.stat-widget-filter-season').val(_seasonId);
+
 					switch (_activeTabId) {
 						case _tabs.commandStatistic:
 							_module.getCommandsStatistic();
@@ -143,11 +199,13 @@
 				//Смена сезона
 				$_mainContainer.on('change', '.stat-widget-filter-season', function (event) {
 					_seasonId = $(event.target).val();
+
 					switch (_activeTabId) {
 						case _tabs.commandStatistic:
 							_module.getCommandsStatistic();
 							break;
 						case _tabs.players:
+							_module.renderTournaments();
 							if (_playerId) {
 								_module.getPlayerInfo();
 							} else {
@@ -176,7 +234,7 @@
 				});
 			},
 
-			goToLink: function(sParam) {
+			goToLink: function() {
 				var gameId = _module.getUrlParameter(_gameLink);
 				var playerId = _module.getUrlParameter(_playerLink);
 				if (gameId) {
@@ -230,13 +288,20 @@
 			},
 
 			renderTournaments: function () {
-				var html = (
-					'<li class="stat-widget-filter-tournament active" data-tournament-id="' + TOURNAMENTS_EURO_ALIAS + '" >Евролига/Кубок Европы</li>' +
-					'<li class="stat-widget-filter-tournament" data-tournament-id="1">Единая Лига ВТБ</li>' +
-					'<li class="stat-widget-filter-tournament" data-tournament-id="' + ALL_TOURNAMENTS_ALIAS + '">Все игры сезона</li>'
-				);
+				var html = '';
+				$.each(TOURNAMENTS_CONFIG[_seasonId], function(idx, val) {
+					var active = '';
+					if (idx == 0) {
+						active = 'active';
+						_tournamentIds = [val.id];
+					}
 
-				$('.stat-widget-filter-tournaments').append(html);
+					html +=	'<li class="stat-widget-filter-tournament ' + active + '" data-tournament-id="' + val.id + '" >' + val.name + '</li>';
+				});
+
+				html += '<li class="stat-widget-filter-tournament" data-tournament-id="' + ALL_TOURNAMENTS_ALIAS + '">Все игры сезона</li>';
+
+				$('.stat-widget-filter-tournaments').empty().append(html);
 			},
 
 			renderHistoryTournaments: function (tournaments) {
@@ -299,7 +364,7 @@
 				);
 				$('.stat-widget-data').empty().append(html);
 				_module.renderTournaments();
-				//_module.renderSeasons();
+				_module.renderSeasons();
 				_module.getPlayersStatistic();
 			},
 
@@ -322,7 +387,7 @@
 				$('.stat-widget-data').empty().append(html);
 
 				_module.renderTournaments();
-				//_module.renderSeasons();
+				_module.renderSeasons();
 				_module.getPlayerInfo();
 
 				_activeTabId = _tabs.players;
