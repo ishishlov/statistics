@@ -865,11 +865,14 @@
 			},
 
             appendHtmlPlayerStatistic: function (data) {
-                var html = _module.getPlayerStatisticHtml(data);
-                var adaptiveHtml = (
-                    '<div class="stat-widget-table-first">' + html + '</div>' +
-                    '<div class="stat-widget-table-second">' + html + '</div>'
-                );
+                var adaptiveHtml = 'Нет данных';
+				if (data.MAX_seconds !== null) {
+					var html = _module.getPlayerStatisticHtml(data);
+					adaptiveHtml = (
+						'<div class="stat-widget-table-first">' + html + '</div>' +
+						'<div class="stat-widget-table-second">' + html + '</div>'
+					);
+				}
 
                 $('.stat-widget-player-statistic').empty().append(adaptiveHtml);
             },
@@ -990,11 +993,14 @@
 			},
 
             appendHtmlPlayerGamesStatistic: function (data) {
-                var html = _module.getPlayerGamesStatisticHtml(data);
-                var adaptiveHtml = (
-                    '<div class="stat-widget-table-first">' + html + '</div>' +
-                    '<div class="stat-widget-table-second stat-widget-table-second-stretch">' + html + '</div>'
-                );
+				var adaptiveHtml = '';
+				if (data.length > 0) {
+					var html = _module.getPlayerGamesStatisticHtml(data);
+					adaptiveHtml = (
+						'<div class="stat-widget-table-first">' + html + '</div>' +
+						'<div class="stat-widget-table-second stat-widget-table-second-stretch">' + html + '</div>'
+					);
+				}
 
                 $('.stat-widget-player-games-statistic').empty().append(adaptiveHtml);
             },
