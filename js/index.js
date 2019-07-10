@@ -582,7 +582,12 @@
 			appendHtmlSeasons: function (seasons) {
 				var optionsHtml = '';
 				$.each(seasons, function(idx, val) {
-					optionsHtml +=	'<option value="' + val.season_id + '">' + val.name + '</option>';
+				    var selected = '';
+				    if (_playerId && _seasonId == val.season_id) {
+                        selected = 'selected';
+                    }
+
+					optionsHtml +=	'<option ' + selected + ' value="' + val.season_id + '">' + val.name + '</option>';
 				});
 
 				var html = (
