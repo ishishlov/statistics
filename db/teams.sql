@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : originstatistic
+Source Server         : Stat-origin
 Source Server Version : 50643
 Source Host           : VH247.spaceweb.ru:3306
 Source Database       : ivanshiru_stat
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50643
 File Encoding         : 65001
 
-Date: 2019-05-23 21:49:49
+Date: 2019-08-01 23:30:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,7 +25,7 @@ CREATE TABLE `teams` (
   `logo_url` varchar(255) NOT NULL,
   `url` varchar(255) NOT NULL,
   PRIMARY KEY (`team_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COMMENT='Список команд';
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8 COMMENT='Список команд';
 
 -- ----------------------------
 -- Records of teams
@@ -61,3 +61,11 @@ INSERT INTO `teams` VALUES ('28', 'ФЕНЕРБАХЧЕ', '/images/command_logos
 INSERT INTO `teams` VALUES ('29', 'ЦМОКИ', '', '');
 INSERT INTO `teams` VALUES ('30', 'ЦРВЕНА ЗВЕЗДА', '', '');
 INSERT INTO `teams` VALUES ('31', 'ЦСКА', '/images/command_logos/cska.jpg', 'https://cskabasket.com/');
+INSERT INTO `teams` VALUES ('32', 'АЛЬБА', '', '');
+INSERT INTO `teams` VALUES ('33', 'БИЛЬБАО', '', '');
+INSERT INTO `teams` VALUES ('34', 'ЛЕТКАБЕЛИС', '', '');
+INSERT INTO `teams` VALUES ('35', 'ЛИТОВАС РИТАС', '', '');
+INSERT INTO `teams` VALUES ('36', 'УЛЬМ', '', '');
+INSERT INTO `teams` VALUES ('37', 'ФУЭНЛАБРАДА', '', '');
+INSERT INTO `teams` VALUES ('38', 'ХАПОЭЛЬ ИЕРУСАЛИМ', '', '');
+SET FOREIGN_KEY_CHECKS=1;

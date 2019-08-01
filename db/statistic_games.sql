@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : statistics
-Source Server Version : 50638
-Source Host           : localhost:3306
-Source Database       : statistics
+Source Server         : Stat-origin
+Source Server Version : 50643
+Source Host           : VH247.spaceweb.ru:3306
+Source Database       : ivanshiru_stat
 
 Target Server Type    : MYSQL
-Target Server Version : 50638
+Target Server Version : 50643
 File Encoding         : 65001
 
-Date: 2019-05-23 21:54:57
+Date: 2019-08-01 23:30:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,7 +25,7 @@ CREATE TABLE `statistic_games` (
   `tournament_id` int(10) unsigned NOT NULL COMMENT 'Id турнира. Ссылка на поле tournament_id из tournaments',
   `team_id` int(10) unsigned NOT NULL COMMENT 'Id команды. Ссылка на team_id из teams',
   `venue` tinyint(3) NOT NULL COMMENT 'Место проведения. 1 - дом, 0 - гость',
-  `season_id` tinyint(3) unsigned NOT NULL COMMENT 'Id сезона. Ссылка на поле season_id из seasons',
+  `season_id` tinyint(3) NOT NULL COMMENT 'Id сезона. Ссылка на поле season_id из seasons',
   `score` varchar(9) NOT NULL COMMENT 'Счет',
   `status` tinyint(3) NOT NULL COMMENT 'Статус подтверждения протокола. 1 - подтвержден, 2 - не подтвержден',
   PRIMARY KEY (`game_id`),
@@ -36,6 +36,58 @@ CREATE TABLE `statistic_games` (
 -- ----------------------------
 -- Records of statistic_games
 -- ----------------------------
+INSERT INTO `statistic_games` VALUES ('1005', '2016-10-08', '1', '11', '1', '16', '73:76', '1');
+INSERT INTO `statistic_games` VALUES ('1006', '2016-10-12', '3', '35', '1', '16', '76:71', '1');
+INSERT INTO `statistic_games` VALUES ('1007', '2016-10-19', '3', '37', '0', '16', '85:89', '1');
+INSERT INTO `statistic_games` VALUES ('1008', '2016-10-23', '1', '18', '1', '16', '73:65', '1');
+INSERT INTO `statistic_games` VALUES ('1009', '2016-10-26', '3', '32', '0', '16', '102:72', '1');
+INSERT INTO `statistic_games` VALUES ('1010', '2016-11-06', '1', '27', '1', '16', '87:70', '1');
+INSERT INTO `statistic_games` VALUES ('1011', '2016-11-09', '3', '33', '0', '16', '91:72', '1');
+INSERT INTO `statistic_games` VALUES ('1012', '2016-11-13', '1', '14', '1', '16', '72:64', '1');
+INSERT INTO `statistic_games` VALUES ('1013', '2016-11-16', '3', '35', '0', '16', '91:93', '1');
+INSERT INTO `statistic_games` VALUES ('1014', '2016-11-20', '1', '21', '1', '16', '90:84', '1');
+INSERT INTO `statistic_games` VALUES ('1015', '2016-11-23', '3', '37', '1', '16', '96:84', '1');
+INSERT INTO `statistic_games` VALUES ('1016', '2016-11-27', '1', '29', '0', '16', '77:73', '1');
+INSERT INTO `statistic_games` VALUES ('1017', '2016-11-30', '3', '32', '1', '16', '88:77', '1');
+INSERT INTO `statistic_games` VALUES ('1018', '2016-12-03', '1', '1', '1', '16', '102:70', '1');
+INSERT INTO `statistic_games` VALUES ('1019', '2016-12-10', '1', '24', '1', '16', '92:66', '1');
+INSERT INTO `statistic_games` VALUES ('1020', '2016-12-14', '3', '33', '1', '16', '99:78', '1');
+INSERT INTO `statistic_games` VALUES ('1021', '2016-12-18', '1', '31', '0', '16', '79:95', '1');
+INSERT INTO `statistic_games` VALUES ('1022', '2016-12-22', '1', '17', '0', '16', '84:77', '1');
+INSERT INTO `statistic_games` VALUES ('1023', '2017-01-04', '3', '34', '1', '16', '88:80', '1');
+INSERT INTO `statistic_games` VALUES ('1024', '2017-01-08', '1', '16', '0', '16', '110:114', '1');
+INSERT INTO `statistic_games` VALUES ('1025', '2017-01-11', '3', '4', '0', '16', '74:90', '1');
+INSERT INTO `statistic_games` VALUES ('1026', '2017-01-15', '1', '3', '1', '16', '83:66', '1');
+INSERT INTO `statistic_games` VALUES ('1027', '2017-01-18', '3', '36', '0', '16', '95:90', '1');
+INSERT INTO `statistic_games` VALUES ('1028', '2017-01-22', '1', '17', '1', '16', '81:57', '1');
+INSERT INTO `statistic_games` VALUES ('1029', '2017-01-25', '3', '36', '1', '16', '85:84', '1');
+INSERT INTO `statistic_games` VALUES ('1030', '2017-01-29', '1', '11', '0', '16', '104:90', '1');
+INSERT INTO `statistic_games` VALUES ('1031', '2017-02-01', '3', '34', '0', '16', '89:77', '1');
+INSERT INTO `statistic_games` VALUES ('1032', '2017-02-08', '3', '4', '1', '16', '74:96', '1');
+INSERT INTO `statistic_games` VALUES ('1033', '2017-02-15', '1', '1', '0', '16', '118:109', '1');
+INSERT INTO `statistic_games` VALUES ('1034', '2017-02-20', '1', '27', '0', '16', '98:73', '1');
+INSERT INTO `statistic_games` VALUES ('1035', '2017-02-24', '1', '18', '0', '16', '89:84', '1');
+INSERT INTO `statistic_games` VALUES ('1036', '2017-02-28', '3', '10', '0', '16', '82:88', '1');
+INSERT INTO `statistic_games` VALUES ('1037', '2017-03-03', '3', '10', '1', '16', '98:74', '1');
+INSERT INTO `statistic_games` VALUES ('1038', '2017-03-05', '1', '29', '1', '16', '80:72', '1');
+INSERT INTO `statistic_games` VALUES ('1039', '2017-03-08', '3', '10', '0', '16', '76:92', '1');
+INSERT INTO `statistic_games` VALUES ('1040', '2017-03-11', '1', '24', '0', '16', '87:83', '1');
+INSERT INTO `statistic_games` VALUES ('1041', '2017-03-27', '1', '31', '1', '16', '70:92', '1');
+INSERT INTO `statistic_games` VALUES ('1042', '2017-04-02', '1', '21', '0', '16', '99:90', '1');
+INSERT INTO `statistic_games` VALUES ('1043', '2017-04-09', '1', '16', '1', '16', '66:74', '1');
+INSERT INTO `statistic_games` VALUES ('1044', '2017-04-17', '1', '3', '0', '16', '90:87', '1');
+INSERT INTO `statistic_games` VALUES ('1045', '2017-04-23', '1', '14', '0', '16', '104:64', '1');
+INSERT INTO `statistic_games` VALUES ('1046', '2017-05-04', '1', '14', '1', '16', '91:84', '1');
+INSERT INTO `statistic_games` VALUES ('1047', '2017-05-06', '1', '14', '1', '16', '109:81', '1');
+INSERT INTO `statistic_games` VALUES ('1048', '2017-05-09', '1', '14', '0', '16', '89:68', '1');
+INSERT INTO `statistic_games` VALUES ('1049', '2017-05-25', '1', '16', '0', '16', '95:99', '1');
+INSERT INTO `statistic_games` VALUES ('1050', '2017-05-27', '1', '16', '0', '16', '89:92', '1');
+INSERT INTO `statistic_games` VALUES ('1051', '2017-05-30', '1', '16', '1', '16', '97:73', '1');
+INSERT INTO `statistic_games` VALUES ('1052', '2017-06-01', '1', '16', '1', '16', '73:71', '1');
+INSERT INTO `statistic_games` VALUES ('1053', '2017-06-04', '1', '16', '0', '16', '90:84', '1');
+INSERT INTO `statistic_games` VALUES ('1054', '2017-06-08', '1', '31', '0', '16', '88:94', '1');
+INSERT INTO `statistic_games` VALUES ('1055', '2017-06-10', '1', '31', '0', '16', '79:99', '1');
+INSERT INTO `statistic_games` VALUES ('1056', '2017-06-13', '1', '31', '1', '16', '72:95', '1');
 INSERT INTO `statistic_games` VALUES ('1057', '2017-10-05', '1', '29', '1', '17', '83:55', '1');
 INSERT INTO `statistic_games` VALUES ('1058', '2017-10-09', '1', '11', '0', '17', '104:64', '1');
 INSERT INTO `statistic_games` VALUES ('1059', '2017-10-13', '2', '10', '1', '17', '75:70', '1');
@@ -99,3 +151,4 @@ INSERT INTO `statistic_games` VALUES ('1116', '2018-05-26', '1', '18', '1', '17'
 INSERT INTO `statistic_games` VALUES ('1117', '2018-05-28', '1', '18', '1', '17', '86:73', '1');
 INSERT INTO `statistic_games` VALUES ('1118', '2018-06-08', '1', '27', '0', '17', '76:71', '1');
 INSERT INTO `statistic_games` VALUES ('1119', '2018-06-10', '1', '31', '0', '17', '84:95', '1');
+SET FOREIGN_KEY_CHECKS=1;
