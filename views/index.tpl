@@ -3,6 +3,7 @@
 	<head>
 		<title>Добавление протокола статистики</title>
 		<meta charset="UTF-8">
+		<meta name="robots" content="noindex, nofollow"/>
 		<link rel="stylesheet" href="/css/index.css" />
 	</head>
 	<body>

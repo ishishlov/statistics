@@ -350,7 +350,7 @@
 
 				$('.stat-widget-data').empty().append(html);
 				_module.renderTournaments();
-				//_module.renderSeasons();
+				_module.renderSeasons();
 				_module.renderCommandsStatistic();
 			},
 
