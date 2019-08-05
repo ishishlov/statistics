@@ -544,6 +544,52 @@ class StatisticsModel extends Main {
         return $res;
     }
 
+    public function getHistoryTeamsTotal($seasonId) {
+        $res = Cache::getInfo(Cache::CACHE_KEY_HISTORY_TEAMS_TOTAL, $seasonId);
+        if (!$res) {
+            $sth = $this->_db->prepare(
+                'SELECT
+                  htt.number,
+                  t.`name`,
+                  htt.season_id,
+                  htt.`two_point_made`,
+                  htt.`two_point_throw`,
+                  htt.`two_point_percent`,
+                  htt.`three_point_made`,
+                  htt.`three_point_throw`,
+                  htt.`three_point_percent`,
+                  htt.`two_three_point_made`,
+                  htt.`two_three_point_throw`,
+                  htt.`two_three_point_percent`,
+                  htt.free_made,
+                  htt.free_throw,
+                  htt.free_percent,
+                  htt.offensive_rebound,
+                  htt.deffensive_rebound,
+                  htt.assists,
+                  htt.commited_foul,
+                  htt.recieved_foul,
+                  htt.turnover,
+                  htt.steal,
+                  htt.in_fawor,
+                  htt.`against`,
+                  htt.effectiveness,
+                  htt.points_scored,
+                  htt.`plus_minus`
+                FROM history_teams_total htt
+                LEFT JOIN teams t ON t.team_id = htt.team_id
+                WHERE htt.season_id = ?
+                ORDER BY htt.number ASC'
+            );
+            $sth->execute([$seasonId]);
+            $res = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+            Cache::setInfo(Cache::CACHE_KEY_PLAYER_GAMES_STATISTIC, $res, $seasonId);
+        }
+
+        return $res;
+    }
+
     public function getHistoryRecords($seasonId, $tournamentIds) {
         $res = Cache::getStatistic(Cache::CACHE_KEY_RECORDS, $seasonId, $tournamentIds);
         if (!$res) {

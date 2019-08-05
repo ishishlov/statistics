@@ -16,6 +16,7 @@ class Cache {
     const CACHE_KEY_PLAYER_GAMES_STATISTIC  = 'playerGamesStatistic';
     const CACHE_KEY_PLAYER_INFO             = 'playerInfo';
     const CACHE_KEY_HISTORY                 = 'history';
+    const CACHE_KEY_HISTORY_TEAMS_TOTAL     = 'historyTeamsTotal';
     const CACHE_KEY_RECORDS                 = 'records';
     const CACHE_KEY_TOTAL                   = 'total';
 

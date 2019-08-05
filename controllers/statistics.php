@@ -72,7 +72,10 @@ class Statistics extends Common {
         $tournamentIds = $this->arrayToInt($_POST['tournamentIds']);
 
         $this->toJson([
-            'historyTables'     => $this->_model->getHistoryTables($seasonId, $tournamentIds),
+            'historyTables'     => [
+                'history' => $this->_model->getHistoryTables($seasonId, $tournamentIds),
+                'history_teams_total' => $this->_model->getHistoryTeamsTotal($seasonId),
+            ],
             'historyRecords'    => $this->_model->getHistoryRecords($seasonId, $tournamentIds),
             'historyTotal'      => $this->_model->getHistoryTotal($seasonId, $tournamentIds),
         ]);

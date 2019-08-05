@@ -422,7 +422,10 @@
 						'<div class="stat-widget-history-sections"></div>' +
 						'<div class="stat-widget-title"></div>' +
 						'<div class="stat-widget-history-content">' +
-							'<div class="stat-widget-history-data stat-widget-history-data-tables"></div>' +
+							'<div class="stat-widget-history-data stat-widget-history-data-tables">' +
+								'<div class="stat-widget-history-table"></div>' +
+								'<div class="stat-widget-history-team-total-table"></div>' +
+							'</div>' +
 							'<div class="stat-widget-history-data stat-widget-history-data-records hide"></div>' +
 							'<div class="stat-widget-history-data stat-widget-history-data-total hide"></div>' +
 						'</div>' +
@@ -1401,8 +1404,13 @@
 			},
 
 			appendHtmlHistoryTables: function (historyTables) {
+				_module.appendHtmlHistory(historyTables.history);
+				_module.appendHtmlTeamHistory(historyTables.history_teams_total);
+			},
+
+			appendHtmlHistory: function (history) {
 				var rows = '';
-				$.each(historyTables, function(idx, val) {
+				$.each(history, function(idx, val) {
 					rows += (
 						'<tr>' +
 							'<td class="stat-widget-game-statistic-table-cell-left">' + val.dt + '</td>' +
@@ -1454,12 +1462,140 @@
 						'<th class="stat-widget-game-statistic-table-cell-left"></th>' +
 						'<th class="stat-widget-game-statistic-table-cell-center">СЧЁТ</th>' +
 					'</tr>' +
-					rows +
+						rows +
 					'</table>'
 				);
 
-				$('.stat-widget-history-data-tables').empty().append(html);
+				$('.stat-widget-history-table').empty().append(html);
 
+			},
+
+			appendHtmlTeamHistory: function (historyTeamsTotal) {
+				var html = _module.getTeamHistoryHtml(historyTeamsTotal);
+				var adaptiveHtml = (
+					'<div class="stat-widget-table-first">' + html + '</div>' +
+					'<div class="stat-widget-table-second">' + html + '</div>'
+				);
+				$('.stat-widget-history-team-total-table').empty().append(adaptiveHtml);
+			},
+
+			getTeamHistoryHtml: function (historyTeamsTotal) {
+				var rows = '';
+				$.each(historyTeamsTotal, function(idx, val) {
+					rows += (
+						'<tr>' +
+						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-first-column stat-widget-game-statistic-table-name">' + val.number + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-first-column stat-widget-game-statistic-table-name">' + val.name + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.two_point_made + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.two_point_throw + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.two_point_percent + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.three_point_made + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.three_point_throw + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.three_point_percent + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.two_three_point_made + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.two_three_point_throw + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.two_three_point_percent + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.free_made + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.free_throw + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.free_percent + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.offensive_rebound + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.deffensive_rebound + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.assists + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.commited_foul + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.recieved_foul + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.turnover + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.steal + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.in_fawor + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.against + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.effectiveness + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.plus_minus + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.points_scored + '</td>' +
+						'</tr>'
+					);
+				});
+				var html = (
+					'<table class="stat-widget-season-statistic-table">' +
+					'<colgroup>' +
+					'<col width="70" />' +
+					'<col width="60" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'<col width="50" />' +
+					'</colgroup>' +
+					'<tbody>' +
+					'<tr class="stat-widget-table-head-row">' +
+					'<th class="stat-widget-season-statistic-table-cell-head stat-widget-table-first-column"></th>' +
+					'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
+					'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">2-ОЧК</th>' +
+					'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">3-ОЧК</th>' +
+					'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">2+3-ОЧК</th>' +
+					'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">ШТР</th>' +
+					'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">ПД</th>' +
+					'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
+					'<th class="stat-widget-season-statistic-table-cell-head" colspan="2">Ф</th>' +
+					'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
+					'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
+					'<th class="stat-widget-season-statistic-table-cell-head" colspan="2"></th>' +
+					'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
+					'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
+					'<th class="stat-widget-season-statistic-table-cell-head-end"></th>' +
+					'</tr>' +
+					'<tr class="stat-widget-table-head-row">' +
+					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end stat-widget-table-first-column"></td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end stat-widget-table-first-column">Команда</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">З+Б</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">З+Б</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">З+Б</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">З+Б</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold">Ч</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold">С</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">В</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">РП</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold">Ф</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">ФС</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Пт</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Пх</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">БШ</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">БШ НА</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Эфф</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">+/-</td>' +
+					'<td class="stat-widget-season-statistic-table-cell-bold">Оч</td>' +
+					'</tr>' +
+					rows +
+					'</tbody>' +
+					'</table>'
+				);
+
+				return html;
 			},
 
 			appendHtmlHistoryRecords: function (historyRecords) {
