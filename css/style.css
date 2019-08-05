@@ -397,6 +397,11 @@
 		overflow-y: hidden;
 	}
 
+	.stat-widget-table-adaptive-name {
+		width: 87px;
+		overflow-x: hidden;
+	}
+
 	.stat-widget-table-second .stat-widget-table-first-column {
 		display: none;
 	}

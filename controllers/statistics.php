@@ -74,7 +74,7 @@ class Statistics extends Common {
         $this->toJson([
             'historyTables'     => [
                 'history' => $this->_model->getHistoryTables($seasonId, $tournamentIds),
-                'history_teams_total' => $this->_model->getHistoryTeamsTotal($seasonId),
+                'history_teams_total' => $this->_model->getHistoryTeamsTotal($seasonId, $tournamentIds),
             ],
             'historyRecords'    => $this->_model->getHistoryRecords($seasonId, $tournamentIds),
             'historyTotal'      => $this->_model->getHistoryTotal($seasonId, $tournamentIds),

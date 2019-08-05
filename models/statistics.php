@@ -544,9 +544,10 @@ class StatisticsModel extends Main {
         return $res;
     }
 
-    public function getHistoryTeamsTotal($seasonId) {
-        $res = Cache::getInfo(Cache::CACHE_KEY_HISTORY_TEAMS_TOTAL, $seasonId);
+    public function getHistoryTeamsTotal($seasonId, $tournamentIds) {
+        $res = Cache::getStatistic(Cache::CACHE_KEY_HISTORY, $seasonId, $tournamentIds);
         if (!$res) {
+            $tournamentIdsString = implode(',', $tournamentIds);
             $sth = $this->_db->prepare(
                 'SELECT
                   htt.number,
@@ -566,6 +567,7 @@ class StatisticsModel extends Main {
                   htt.free_percent,
                   htt.offensive_rebound,
                   htt.deffensive_rebound,
+                  htt.sum_rebound,
                   htt.assists,
                   htt.commited_foul,
                   htt.recieved_foul,
@@ -578,13 +580,13 @@ class StatisticsModel extends Main {
                   htt.`plus_minus`
                 FROM history_teams_total htt
                 LEFT JOIN teams t ON t.team_id = htt.team_id
-                WHERE htt.season_id = ?
+                WHERE htt.tournament_id IN (' . $tournamentIdsString . ') AND htt.season_id = ?
                 ORDER BY htt.number ASC'
             );
             $sth->execute([$seasonId]);
             $res = $sth->fetchAll(PDO::FETCH_ASSOC);
 
-            Cache::setInfo(Cache::CACHE_KEY_PLAYER_GAMES_STATISTIC, $res, $seasonId);
+            Cache::setStatistic(Cache::CACHE_KEY_PLAYER_GAMES_STATISTIC, $res, $seasonId, $tournamentIds);
         }
 
         return $res;
