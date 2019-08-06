@@ -49,7 +49,7 @@ CREATE TABLE `history_teams_total` (
   `effectiveness` smallint(5) NOT NULL COMMENT 'Эффективность',
   `plus_minus` smallint(5) NOT NULL COMMENT 'Показатель «плюс-минус»',
   `points_scored` smallint(5) unsigned NOT NULL COMMENT 'Очки',
-  `tournaments_id` int(10) unsigned NOT NULL,
+  `tournament_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`history_teams_total_id`),
   KEY `season_id` (`season_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Статистика сезона по командам';

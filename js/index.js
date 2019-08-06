@@ -1490,6 +1490,7 @@
 				}
 
 				$('.stat-widget-history-team-total-table').empty().append(adaptiveHtml);
+				$(".stat-widget-sortable-table").tablesorter();
 			},
 
 			getTeamHistoryHtml: function (historyTeamsTotal) {
@@ -1530,7 +1531,7 @@
 					);
 				});
 				var html = (
-					'<table class="stat-widget-season-statistic-table">' +
+					'<table class="stat-widget-season-statistic-table stat-widget-sortable-table">' +
 					'<colgroup>' +
 					'<col width="70" />' +
 					'<col width="60" />' +
@@ -1559,10 +1560,9 @@
 					'<col width="50" />' +
 					'<col width="50" />' +
 					'</colgroup>' +
-					'<tbody>' +
+					'<thead>' +
 					'<tr class="stat-widget-table-head-row">' +
 					'<th class="stat-widget-season-statistic-table-cell-head stat-widget-table-first-column"></th>' +
-					'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
 					'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">2-ОЧК</th>' +
 					'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">3-ОЧК</th>' +
 					'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">2+3-ОЧК</th>' +
@@ -1577,6 +1577,7 @@
 					'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
 					'<th class="stat-widget-season-statistic-table-cell-head-end"></th>' +
 					'</tr>' +
+
 					'<tr class="stat-widget-table-head-row">' +
 //					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end stat-widget-table-first-column"></td>' +
 					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end stat-widget-table-first-column">Команда</td>' +
@@ -1606,6 +1607,8 @@
 					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">+/-</td>' +
 					'<td class="stat-widget-season-statistic-table-cell-bold">Оч</td>' +
 					'</tr>' +
+					'</thead>' +
+					'<tbody>' +
 					rows +
 					'</tbody>' +
 					'</table>'
