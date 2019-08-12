@@ -1,6 +1,7 @@
 <?php
 require_once 'controllers/common.php';
 require_once 'models/statistics.php';
+require_once 'models/hystoryTeamsTotal.php';
 
 class Statistics extends Common {
 	
@@ -71,10 +72,12 @@ class Statistics extends Common {
         $seasonId = (int) $_POST['seasonId'];
         $tournamentIds = $this->arrayToInt($_POST['tournamentIds']);
 
+        $HistoryTeamsTotalModel = new HystoryTeamsTotalModel();
+
         $this->toJson([
             'historyTables'     => [
                 'history' => $this->_model->getHistoryTables($seasonId, $tournamentIds),
-                'history_teams_total' => $this->_model->getHistoryTeamsTotal($seasonId, $tournamentIds),
+                'history_teams_total' => $HistoryTeamsTotalModel->getHistoryTeamsTotal($seasonId, $tournamentIds),
             ],
             'historyRecords'    => $this->_model->getHistoryRecords($seasonId, $tournamentIds),
             'historyTotal'      => $this->_model->getHistoryTotal($seasonId, $tournamentIds),

@@ -1,6 +1,7 @@
 <?php
 require_once 'controllers/common.php';
 require_once 'models/statistics.php';
+require_once 'models/hystoryTeamsTotal.php';
 require_once 'models/csv.php';
 require_once 'models/cache.php';
 
@@ -48,6 +49,31 @@ class Admin extends Common {
         $this->_data['tournaments'] = $this->_model->getTournaments();
 
         $this->display('addgameresult.tpl');
+    }
+
+    public function addHistoryTeamsTotal() {
+        $model = new HystoryTeamsTotalModel();
+        if (isset($_POST['saveProtocol'])) {
+            $Csv = new Csv($_FILES['csv']);
+            $model->save($Csv);
+        }
+        if (isset($_POST['cancel'])) {
+            $model->deleteNotConfirmedProtocol();
+        }
+        if (isset($_POST['confirmed'])) {
+            $model->confirmedProtocol();
+        }
+        if (isset($_POST['errors'])) {
+            $this->_data['errors'] = $_POST['errors'];
+        }
+
+        $notConfirmedData = $model->getNotConfirmedSeasonsStatistic();
+
+        $this->_data['isShowLoadButton'] = (bool)!$notConfirmedData;
+        $this->_data['notConfirmedData'] = $notConfirmedData;
+        $this->_data['gamesInfo'] = $model->getGamesInfo();
+
+        $this->display('addhistoryteamstotal.tpl');
     }
 
     /**
