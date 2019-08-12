@@ -13,7 +13,7 @@
 	<link rel="stylesheet" href="https://bckhimki.ru/css/v7/slider-pro.min.css" />
 	<link rel="stylesheet" href="https://bckhimki.ru/css/v7/swiper.min.css" />
 	<link rel="stylesheet" type="text/css" href="https://hub.euroleague.net/app_topbar/euroleague/css/iframe.css" />
-	<script type="text/javascript" src="https://bckhimki.ru/js/v7/jquery.min.js"></script>
+	<script type="text/javascript" src="https://bckhimki.com/js/v7/jquery.min.js"></script>
 	<meta name="theme-color" content="#0f1529" />
 	<meta name="msapplication-navbutton-color" content="#0f1529" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="#0f1529" />
