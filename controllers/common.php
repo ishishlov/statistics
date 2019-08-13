@@ -20,7 +20,7 @@ class Common {
 	/**
 	 * Привести вложенность массива к числу
 	 * 
-	 * @param araay $data
+	 * @param array $data
 	 * @return array Description
 	 */
 	public function arrayToInt($data) {

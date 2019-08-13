@@ -12,77 +12,43 @@ class HystoryTeamsTotalModel extends Main {
 	const TABLE_NAME = 'history_teams_total';
 
 	const FIELDS = [
-		0 => '`game_id`',
-		1 => '`dt`',
-		2 => '`tournament_id`',
-		3 => '`team_id`',
-		4 => '`player_id`',
-		5 => '`season_id`',
-		6 => '`venue`',
-		7 => '`seconds`',
-		8 => '`two_point_made`',
-		9 => '`two_point_throw`',
-		10 => '`three_point_made`',
-		11 => '`three_point_throw`',
-		12 => '`free_made`',
-		13 => '`free_throw`',
-		14 => '`offensive_rebound`',
-		15 => '`deffensive_rebound`',
-		16 => '`assists`',
-		17 => '`commited_foul`',
-		18 => '`recieved_foul`',
-		19 => '`turnover`',
-		20 => '`steal`',
-		21 => '`in_fawor`',
-		22 => '`against`',
-		23 => '`effectiveness`',
-		24 => '`plus_minus`',
-		25 => '`points_scored`',
-		26 => '`games`',
-		27 => '`gs`',
-		28 => '`score`',
-		29 => '`status`'
-	];
-
-	const FIELD_FOR_STATICTIC_PLAYER = [
-		self::FIELDS[4],
-		self::FIELDS[0],
-		self::FIELDS[7],
-		self::FIELDS[8],
-		self::FIELDS[9],
-		self::FIELDS[10],
-		self::FIELDS[11],
-		self::FIELDS[12],
-		self::FIELDS[13],
-		self::FIELDS[14],
-		self::FIELDS[15],
-		self::FIELDS[16],
-		self::FIELDS[17],
-		self::FIELDS[18],
-		self::FIELDS[19],
-		self::FIELDS[20],
-		self::FIELDS[21],
-		self::FIELDS[22],
-		self::FIELDS[23],
-		self::FIELDS[24],
-		self::FIELDS[25],
-		self::FIELDS[26],
-		self::FIELDS[27]
-	];
-
-	const FIELD_FOR_STATICTIC_GAME = [
-		self::FIELDS[0],
-		self::FIELDS[1],
-		self::FIELDS[2],
-		self::FIELDS[3],
-		self::FIELDS[6],
-		self::FIELDS[5],
-		self::FIELDS[28],
-		self::FIELDS[29]
+		0 => '`history_teams_total_id`',
+		1 => '`number`',
+		2 => '`team_id`',
+		3 => '`season_id`',
+		4 => '`two_point_made`',
+		5 => '`two_point_throw`',
+		6 => '`two_point_percent`',
+		7 => '`three_point_made`',
+		8 => '`three_point_throw`',
+		9 => '`three_point_percent`',
+		10 => '`two_three_point_made`',
+		11 => '`two_three_point_throw`',
+		12 => '`two_three_point_percent`',
+		13 => '`free_made`',
+		14 => '`free_throw`',
+		15 => '`free_percent`',
+		16 => '`offensive_rebound`',
+		17 => '`deffensive_rebound`',
+		18 => '`sum_rebound`',
+		19 => '`assists`',
+		20 => '`commited_foul`',
+		21 => '`recieved_foul`',
+		22 => '`turnover`',
+		23 => '`steal`',
+		24 => '`in_fawor`',
+		25 => '`against`',
+		26 => '`effectiveness`',
+		27 => '`plus_minus`',
+		28 => '`points_scored`',
+		29 => '`tournament_id`',
+		30 => '`status`'
 	];
 
 	public function save($Csv) {
         $data = $Csv->getArray();
+        $data = $this->_getCorrectKeyArray($data);
+        $data = $this->_removeFirstRow($data);
 
         $seasonId = $this->getSeasonId($data);
 		$oldIds = $this->getIdsBySeasonId($seasonId);
@@ -95,7 +61,7 @@ class HystoryTeamsTotalModel extends Main {
 	}
 
 	public function getSeasonId($data) {
-	    return 16; // ToDo не забыть исправить заглушку
+	    return $data[0][self::FIELDS[3]] ?: 0;
     }
 
     public function getHistoryTeamsTotal($seasonId, $tournamentIds) {
@@ -200,7 +166,7 @@ class HystoryTeamsTotalModel extends Main {
                   htt.effectiveness,
                   htt.points_scored,
                   htt.`plus_minus`
-			FROM history_teams_total htt
+			FROM ' . self::TABLE_NAME . ' htt
             LEFT JOIN teams t ON t.team_id = htt.team_id
             WHERE `status` = ?
             ORDER BY htt.number ASC
@@ -210,8 +176,6 @@ class HystoryTeamsTotalModel extends Main {
 	}
 
 	/**
-	 * Подтверждение протокола матча
-	 * 
 	 * @return bool
 	 */
 	public function confirmedProtocol() {
@@ -227,8 +191,6 @@ class HystoryTeamsTotalModel extends Main {
 	}
 
 	/**
-	 * Удаление неподтвержденного протокола матча
-	 * 
 	 * @return bool
 	 */
 	public function deleteNotConfirmedProtocol() {
@@ -249,4 +211,40 @@ class HystoryTeamsTotalModel extends Main {
 	private function _saveHistoryTeamsTotal($data) {
 		return $this->insert(self::TABLE_NAME, $data);
 	}
+
+    /**
+     * Установка корректных названий элементам массива и добавление поле "статус"
+     *
+     * @param array $data
+     * @return array
+     */
+    private function _getCorrectKeyArray($data) {
+        if (!$data) {
+            return [];
+        }
+
+        $finalData = [];
+        foreach ($data as $key1 => $row) {
+            foreach ($row as $key2 => $value) {
+                $finalData[$key1][self::FIELDS[$key2]] = mb_convert_encoding($value, "utf-8", "windows-1251");
+            }
+            $finalData[$key1][self::FIELDS[30]] = self::STATUS_NOT_CONFIRMED;
+        }
+
+        return $finalData;
+    }
+
+    /**
+     * Удалить первую строку если она состоит из заголовков
+     *
+     * @param array $data
+     * @return array
+     */
+    private function _removeFirstRow($data) {
+        $temp = (int)$data[0][self::FIELDS[0]];
+        if (!$temp) {
+            array_shift($data);
+        }
+        return $data;
+    }
 }

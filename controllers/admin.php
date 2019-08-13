@@ -7,10 +7,12 @@ require_once 'models/cache.php';
 
 class Admin extends Common {
 	
-	private $_model = null;
-	
+	private $_statModel = null;
+	private $_historyTeamsModel = null;
+
 	public function __construct() {
-		$this->_model = new StatisticsModel();
+		$this->_statModel = new StatisticsModel();
+		$this->_historyTeamsModel = new HystoryTeamsTotalModel();
 	}
 
 	/**
@@ -21,20 +23,20 @@ class Admin extends Common {
 			$this->_save();
 		}
 		if (isset($_POST['cancel'])) {
-			$this->_model->deleteNotConfirmedProtocol();
+			$this->_statModel->deleteNotConfirmedProtocol();
 		}
 		if (isset($_POST['confirmed'])) {
-			$this->_model->confirmedProtocol();
+			$this->_statModel->confirmedProtocol();
 		}
         if (isset($_POST['errors'])) {
             $this->_data['errors'] = $_POST['errors'];
         }
 
-		$notConfirmedData = $this->_model->getNotConfirmedSeasonsStatistic();
+		$notConfirmedData = $this->_statModel->getNotConfirmedSeasonsStatistic();
 
 		$this->_data['isShowLoadButton'] = (bool)!$notConfirmedData;
 		$this->_data['notConfirmedData'] = $notConfirmedData;
-		$this->_data['gamesInfo'] = $this->_model->getGamesInfo();
+		$this->_data['gamesInfo'] = $this->_statModel->getGamesInfo();
 
 		$this->display('index.tpl');
 	}
@@ -43,35 +45,33 @@ class Admin extends Common {
      * Страница показа формы для добавления результата игры
      */
     public function addGameResult() {
-        $this->_data['teams'] = $this->_model->getTeams();
+        $this->_data['teams'] = $this->_statModel->getTeams();
         $this->_data['nowDate'] = date('Y-m-d');
-        $this->_data['seasons'] = $this->_model->getAllSeasons();
-        $this->_data['tournaments'] = $this->_model->getTournaments();
+        $this->_data['seasons'] = $this->_statModel->getAllSeasons();
+        $this->_data['tournaments'] = $this->_statModel->getTournaments();
 
         $this->display('addgameresult.tpl');
     }
 
     public function addHistoryTeamsTotal() {
-        $model = new HystoryTeamsTotalModel();
         if (isset($_POST['saveProtocol'])) {
             $Csv = new Csv($_FILES['csv']);
-            $model->save($Csv);
+            $this->_historyTeamsModel->save($Csv);
         }
         if (isset($_POST['cancel'])) {
-            $model->deleteNotConfirmedProtocol();
+            $this->_historyTeamsModel->deleteNotConfirmedProtocol();
         }
         if (isset($_POST['confirmed'])) {
-            $model->confirmedProtocol();
+            $this->_historyTeamsModel->confirmedProtocol();
         }
         if (isset($_POST['errors'])) {
             $this->_data['errors'] = $_POST['errors'];
         }
 
-        $notConfirmedData = $model->getNotConfirmedSeasonsStatistic();
+        $notConfirmedData = $this->_historyTeamsModel->getNotConfirmedSeasonsStatistic();
 
         $this->_data['isShowLoadButton'] = (bool)!$notConfirmedData;
         $this->_data['notConfirmedData'] = $notConfirmedData;
-        $this->_data['gamesInfo'] = $model->getGamesInfo();
 
         $this->display('addhistoryteamstotal.tpl');
     }
@@ -91,7 +91,7 @@ class Admin extends Common {
         ];
 
         $this->toJson([
-            'result'    => $this->_model->addHistoryGame($data),
+            'result'    => $this->_statModel->addHistoryGame($data),
             'error'     => 'Ошибка при добавлении'
         ]);
     }
@@ -110,9 +110,23 @@ class Admin extends Common {
      * Скачать образец протокола
      */
     public function loadProtocol() {
-        $file = 'files/test.csv';
+        $this->downloadCSV('protocol');
+    }
+
+    /**
+     * Скачать образец общих данных по командам
+     */
+    public function loadHistoryTeamsTotalData() {
+        $this->downloadCSV('historyTeamsTotalData');
+    }
+
+    /**
+     * Скачать csv
+     */
+    private function downloadCSV($fileName) {
+        $file = 'files/' . $fileName . 'csv';
         header("Content-type: text/csv");
-        header('Content-Disposition: attachment; filename="test.csv"');
+        header('Content-Disposition: attachment; filename="' . $fileName . '.csv"');
         readfile($file);
     }
 
@@ -129,7 +143,7 @@ class Admin extends Common {
         if ($errors) {
             $_POST['errors'] = $errors;
         } else {
-            if (!$this->_model->save($data)) {
+            if (!$this->_statModel->save($data)) {
                 $_POST['errors'][] = [
                     'text'  => 'No saved. Please try again',
                     'value' => ''
@@ -233,7 +247,7 @@ class Admin extends Common {
             $newGameIds[] = (int) $row[StatisticsModel::FIELDS[0]];
         }
         $newGameIds = array_unique($newGameIds);
-        $duplicateGameIds = $this->_model->getGameIds($newGameIds);
+        $duplicateGameIds = $this->_statModel->getGameIds($newGameIds);
 
         if ($duplicateGameIds) {
             $error = [
