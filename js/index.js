@@ -1280,6 +1280,7 @@
                 );
 
                 $('.stat-widget-history-data-total').empty().append(adaptiveHtml);
+				$('.stat-widget-sortable-table').tablesorter();
             },
 
             getHistoryTotalHtml: function (data) {
@@ -1317,7 +1318,7 @@
                     );
                 });
                 var html = (
-                    '<table class="stat-widget-season-statistic-table">' +
+                    '<table class="stat-widget-season-statistic-table stat-widget-sortable-table">' +
                         '<colgroup>' +
                             '<col width="70" />' +
                             '<col width="60" />' +
@@ -1346,7 +1347,7 @@
                             '<col width="50" />' +
                             '<col width="50" />' +
                         '</colgroup>' +
-                        '<tbody>' +
+						'<thead>' +
                             '<tr class="stat-widget-table-head-row">' +
                                 '<th class="stat-widget-season-statistic-table-cell-head stat-widget-table-first-column"></th>' +
                                 '<th class="stat-widget-season-statistic-table-cell-head"></th>' +
@@ -1389,6 +1390,8 @@
                                 '<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">+/-</td>' +
                                 '<td class="stat-widget-season-statistic-table-cell-bold">Оч</td>' +
                             '</tr>' +
+						'</thead>' +
+						'</tbody>' +
                             rows +
                         '</tbody>' +
                     '</table>'
