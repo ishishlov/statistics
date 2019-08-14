@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : Stat-origin
-Source Server Version : 50643
-Source Host           : VH247.spaceweb.ru:3306
-Source Database       : ivanshiru_stat
+Source Server         : localhost
+Source Server Version : 50638
+Source Host           : localhost:3306
+Source Database       : statistics
 
 Target Server Type    : MYSQL
-Target Server Version : 50643
+Target Server Version : 50638
 File Encoding         : 65001
 
-Date: 2019-08-01 23:30:49
+Date: 2019-08-15 00:08:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,7 +25,7 @@ CREATE TABLE `teams` (
   `logo_url` varchar(255) NOT NULL,
   `url` varchar(255) NOT NULL,
   PRIMARY KEY (`team_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8 COMMENT='Список команд';
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COMMENT='Список команд';
 
 -- ----------------------------
 -- Records of teams
@@ -68,4 +68,5 @@ INSERT INTO `teams` VALUES ('35', 'ЛИТОВАС РИТАС', '', '');
 INSERT INTO `teams` VALUES ('36', 'УЛЬМ', '', '');
 INSERT INTO `teams` VALUES ('37', 'ФУЭНЛАБРАДА', '', '');
 INSERT INTO `teams` VALUES ('38', 'ХАПОЭЛЬ ИЕРУСАЛИМ', '', '');
+INSERT INTO `teams` VALUES ('39', 'БАМБЕРГ', '', '');
 SET FOREIGN_KEY_CHECKS=1;
