@@ -508,7 +508,7 @@ class StatisticsModel extends Main {
         return $res;
 	}
 
-    public function getHistoryTables($seasonId, $tournamentIds) {
+    public function getHistory($seasonId, $tournamentIds) {
         $res = Cache::getStatistic(Cache::CACHE_KEY_HISTORY, $seasonId, $tournamentIds);
         if (!$res) {
             $tournamentIdsString = implode(',', $tournamentIds);
@@ -605,7 +605,7 @@ class StatisticsModel extends Main {
         return $res;
     }
 
-    public function getHistoryTotal($seasonId, $tournamentIds) {
+    public function getHistoryTables($seasonId, $tournamentIds) {
         $res = Cache::getStatistic(Cache::CACHE_KEY_TOTAL, $seasonId, $tournamentIds);
         if (!$res) {
             $tournamentIdsString = implode(',', $tournamentIds);

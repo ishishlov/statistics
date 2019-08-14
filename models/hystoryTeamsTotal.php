@@ -10,6 +10,8 @@ class HystoryTeamsTotalModel extends Main {
 	const STATUS_NOT_CONFIRMED = 2;
 	/** Название таблицы статистики игр */
 	const TABLE_NAME = 'history_teams_total';
+	/** Выбор по всем сезонам */
+	const ALL_SEASONS = 999;
 
 	const FIELDS = [
 		0 => '`history_teams_total_id`',
@@ -67,6 +69,7 @@ class HystoryTeamsTotalModel extends Main {
     public function getHistoryTeamsTotal($seasonId, $tournamentIds) {
         $res = Cache::getStatistic(Cache::CACHE_KEY_HISTORY, $seasonId, $tournamentIds);
         if (!$res) {
+			$seasonSql = ($seasonId === self::ALL_SEASONS) ? '' : 'AND htt.season_id = ' . $seasonId;
             $tournamentIdsString = implode(',', $tournamentIds);
             $sth = $this->_db->prepare(
                 'SELECT
@@ -100,10 +103,10 @@ class HystoryTeamsTotalModel extends Main {
                   htt.`plus_minus`
                 FROM history_teams_total htt
                 LEFT JOIN teams t ON t.team_id = htt.team_id
-                WHERE htt.tournament_id IN (' . $tournamentIdsString . ') AND htt.season_id = ?
+                WHERE htt.tournament_id IN (' . $tournamentIdsString . ') ' . $seasonSql . '
                 ORDER BY htt.number ASC'
             );
-            $sth->execute([$seasonId]);
+            $sth->execute();
             $res = $sth->fetchAll(PDO::FETCH_ASSOC);
 
             Cache::setStatistic(Cache::CACHE_KEY_PLAYER_GAMES_STATISTIC, $res, $seasonId, $tournamentIds);

@@ -75,6 +75,7 @@
 		var _gameLink = 'swgameid';
 		var _playerLink = 'swplayerid';
 
+		var ALL_SEASONS_ALIAS = 999;
 		var ALL_TOURNAMENTS_ALIAS = 999;
 		var ALL_TOURNAMENTS_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -193,6 +194,13 @@
 					if (historyTab) {
 						$('.stat-widget-history-data').addClass('hide');
 						$('.stat-widget-history-data-' + historyTab).removeClass('hide');
+
+						if (historyTab === 'total') {
+							$('.stat-widget-filter-all-season').remove();
+							$('.stat-widget-filter-season').append('<option class="stat-widget-filter-all-season" value="' + ALL_SEASONS_ALIAS + '">Все сезоны</option>');
+						} else {
+							$('.stat-widget-filter-all-season').remove();
+						}
 					}
 				});
 
@@ -423,8 +431,8 @@
 						'<div class="stat-widget-title"></div>' +
 						'<div class="stat-widget-history-content">' +
 							'<div class="stat-widget-history-data stat-widget-history-data-tables">' +
-								'<div class="stat-widget-history-table"></div>' +
-								'<div class="stat-widget-history-team-total-table"></div>' +
+//								'<div class="stat-widget-history-table"></div>' +
+//								'<div class="stat-widget-history-team-total-table"></div>' +
 							'</div>' +
 							'<div class="stat-widget-history-data stat-widget-history-data-records hide"></div>' +
 							'<div class="stat-widget-history-data stat-widget-history-data-total hide"></div>' +
@@ -1272,18 +1280,22 @@
 				return html;
 			},
 
-            appendHtmlHistoryTotal: function (data) {
-                var html = _module.getHistoryTotalHtml(data);
-                var adaptiveHtml = (
-                    '<div class="stat-widget-table-first">' + html + '</div>' +
-                    '<div class="stat-widget-table-second">' + html + '</div>'
-                );
+            appendHtmlHistoryTables: function (data) {
+                var html = _module.getHistoryTabelsHtml(data);
+				if (!data.length) {
+					$('.stat-widget-history-data-tables').empty().append('Нет данных');
+				} else {
+					var adaptiveHtml = (
+						'<div class="stat-widget-table-first">' + html + '</div>' +
+						'<div class="stat-widget-table-second">' + html + '</div>'
+					);
 
-                $('.stat-widget-history-data-total').empty().append(adaptiveHtml);
-				$('.stat-widget-sortable-table').tablesorter();
+					$('.stat-widget-history-data-tables').empty().append(adaptiveHtml);
+					$('.stat-widget-sortable-table').tablesorter();
+				}
             },
 
-            getHistoryTotalHtml: function (data) {
+            getHistoryTabelsHtml: function (data) {
                 var rows = '';
                 $.each(data, function(idx, val) {
                     var fullName = val.name + ' ' + val.surname;
@@ -1403,18 +1415,7 @@
 			appendHtmlHistoryData: function (data) {
 				_module.appendHtmlHistoryTables(data.historyTables);
 				_module.appendHtmlHistoryRecords(data.historyRecords);
-				_module.appendHtmlHistoryTotal(data.historyTotal);
-			},
-
-			appendHtmlHistoryTables: function (historyTables) {
-				$('.stat-widget-history-table').empty();
-				$('.stat-widget-history-team-total-table').empty()
-				if (!historyTables.history.length && !historyTables.history_teams_total.length) {
-					$('.stat-widget-history-table').append('Нет данных');
-				} else {
-					_module.appendHtmlHistory(historyTables.history);
-					_module.appendHtmlTeamHistory(historyTables.history_teams_total);
-				}
+				_module.appendHtmlTeamHistoryTotal(data.historyTeamsTotal);
 			},
 
 			appendHtmlHistory: function (history) {
@@ -1482,21 +1483,22 @@
 				$('.stat-widget-history-table').empty().append(html);
 			},
 
-			appendHtmlTeamHistory: function (historyTeamsTotal) {
+			appendHtmlTeamHistoryTotal: function (historyTeamsTotal) {
 				var adaptiveHtml = '';
-				if (historyTeamsTotal.length) {
-					var html = _module.getTeamHistoryHtml(historyTeamsTotal);
+				if (!historyTeamsTotal.length) {
+					$('.stat-widget-history-data-total').empty().append('Нет данных');
+				} else {
+					var html = _module.getTeamHistoryTeamHtml(historyTeamsTotal);
 					adaptiveHtml += (
 						'<div class="stat-widget-table-first">' + html + '</div>' +
 						'<div class="stat-widget-table-second">' + html + '</div>'
 					);
-				}
-
-				$('.stat-widget-history-team-total-table').empty().append(adaptiveHtml);
-				$(".stat-widget-sortable-table").tablesorter();
+					$('.stat-widget-history-data-total').empty().append(adaptiveHtml);
+					$(".stat-widget-sortable-table").tablesorter();
+				}	
 			},
 
-			getTeamHistoryHtml: function (historyTeamsTotal) {
+			getTeamHistoryTeamHtml: function (historyTeamsTotal) {
 				var rows = '';
 				$.each(historyTeamsTotal, function(idx, val) {
 					rows += (
@@ -1535,51 +1537,50 @@
 				var html = (
 					'<table class="stat-widget-season-statistic-table stat-widget-sortable-table">' +
 					'<colgroup>' +
-					'<col width="70" />' +
-					'<col width="60" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
-					'<col width="50" />' +
+						'<col width="70" />' +
+						'<col width="60" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
+						'<col width="50" />' +
 					'</colgroup>' +
 					'<thead>' +
-					'<tr class="stat-widget-table-head-row">' +
-					'<th class="stat-widget-season-statistic-table-cell-head stat-widget-table-first-column"></th>' +
-					'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">2-ОЧК</th>' +
-					'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">3-ОЧК</th>' +
-					'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">2+3-ОЧК</th>' +
-					'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">ШТР</th>' +
-					'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">ПД</th>' +
-					'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-					'<th class="stat-widget-season-statistic-table-cell-head" colspan="2">Ф</th>' +
-					'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-					'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-					'<th class="stat-widget-season-statistic-table-cell-head" colspan="2"></th>' +
-					'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-					'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-					'<th class="stat-widget-season-statistic-table-cell-head-end"></th>' +
+						'<tr class="stat-widget-table-head-row">' +
+						'<th class="stat-widget-season-statistic-table-cell-head stat-widget-table-first-column"></th>' +
+						'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">2-ОЧК</th>' +
+						'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">3-ОЧК</th>' +
+						'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">2+3-ОЧК</th>' +
+						'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">ШТР</th>' +
+						'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">ПД</th>' +
+						'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
+						'<th class="stat-widget-season-statistic-table-cell-head" colspan="2">Ф</th>' +
+						'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
+						'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
+						'<th class="stat-widget-season-statistic-table-cell-head" colspan="2"></th>' +
+						'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
+						'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
+						'<th class="stat-widget-season-statistic-table-cell-head-end"></th>' +
 					'</tr>' +
-
 					'<tr class="stat-widget-table-head-row">' +
 						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end stat-widget-table-first-column">Команда</td>' +
 						'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
