@@ -192,6 +192,9 @@
 
 					var historyTab = $(event.target).data('history-tab');
 					if (historyTab) {
+						_module.changeSeason(CURRENT_SEASON);
+						$('.stat-widget-filter-season').val(CURRENT_SEASON);
+
 						$('.stat-widget-history-data').addClass('hide');
 						$('.stat-widget-history-data-' + historyTab).removeClass('hide');
 
@@ -206,27 +209,8 @@
 
 				//Смена сезона
 				$_mainContainer.on('change', '.stat-widget-filter-season', function (event) {
-					_seasonId = $(event.target).val();
-
-					switch (_activeTabId) {
-						case _tabs.commandStatistic:
-							_module.getCommandsStatistic();
-							break;
-						case _tabs.players:
-							_module.renderTournaments();
-							if (_playerId) {
-								_module.getPlayerInfo();
-							} else {
-								_module.getPlayersStatistic();
-							}
-							break;
-						case _tabs.history:
-							_module.renderHistoryData();
-							break;
-						default:
-							_module.getCommandsStatistic();
-							break;
-					}
+					var seasonId = $(event.target).val();
+					_module.changeSeason(seasonId);
 				});
 
 				//Профиль игрока
@@ -240,6 +224,30 @@
 					_gameId = $(event.target).data('game-id');
 					_module.renderGameInfo();
 				});
+			},
+
+			changeSeason: function(seasonId) {
+				_seasonId = seasonId;
+
+				switch (_activeTabId) {
+					case _tabs.commandStatistic:
+						_module.getCommandsStatistic();
+						break;
+					case _tabs.players:
+						_module.renderTournaments();
+						if (_playerId) {
+							_module.getPlayerInfo();
+						} else {
+							_module.getPlayersStatistic();
+						}
+						break;
+					case _tabs.history:
+						_module.renderHistoryData();
+						break;
+					default:
+						_module.getCommandsStatistic();
+						break;
+				}
 			},
 
 			goToLink: function() {
