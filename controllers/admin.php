@@ -116,7 +116,7 @@ class Admin extends Common {
     /**
      * Скачать образец общих данных по командам
      */
-    public function loadHistoryTeamsTotalData() {
+    public function loadHistoryTeamsTotalPrototype() {
         $this->downloadCSV('historyTeamsTotalData');
     }
 

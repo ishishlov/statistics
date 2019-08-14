@@ -1498,8 +1498,7 @@
 				$.each(historyTeamsTotal, function(idx, val) {
 					rows += (
 						'<tr>' +
-//						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-first-column stat-widget-game-statistic-table-name">' + val.number + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-first-column stat-widget-game-statistic-table-name">' + 
+						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-first-column stat-widget-game-statistic-table-name">' +
 							'<div class="stat-widget-table-adaptive-name">' + val.name + '</div>' +
 						'</td>' +
 						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.two_point_made + '</td>' +
@@ -1579,33 +1578,32 @@
 					'</tr>' +
 
 					'<tr class="stat-widget-table-head-row">' +
-//					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end stat-widget-table-first-column"></td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end stat-widget-table-first-column">Команда</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold">Ч</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold">С</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">В</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">РП</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold">Ф</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">ФС</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Пт</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Пх</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">БШ</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">БШ НА</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Эфф</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">+/-</td>' +
-					'<td class="stat-widget-season-statistic-table-cell-bold">Оч</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end stat-widget-table-first-column">Команда</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold">Ч</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold">С</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">В</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">РП</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold">Ф</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">ФС</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Пт</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Пх</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">БШ</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">БШ НА</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Эфф</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">+/-</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-bold">Оч</td>' +
 					'</tr>' +
 					'</thead>' +
 					'<tbody>' +
