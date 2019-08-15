@@ -216,6 +216,7 @@
 				//Профиль игрока
 				$_mainContainer.on('click', '.stat-widget-player-profile', function (event) {
 					_playerId = $(event.target).data('player-id');
+					_seasonId = CURRENT_SEASON;
 					_module.renderPlayerInfo();
 				});
 
@@ -438,12 +439,12 @@
 						'<div class="stat-widget-history-sections"></div>' +
 						'<div class="stat-widget-title"></div>' +
 						'<div class="stat-widget-history-content">' +
-							'<div class="stat-widget-history-data stat-widget-history-data-tables">' +
-//								'<div class="stat-widget-history-table"></div>' +
-//								'<div class="stat-widget-history-team-total-table"></div>' +
-							'</div>' +
+							'<div class="stat-widget-history-data stat-widget-history-data-tables"></div>' +
 							'<div class="stat-widget-history-data stat-widget-history-data-records hide"></div>' +
-							'<div class="stat-widget-history-data stat-widget-history-data-total hide"></div>' +
+							'<div class="stat-widget-history-data stat-widget-history-data-total hide">' +
+								'<div class="stat-widget-history-data-totals"></div>' +
+								'<div class="stat-widget-history-table-sum"></div>' +
+							'</div>' +
 						'</div>' +
 					'</div>'
 				);
@@ -1289,10 +1290,10 @@
 			},
 
             appendHtmlHistoryTables: function (data) {
-                var html = _module.getHistoryTabelsHtml(data);
 				if (!data.length) {
 					$('.stat-widget-history-data-tables').empty().append('Нет данных');
 				} else {
+					var html = _module.getHistoryTabelsHtml(data);
 					var adaptiveHtml = (
 						'<div class="stat-widget-table-first">' + html + '</div>' +
 						'<div class="stat-widget-table-second">' + html + '</div>'
@@ -1423,7 +1424,7 @@
 			appendHtmlHistoryData: function (data) {
 				_module.appendHtmlHistoryTables(data.historyTables);
 				_module.appendHtmlHistoryRecords(data.historyRecords);
-				_module.appendHtmlTeamHistoryTotal(data.historyTeamsTotal);
+				_module.appendHtmlTeamHistoryTotal(data.historyTeamsTotal, data.historyTables);
 			},
 
 			appendHtmlHistory: function (history) {
@@ -1491,18 +1492,36 @@
 				$('.stat-widget-history-table').empty().append(html);
 			},
 
-			appendHtmlTeamHistoryTotal: function (historyTeamsTotal) {
+			appendHtmlTeamHistoryTotal: function (historyTeamsTotal, historyTables) {
 				var adaptiveHtml = '';
-				if (!historyTeamsTotal.length) {
-					$('.stat-widget-history-data-total').empty().append('Нет данных');
+				var showHistoryTeamsTotal = historyTeamsTotal.length ? true : false;
+				var showHistoryTabels = (_seasonId == ALL_SEASONS_ALIAS && historyTables.length) ? true : false;
+				$('.stat-widget-history-data-totals').empty();
+				$('.stat-widget-history-table-sum').empty();
+
+				if (!showHistoryTeamsTotal && !showHistoryTabels) {
+					$('.stat-widget-history-data-totals').empty().append('Нет данных');
 				} else {
-					var html = _module.getTeamHistoryTeamHtml(historyTeamsTotal);
-					adaptiveHtml += (
-						'<div class="stat-widget-table-first">' + html + '</div>' +
-						'<div class="stat-widget-table-second">' + html + '</div>'
-					);
-					$('.stat-widget-history-data-total').empty().append(adaptiveHtml);
-					$(".stat-widget-sortable-table").tablesorter();
+					if (showHistoryTeamsTotal) {
+						var html = _module.getTeamHistoryTeamHtml(historyTeamsTotal);
+						adaptiveHtml += (
+							'<div class="stat-widget-table-first">' + html + '</div>' +
+							'<div class="stat-widget-table-second">' + html + '</div>'
+						);
+						$('.stat-widget-history-data-totals').empty().append(adaptiveHtml);
+						$(".stat-widget-sortable-table").tablesorter();
+					}
+
+					if (showHistoryTabels) {
+						var html = _module.getHistoryTabelsHtml(historyTables);
+						var adaptiveHtml = (
+							'<div class="stat-widget-table-first">' + html + '</div>' +
+							'<div class="stat-widget-table-second">' + html + '</div>'
+						);
+
+						$('.stat-widget-history-table-sum').empty().append(adaptiveHtml);
+						$('.stat-widget-sortable-table').tablesorter();
+					}
 				}	
 			},
 

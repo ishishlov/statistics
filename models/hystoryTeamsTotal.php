@@ -67,6 +67,7 @@ class HystoryTeamsTotalModel extends Main {
     }
 
     public function getHistoryTeamsTotal($seasonId, $tournamentIds) {
+		$seasonId = (int) $seasonId;
         $res = Cache::getStatistic(Cache::CACHE_KEY_HISTORY, $seasonId, $tournamentIds);
         if (!$res) {
 			$seasonSql = ($seasonId === self::ALL_SEASONS) ? '' : 'AND htt.season_id = ' . $seasonId;

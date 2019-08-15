@@ -16,6 +16,9 @@ class StatisticsModel extends Main {
     /** Название таблицы игр истории */
     const TABLE_NAME_HISTORY_GAMES          = 'history';
 
+	/** Выбор по всем сезонам */
+	const ALL_SEASONS = 999;
+
 	const FIELDS = [
 		0 => '`game_id`',
 		1 => '`dt`',
@@ -606,8 +609,10 @@ class StatisticsModel extends Main {
     }
 
     public function getHistoryTables($seasonId, $tournamentIds) {
+		$seasonId = (int) $seasonId;
         $res = Cache::getStatistic(Cache::CACHE_KEY_TOTAL, $seasonId, $tournamentIds);
         if (!$res) {
+			$seasonSql = ($seasonId === self::ALL_SEASONS) ? '' : 'AND sg.season_id = ' . $seasonId;
             $tournamentIdsString = implode(',', $tournamentIds);
             $sth = $this->_db->prepare(
                 'SELECT
@@ -639,10 +644,10 @@ class StatisticsModel extends Main {
                 FROM statistic_games sg
                 JOIN statistic_players sp ON sp.game_id = sg.game_id
                 JOIN players p ON p.player_id = sp.player_id
-                WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?
+                WHERE sg.tournament_id IN (' . $tournamentIdsString . ') ' . $seasonSql . '
                 GROUP BY p.player_id'
             );
-            $sth->execute([$seasonId]);
+            $sth->execute();
             $res = $sth->fetchAll(PDO::FETCH_ASSOC);
 
             foreach ($res as &$player) {

@@ -334,6 +334,10 @@
 	display: none;
 }
 
+.stat-widget-history-data-totals {
+	margin-bottom: 40px;
+}
+
 @media (max-width: 975px) {
 	.stat-widget-records-comand {
 		display: block;
