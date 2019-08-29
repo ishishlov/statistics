@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Добавление протокола статистики</title>
+		<title>Добавление протокола матча</title>
 		<meta charset="UTF-8">
 		<meta name="robots" content="noindex, nofollow"/>
 		<link rel="stylesheet" href="/css/index.css" />
@@ -17,13 +17,14 @@
 						<img src="https://bckhimki.ru/i/v7/icons/bckhimki_logo.png" alt="Баскетбольный клуб Химки">
 					</a>
 					<form class="header-button" action="/admin/loadprotocol" method="post" enctype="multipart/form-data">
-						<input id="loadProtocol" type="submit" name="submit" value="Образец протокола" />
+						<input id="loadProtocol" type="submit" name="submit" value="Скачать образец" />
 					</form>
-					<form class="header-button" action="/admin/addGameResult" method="post">
-						<input type="submit" name="submit" value="Добавить результат игры" />
+					<form class="header-button" action="/admin/addHistoryTeamsTotal" method="post">
+						<input type="submit" name="submit" value="Добавить итоговые данные" />
 					</form>
 				</div>
 			</div>
+			<div class="header-title">Добавление протокола матча</div>
 			{% if isShowLoadButton %}
 				<form class="save-protocol" action="/admin/index" method="post" enctype="multipart/form-data">
 					<input class="btn-center" type="file" name="csv" value="" />

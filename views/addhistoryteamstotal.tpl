@@ -17,13 +17,14 @@
 						<img src="https://bckhimki.ru/i/v7/icons/bckhimki_logo.png" alt="Баскетбольный клуб Химки">
 					</a>
 					<form class="header-button" action="/admin/loadHistoryTeamsTotalPrototype" method="post" enctype="multipart/form-data">
-						<input id="loadProtocol" type="submit" name="submit" value="Образец протокола" />
+						<input id="loadProtocol" type="submit" name="submit" value="Скачать образец" />
 					</form>
-					<form class="header-button" action="/admin/addGameResult" method="post">
-						<input type="submit" name="submit" value="Добавить результат игры" />
+					<form class="header-button" action="/admin/index" method="post">
+						<input type="submit" name="submit" value="Вернуться" />
 					</form>
 				</div>
 			</div>
+			<div class="header-title">Добавление общей статистики</div>
 			{% if isShowLoadButton %}
 				<form class="save-protocol" action="/admin/addHistoryTeamsTotal" method="post" enctype="multipart/form-data">
 					<input class="btn-center" type="file" name="csv" value="" />
