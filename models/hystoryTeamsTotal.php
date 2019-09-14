@@ -14,38 +14,44 @@ class HystoryTeamsTotalModel extends Main {
 	const ALL_SEASONS = 999;
 
 	const FIELDS = [
-		0 => '`history_teams_total_id`',
-		1 => '`number`',
-		2 => '`team_id`',
-		3 => '`season_id`',
-		4 => '`two_point_made`',
-		5 => '`two_point_throw`',
-		6 => '`two_point_percent`',
-		7 => '`three_point_made`',
-		8 => '`three_point_throw`',
-		9 => '`three_point_percent`',
-		10 => '`two_three_point_made`',
-		11 => '`two_three_point_throw`',
-		12 => '`two_three_point_percent`',
-		13 => '`free_made`',
-		14 => '`free_throw`',
-		15 => '`free_percent`',
-		16 => '`offensive_rebound`',
-		17 => '`deffensive_rebound`',
-		18 => '`sum_rebound`',
-		19 => '`assists`',
-		20 => '`commited_foul`',
-		21 => '`recieved_foul`',
-		22 => '`turnover`',
-		23 => '`steal`',
-		24 => '`in_fawor`',
-		25 => '`against`',
-		26 => '`effectiveness`',
+		0 => '`number`',
+		1 => '`team_id`',
+		2 => '`two_point_made`',
+		3 => '`two_point_throw`',
+		4 => '`two_point_percent`',
+		5 => '`three_point_made`',
+		6 => '`three_point_throw`',
+		7 => '`three_point_percent`',
+		8 => '`two_three_point_made`',
+		9 => '`two_three_point_throw`',
+		10 => '`two_three_point_percent`',
+		11 => '`free_made`',
+		12 => '`free_throw`',
+		13 => '`free_percent`',
+		14 => '`offensive_rebound`',
+		15 => '`deffensive_rebound`',
+		16 => '`sum_rebound`',
+		17 => '`assists`',
+		18 => '`commited_foul`',
+		19 => '`recieved_foul`',
+		20 => '`turnover`',
+		21 => '`steal`',
+		22 => '`in_fawor`',
+		23 => '`against`',
+		24 => '`effectiveness`',
+		25 => '`scipped1`',
+		26 => '`scipped2`',
 		27 => '`plus_minus`',
-		28 => '`points_scored`',
-		29 => '`tournament_id`',
-		30 => '`status`'
+		28 => '`scipped3`',
+		29 => '`scipped4`',
+		30 => '`tournament_id`',
+		31 => '`scipped5`',
+		32 => '`points_scored`',
+		33 => '`season_id`',
+		34 => '`status`'
 	];
+	
+	const SCIPPED_FIELDS = [25,26,28,29,31];
 
 	public function save($Csv) {
         $data = $Csv->getArray();
@@ -55,6 +61,7 @@ class HystoryTeamsTotalModel extends Main {
         $seasonId = $this->getSeasonId($data);
 		$oldIds = $this->getIdsBySeasonId($seasonId);
         $res = $this->deleteByIds($oldIds);
+
         if ($res) {
             $res = $this->_saveHistoryTeamsTotal($data);
         }
@@ -63,7 +70,7 @@ class HystoryTeamsTotalModel extends Main {
 	}
 
 	public function getSeasonId($data) {
-	    return $data[0][self::FIELDS[3]] ?: 0;
+	    return $data[0][self::FIELDS[33]] ?: 0;
     }
 
     public function getHistoryTeamsTotal($seasonId, $tournamentIds) {
@@ -176,7 +183,7 @@ class HystoryTeamsTotalModel extends Main {
             ORDER BY htt.number ASC
 		');
 		$sth->execute([self::STATUS_NOT_CONFIRMED]);
-        return $sth->fetch(PDO::FETCH_ASSOC);
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	/**
@@ -185,7 +192,8 @@ class HystoryTeamsTotalModel extends Main {
 	public function confirmedProtocol() {
 		$res = false;
 		$ids = $this->getNotConfirmedIds();
-		if ($gameIds) {
+
+		if ($ids) {
 			$idsString = implode(', ', $ids);
 			$stmt = $this->_db->prepare('UPDATE ' . self::TABLE_NAME . ' SET `status` = ? WHERE `history_teams_total_id` IN(' . $idsString . ')');
 			$res = $stmt->execute([self::STATUS_CONFIRMED]);
@@ -206,6 +214,9 @@ class HystoryTeamsTotalModel extends Main {
 	}
 
     public function deleteByIds($ids) {
+		if (!$ids) {
+			return true;
+		}
         $idsString = implode(', ', $ids);
         $stmt = $this->_db->prepare('DELETE FROM ' . self::TABLE_NAME . ' WHERE `history_teams_total_id` IN(' . $idsString . ')');
 
@@ -230,9 +241,11 @@ class HystoryTeamsTotalModel extends Main {
         $finalData = [];
         foreach ($data as $key1 => $row) {
             foreach ($row as $key2 => $value) {
-                $finalData[$key1][self::FIELDS[$key2]] = mb_convert_encoding($value, "utf-8", "windows-1251");
+				if (!in_array($key2, self::SCIPPED_FIELDS)) {
+					$finalData[$key1][self::FIELDS[$key2]] = mb_convert_encoding($value, "utf-8", "windows-1251");
+				}
             }
-            $finalData[$key1][self::FIELDS[30]] = self::STATUS_NOT_CONFIRMED;
+            $finalData[$key1][self::FIELDS[34]] = self::STATUS_NOT_CONFIRMED;
         }
 
         return $finalData;
