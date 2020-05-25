@@ -1,8 +1,8 @@
 <?php
-require_once 'models/main.php';
-require_once 'models/cache.php';
+require_once 'models/Main.php';
+require_once 'models/Cache.php';
 
-class StatisticsModel extends Main {
+class AllStatistics extends Main {
 
 	/** Статус протокола статистики - подтвержен */
 	const STATUS_CONFIRMED = 1;
@@ -19,74 +19,105 @@ class StatisticsModel extends Main {
 	/** Выбор по всем сезонам */
 	const ALL_SEASONS = 999;
 
+	const FIELD_GAME_ID = 0;
+	const FIELD_DATE = 1;
+	const FIELD_TOURNAMENT_ID = 2;
+	const FIELD_TEAM_ID = 3;
+	const FIELD_PLAYER_ID = 4;
+	const FIELD_SEASON_ID = 5;
+	const FIELD_VENUE = 6;
+	const FIELD_SECONDS = 7;
+	const FIELD_TWO_POINT_MADE = 8;
+	const FIELD_TWO_POINT_THROW = 9;
+    const FIELD_THREE_POINT_MADE = 10;
+    const FIELD_THREE_POINT_THROW = 11;
+	const FIELD_FREE_MADE = 12;
+	const FIELD_FREE_THROW = 13;
+	const FIELD_OFFENSIVE_REBOUND = 14;
+	const FIELD_DEFFENSIVE_REBOUND = 15;
+	const FIELD_ASSISTS = 16;
+	const FIELD_COMMITED_FOUL = 17;
+	const FIELD_RECIEVED_FOUL = 18;
+	const FIELD_TURNOVER = 19;
+	const FIELD_STEAL = 20;
+	const FIELD_IN_FAWOR = 21;
+	const FIELD_AGAINST = 22;
+	const FIELD_EFFECTIVENESS = 23;
+	const FIELD_PLUS_MINUS = 24;
+	const FIELD_POINTS_SCORED = 25;
+	const FIELD_GAMES = 26;
+	const FIELD_GS = 27;
+	const FIELD_SCORE = 28;
+	const FIELD_STATUS = 29;
+
 	const FIELDS = [
-		0 => '`game_id`',
-		1 => '`dt`',
-		2 => '`tournament_id`',
-		3 => '`team_id`',
-		4 => '`player_id`',
-		5 => '`season_id`',
-		6 => '`venue`',
-		7 => '`seconds`',
-		8 => '`two_point_made`',
-		9 => '`two_point_throw`',
-		10 => '`three_point_made`',
-		11 => '`three_point_throw`',
-		12 => '`free_made`',
-		13 => '`free_throw`',
-		14 => '`offensive_rebound`',
-		15 => '`deffensive_rebound`',
-		16 => '`assists`',
-		17 => '`commited_foul`',
-		18 => '`recieved_foul`',
-		19 => '`turnover`',
-		20 => '`steal`',
-		21 => '`in_fawor`',
-		22 => '`against`',
-		23 => '`effectiveness`',
-		24 => '`plus_minus`',
-		25 => '`points_scored`',
-		26 => '`games`',
-		27 => '`gs`',
-		28 => '`score`',
-		29 => '`status`'
+		self::FIELD_GAME_ID => '`game_id`',
+        self::FIELD_DATE => '`dt`',
+        self::FIELD_TOURNAMENT_ID => '`tournament_id`',
+        self::FIELD_TEAM_ID => '`team_id`',
+        self::FIELD_PLAYER_ID => '`player_id`',
+        self::FIELD_SEASON_ID => '`season_id`',
+        self::FIELD_VENUE => '`venue`',
+        self::FIELD_SECONDS => '`seconds`',
+        self::FIELD_TWO_POINT_MADE => '`two_point_made`',
+        self::FIELD_TWO_POINT_THROW => '`two_point_throw`',
+        self::FIELD_THREE_POINT_MADE => '`three_point_made`',
+        self::FIELD_THREE_POINT_THROW => '`three_point_throw`',
+        self::FIELD_FREE_MADE => '`free_made`',
+        self::FIELD_FREE_THROW => '`free_throw`',
+        self::FIELD_OFFENSIVE_REBOUND => '`offensive_rebound`',
+        self::FIELD_DEFFENSIVE_REBOUND => '`deffensive_rebound`',
+        self::FIELD_ASSISTS => '`assists`',
+        self::FIELD_COMMITED_FOUL => '`commited_foul`',
+        self::FIELD_RECIEVED_FOUL => '`recieved_foul`',
+        self::FIELD_TURNOVER => '`turnover`',
+        self::FIELD_STEAL => '`steal`',
+        self::FIELD_IN_FAWOR => '`in_fawor`',
+        self::FIELD_AGAINST => '`against`',
+        self::FIELD_EFFECTIVENESS => '`effectiveness`',
+        self::FIELD_PLUS_MINUS => '`plus_minus`',
+        self::FIELD_POINTS_SCORED => '`points_scored`',
+        self::FIELD_GAMES => '`games`',
+        self::FIELD_GS => '`gs`',
+        self::FIELD_SCORE => '`score`',
+        self::FIELD_STATUS => '`status`'
 	];
 
 	const FIELD_FOR_STATICTIC_PLAYER = [
-		self::FIELDS[4],
-		self::FIELDS[0],
-		self::FIELDS[7],
-		self::FIELDS[8],
-		self::FIELDS[9],
-		self::FIELDS[10],
-		self::FIELDS[11],
-		self::FIELDS[12],
-		self::FIELDS[13],
-		self::FIELDS[14],
-		self::FIELDS[15],
-		self::FIELDS[16],
-		self::FIELDS[17],
-		self::FIELDS[18],
-		self::FIELDS[19],
-		self::FIELDS[20],
-		self::FIELDS[21],
-		self::FIELDS[22],
-		self::FIELDS[23],
-		self::FIELDS[24],
-		self::FIELDS[25],
-		self::FIELDS[26],
-		self::FIELDS[27]
+		self::FIELDS[self::FIELD_PLAYER_ID],
+		self::FIELDS[self::FIELD_GAME_ID],
+		self::FIELDS[self::FIELD_SECONDS],
+		self::FIELDS[self::FIELD_TWO_POINT_MADE],
+		self::FIELDS[self::FIELD_TWO_POINT_THROW],
+		self::FIELDS[self::FIELD_THREE_POINT_MADE],
+		self::FIELDS[self::FIELD_THREE_POINT_THROW],
+		self::FIELDS[self::FIELD_FREE_MADE],
+		self::FIELDS[self::FIELD_FREE_THROW],
+		self::FIELDS[self::FIELD_OFFENSIVE_REBOUND],
+		self::FIELDS[self::FIELD_DEFFENSIVE_REBOUND],
+		self::FIELDS[self::FIELD_ASSISTS],
+		self::FIELDS[self::FIELD_COMMITED_FOUL],
+		self::FIELDS[self::FIELD_RECIEVED_FOUL],
+		self::FIELDS[self::FIELD_TURNOVER],
+		self::FIELDS[self::FIELD_STEAL],
+		self::FIELDS[self::FIELD_IN_FAWOR],
+		self::FIELDS[self::FIELD_AGAINST],
+		self::FIELDS[self::FIELD_EFFECTIVENESS],
+		self::FIELDS[self::FIELD_PLUS_MINUS],
+		self::FIELDS[self::FIELD_POINTS_SCORED],
+		self::FIELDS[self::FIELD_GAMES],
+		self::FIELDS[self::FIELD_GS]
 	];
 
 	const FIELD_FOR_STATICTIC_GAME = [
-		self::FIELDS[0],
-		self::FIELDS[1],
-		self::FIELDS[2],
-		self::FIELDS[3],
-		self::FIELDS[6],
-		self::FIELDS[5],
-		self::FIELDS[28],
-		self::FIELDS[29]
+		self::FIELDS[self::FIELD_GAME_ID],
+		self::FIELDS[self::FIELD_DATE],
+		self::FIELDS[self::FIELD_TOURNAMENT_ID],
+		self::FIELDS[self::FIELD_TEAM_ID],
+		self::FIELDS[self::FIELD_VENUE],
+		self::FIELDS[self::FIELD_SEASON_ID],
+		self::FIELDS[self::FIELD_SCORE],
+		self::FIELDS[self::FIELD_STATUS]
 	];
 
 	public function save($data) {
@@ -992,7 +1023,7 @@ class StatisticsModel extends Main {
 			foreach ($statistics as $title => $statistic) {
 				if (in_array($title, self::FIELD_FOR_STATICTIC_GAME)) {
 				    // Фикс для некоторых бд
-                    if ($title === self::FIELDS[6]) {
+                    if ($title === self::FIELDS[self::FIELD_VENUE]) {
                         $statistic = (int) $statistic;
                     }
 					$statisticGame[$key][$title] = $statistic;
@@ -1009,10 +1040,10 @@ class StatisticsModel extends Main {
 		if ($statisticGame) {
 			$gameIds = [];
 			foreach ($statisticGame as $key => $value) {
-				if (!in_array($value[self::FIELDS[0]], $gameIds)) {
-					$value[self::FIELDS[1]] = date('Y-m-d', strtotime($value[self::FIELDS[1]]));
+				if (!in_array($value[self::FIELDS[self::FIELD_GAME_ID]], $gameIds)) {
+					$value[self::FIELDS[self::FIELD_DATE]] = date('Y-m-d', strtotime($value[self::FIELDS[self::FIELD_DATE]]));
 					$finishStatisticGame[] = $value;
-					$gameIds[] = (int) $value[self::FIELDS[0]];
+					$gameIds[] = (int) $value[self::FIELDS[self::FIELD_GAME_ID]];
 				}
 			}
 		}

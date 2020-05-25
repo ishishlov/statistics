@@ -11,8 +11,8 @@ class Admin extends Common {
 	private $_historyTeamsModel = null;
 
 	public function __construct() {
-		$this->_statModel = new StatisticsModel();
-		$this->_historyTeamsModel = new HystoryTeamsTotalModel();
+		$this->_statModel = new AllStatistics();
+		$this->_historyTeamsModel = new HystoryTeamsTotal();
 	}
 
 	/**
@@ -167,13 +167,13 @@ class Admin extends Common {
         $finalData = [];
         foreach ($data as $key1 => $row) {
             foreach ($row as $key2 => $value) {
-                $finalData[$key1][StatisticsModel::FIELDS[$key2]] = mb_convert_encoding($value, "utf-8", "windows-1251");
+                $finalData[$key1][AllStatistics::FIELDS[$key2]] = mb_convert_encoding($value, "utf-8", "windows-1251");
                 // Конвертируем время в секунды
                 if ($key2 === 7) {
-                    $finalData[$key1][StatisticsModel::FIELDS[$key2]] = $this->_convertMinToSec($value);
+                    $finalData[$key1][AllStatistics::FIELDS[$key2]] = $this->_convertMinToSec($value);
                 }
             }
-            $finalData[$key1][StatisticsModel::FIELDS[29]] = StatisticsModel::STATUS_NOT_CONFIRMED;
+            $finalData[$key1][AllStatistics::FIELDS[AllStatistics::FIELD_STATUS]] = AllStatistics::STATUS_NOT_CONFIRMED;
         }
 
         return $finalData;
@@ -187,7 +187,7 @@ class Admin extends Common {
      * @return array
      */
     private function _removeFirstRow($data) {
-        $temp = (int)$data[0][StatisticsModel::FIELDS[0]];
+        $temp = (int)$data[0][AllStatistics::FIELDS[AllStatistics::FIELD_GAME_ID]];
         if (!$temp) {
             array_shift($data);
         }
@@ -244,7 +244,7 @@ class Admin extends Common {
     private function _checkDuplicationGameId($data, &$errors) {
         $newGameIds = [];
         foreach ($data as $row) {
-            $newGameIds[] = (int) $row[StatisticsModel::FIELDS[0]];
+            $newGameIds[] = (int) $row[AllStatistics::FIELDS[AllStatistics::FIELD_GAME_ID]];
         }
         $newGameIds = array_unique($newGameIds);
         $duplicateGameIds = $this->_statModel->getGameIds($newGameIds);

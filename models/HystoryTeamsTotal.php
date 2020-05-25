@@ -1,8 +1,8 @@
 <?php
-require_once 'models/main.php';
-require_once 'models/cache.php';
+require_once 'models/Main.php';
+require_once 'models/Cache.php';
 
-class HystoryTeamsTotalModel extends Main {
+class HystoryTeamsTotal extends Main {
 
 	/** Статус протокола статистики - подтвержен */
 	const STATUS_CONFIRMED = 1;
