@@ -1,9 +1,7 @@
 <?php
-require_once 'controllers/common.php';
-require_once 'models/statistics.php';
-require_once 'models/hystoryTeamsTotal.php';
-require_once 'models/csv.php';
-require_once 'models/cache.php';
+require_once 'controllers/Common.php';
+
+use Models\AllStatistics;
 
 class Admin extends Common {
 	
@@ -12,7 +10,7 @@ class Admin extends Common {
 
 	public function __construct() {
 		$this->_statModel = new AllStatistics();
-		$this->_historyTeamsModel = new HystoryTeamsTotal();
+		$this->_historyTeamsModel = new Models\HystoryTeamsTotal();
 	}
 
 	/**
@@ -100,7 +98,7 @@ class Admin extends Common {
      * Метод для чистки всего кеша
      */
     public function clearAllCache() {
-        if (Cache::clearAllCache()) {
+        if (Models\Cache::clearAllCache()) {
             var_dump('Delete is completed');exit;
         }
         var_dump('Error');exit;
@@ -134,7 +132,7 @@ class Admin extends Common {
      * Сохранить протокол статистики
      */
     private function _save() {
-        $Csv = new Csv($_FILES['csv']);
+        $Csv = new Models\Csv($_FILES['csv']);
         $data = $Csv->getArray();
         $data = $this->_getCorrectKeyArray($data);
         $data = $this->_removeFirstRow($data);

@@ -6,7 +6,7 @@ $dir = '../db';
 $names = scandir($dir);
 array_shift($names);
 array_shift($names);
-$db = (new DB())->getInstance();
+$db = (new Models\DB())->getInstance();
 $i = 1;
 $countTables = count($names);
 
