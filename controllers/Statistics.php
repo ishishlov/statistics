@@ -10,10 +10,10 @@ class Statistics extends Common {
 	}
 
     /**
-	 * Страница командной статистики
+	 * Страница командной статистики. Для тестирования
 	 */
 	public function commandsStatistic() {
-		$this->display('commandsstatistic.tpl');
+		$this->display('debug/commandsstatistic.tpl');
 	}
 
 	public function getCommandsStatistic() {

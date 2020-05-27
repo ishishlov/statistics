@@ -16,7 +16,16 @@ class AllStatistics extends Main {
 	/** Название таблицы статистики игр */
 	const TABLE_NAME_STATISTIC_GAMES        = 'statistic_games';
     /** Название таблицы игр истории */
-    const TABLE_NAME_HISTORY_GAMES          = 'history';
+    const TABLE_NAME_HISTORY                = 'history';
+    const TABLE_NAME_TEAMS                  = 'teams';
+    const TABLE_NAME_TOURNAMENTS            = 'tournaments';
+    const TABLE_NAME_SEASONS                = 'seasons';
+    const TABLE_NAME_PLAYERS                = 'players';
+    const TABLE_NAME_GAME_POSITIONS         = 'game_positions';
+    const TABLE_NAME_COUNTRIES              = 'countries';
+
+
+
 
 	/** Выбор по всем сезонам */
 	const ALL_SEASONS = 999;
@@ -135,7 +144,7 @@ class AllStatistics extends Main {
 	public function getGameIds($gameIds)
     {
         $gameIdsString = implode(',', $gameIds);
-        $sth = $this->_db->prepare('SELECT game_id FROM statistic_games WHERE game_id IN (' . $gameIdsString . ')');
+        $sth = $this->_db->prepare('SELECT game_id FROM ' . self::TABLE_NAME_STATISTIC_GAMES . ' WHERE game_id IN (' . $gameIdsString . ')');
         $sth->execute();
 
         $res = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -155,7 +164,7 @@ class AllStatistics extends Main {
             'SELECT
                 team_id,
                 `name`
-			FROM teams
+			FROM ' . self::TABLE_NAME_TEAMS . '
             ORDER BY `name` ASC'
         );
         $sth->execute();
@@ -195,8 +204,8 @@ class AllStatistics extends Main {
 					MAX(sp.points_scored) AS max_points_scored,
 					MAX(sp.`plus_minus`) AS max_plus_minus,
 					MIN(sp.`plus_minus`) AS min_plus_minus
-				FROM statistic_games sg 
-				JOIN statistic_players sp ON sp.game_id = sg.game_id
+				FROM ' . self::TABLE_NAME_STATISTIC_GAMES . ' sg 
+				JOIN ' . self::TABLE_NAME_STATISTIC_PLAYERS . ' sp ON sp.game_id = sg.game_id
 				WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?'
 			);
 			$sth->execute([$seasonId]);
@@ -221,9 +230,9 @@ class AllStatistics extends Main {
                     IF(sg.venue = 1, "дома", "в гостях") AS venue,
                     sg.score,
                     tm.url
-				FROM `statistic_games` sg
-				JOIN tournaments tr ON tr.tournament_id = sg.tournament_id
-				JOIN teams tm ON tm.team_id = sg.team_id
+				FROM `' . self::TABLE_NAME_STATISTIC_GAMES . '` sg
+				JOIN ' . self::TABLE_NAME_TOURNAMENTS . ' tr ON tr.tournament_id = sg.tournament_id
+				JOIN ' . self::TABLE_NAME_TEAMS . ' tm ON tm.team_id = sg.team_id
 				WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?
 				ORDER BY sg.dt DESC'
 			);
@@ -251,11 +260,11 @@ class AllStatistics extends Main {
                     p.height,
                     p.weight,
                     p.avatar_src
-                FROM statistic_games sg
-                JOIN statistic_players sp ON sp.game_id = sg.game_id
-                JOIN players p ON p.player_id = sp.player_id
-                JOIN game_positions gp ON gp.game_position_id = p.game_position_id
-                JOIN countries c ON c.country_id = p.country_id
+                FROM ' . self::TABLE_NAME_STATISTIC_GAMES . ' sg
+                JOIN ' . self::TABLE_NAME_STATISTIC_PLAYERS . ' sp ON sp.game_id = sg.game_id
+                JOIN ' . self::TABLE_NAME_PLAYERS . ' p ON p.player_id = sp.player_id
+                JOIN ' . self::TABLE_NAME_GAME_POSITIONS . ' gp ON gp.game_position_id = p.game_position_id
+                JOIN ' . self::TABLE_NAME_COUNTRIES . ' c ON c.country_id = p.country_id
                 WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?
                 GROUP BY sp.player_id
                 ORDER BY p.number ASC'
@@ -283,8 +292,8 @@ class AllStatistics extends Main {
                     p.height,
                     p.weight,
                     avatar_src
-                FROM players p
-                JOIN game_positions gp ON gp.game_position_id = p.game_position_id
+                FROM ' . self::TABLE_NAME_PLAYERS . ' p
+                JOIN ' . self::TABLE_NAME_GAME_POSITIONS . ' gp ON gp.game_position_id = p.game_position_id
                 WHERE p.player_id = ?'
             );
             $sth->execute([$playerId]);
@@ -370,8 +379,8 @@ class AllStatistics extends Main {
 					ROUND(AVG(sp.effectiveness)) AS AVG_effectiveness,
 					ROUND(AVG(sp.points_scored)) AS AVG_points_scored,
 					ROUND(AVG(sp.`plus_minus`)) AS AVG_plus_minus
-				FROM statistic_games sg 
-				JOIN statistic_players sp ON sp.game_id = sg.game_id
+				FROM ' . self::TABLE_NAME_STATISTIC_GAMES . ' sg 
+				JOIN ' . self::TABLE_NAME_STATISTIC_PLAYERS . ' sp ON sp.game_id = sg.game_id
 				WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ? AND sp.player_id = ?'
             );
             $sth->execute([$seasonId, $playerId]);
@@ -420,9 +429,9 @@ class AllStatistics extends Main {
 					sg.score,
 					DATE_FORMAT(sg.dt, "%d.%m.%Y") AS dt,
 					t.`name` AS team_name
-				FROM statistic_games sg 
-				JOIN statistic_players sp ON sp.game_id = sg.game_id
-				JOIN teams t ON t.team_id = sg.team_id
+				FROM ' . self::TABLE_NAME_STATISTIC_GAMES . ' sg 
+				JOIN ' . self::TABLE_NAME_STATISTIC_PLAYERS . ' sp ON sp.game_id = sg.game_id
+				JOIN ' . self::TABLE_NAME_TEAMS . ' t ON t.team_id = sg.team_id
 				WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ? AND sp.player_id = ?
 				ORDER BY sg.dt DESC'
             );
@@ -472,10 +481,10 @@ class AllStatistics extends Main {
 					sg.score,
 					DATE_FORMAT(sg.dt, "%d.%m.%Y") AS dt,
 					t.`name` AS team_name
-				FROM statistic_games sg 
-				JOIN statistic_players sp ON sp.game_id = sg.game_id
-				JOIN players p ON p.player_id = sp.player_id
-				JOIN teams t ON t.team_id = sg.team_id
+				FROM ' . self::TABLE_NAME_STATISTIC_GAMES . ' sg 
+				JOIN ' . self::TABLE_NAME_STATISTIC_PLAYERS . ' sp ON sp.game_id = sg.game_id
+				JOIN ' . self::TABLE_NAME_PLAYERS . ' p ON p.player_id = sp.player_id
+				JOIN ' . self::TABLE_NAME_TEAMS . ' t ON t.team_id = sg.team_id
 				WHERE sg.game_id = ?'
 			);
             $sth->execute([$gameId]);
@@ -515,7 +524,7 @@ class AllStatistics extends Main {
 				'SELECT
 					season_id,
 					`name` 
-				FROM seasons 
+				FROM ' . self::TABLE_NAME_SEASONS . '
 				ORDER BY season_id DESC');
 			$sth->execute();
 			$res = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -533,7 +542,7 @@ class AllStatistics extends Main {
                 'SELECT
                     tournament_id,
                     `name`
-                FROM tournaments'
+                FROM ' . self::TABLE_NAME_TOURNAMENTS
             );
             $sth->execute();
             $res = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -563,11 +572,11 @@ class AllStatistics extends Main {
                     h.season_id,
                     t.`name` AS tournament_name,
                     s.`name` AS season_name
-                FROM history h
-                JOIN teams tm1 ON tm1.team_id = h.team_id_one
-                JOIN teams tm2 ON tm2.team_id = h.team_id_two
-                JOIN tournaments t ON t.tournament_id = h.tournament_id
-                JOIN seasons s ON s.season_id = h.season_id
+                FROM ' . self::TABLE_NAME_HISTORY . ' h
+                JOIN ' . self::TABLE_NAME_TEAMS . ' tm1 ON tm1.team_id = h.team_id_one
+                JOIN ' . self::TABLE_NAME_TEAMS . ' tm2 ON tm2.team_id = h.team_id_two
+                JOIN ' . self::TABLE_NAME_TOURNAMENTS . ' t ON t.tournament_id = h.tournament_id
+                JOIN ' . self::TABLE_NAME_SEASONS . ' s ON s.season_id = h.season_id
                 WHERE h.tournament_id IN (' . $tournamentIdsString . ') AND h.season_id = ?
                 ORDER BY dt ASC'
             );
@@ -615,7 +624,7 @@ class AllStatistics extends Main {
                   htt.points_scored,
                   htt.`plus_minus`
                 FROM history_teams_total htt
-                LEFT JOIN teams t ON t.team_id = htt.team_id
+                LEFT JOIN ' . self::TABLE_NAME_TEAMS . ' t ON t.team_id = htt.team_id
                 WHERE htt.tournament_id IN (' . $tournamentIdsString . ') AND htt.season_id = ?
                 ORDER BY htt.number ASC'
             );
@@ -674,9 +683,9 @@ class AllStatistics extends Main {
                     SUM(sp.effectiveness) AS effectiveness,
                     SUM(sp.points_scored) AS points_scored,
                     SUM(sp.`plus_minus`) AS plus_minus
-                FROM statistic_games sg
-                JOIN statistic_players sp ON sp.game_id = sg.game_id
-                JOIN players p ON p.player_id = sp.player_id
+                FROM ' . self::TABLE_NAME_STATISTIC_GAMES . ' sg
+                JOIN ' . self::TABLE_NAME_STATISTIC_PLAYERS . ' sp ON sp.game_id = sg.game_id
+                JOIN ' . self::TABLE_NAME_PLAYERS . ' p ON p.player_id = sp.player_id
                 WHERE sg.tournament_id IN (' . $tournamentIdsString . ') ' . $seasonSql . '
                 GROUP BY p.player_id'
             );
@@ -700,7 +709,7 @@ class AllStatistics extends Main {
      */
     public function addHistoryGame($data)
     {
-        return $this->insert(self::TABLE_NAME_HISTORY_GAMES, $data);
+        return $this->insert(self::TABLE_NAME_HISTORY, $data);
     }
 
     /**
@@ -711,7 +720,7 @@ class AllStatistics extends Main {
 	public function getNotConfirmedGameIds() {
 		$sth = $this->_db->prepare('
 			SELECT game_id
-			FROM `statistic_games` 
+			FROM `' . self::TABLE_NAME_STATISTIC_GAMES . '` 
 			WHERE status = ?');
 		$sth->execute([self::STATUS_NOT_CONFIRMED]);
 		return $sth->fetchAll(PDO::FETCH_COLUMN);
@@ -748,8 +757,8 @@ class AllStatistics extends Main {
 				MAX(sp.points_scored) AS max_points_scored,
 				MAX(sp.`plus_minus`) AS max_plus_minus,
 				MIN(sp.`plus_minus`) AS min_plus_minus
-			FROM statistic_games sg 
-			JOIN statistic_players sp ON sp.game_id = sg.game_id
+			FROM ' . self::TABLE_NAME_STATISTIC_GAMES . ' sg 
+			JOIN ' . self::TABLE_NAME_STATISTIC_PLAYERS . ' sp ON sp.game_id = sg.game_id
 			WHERE sg.status = ?
 		');
 		$sth->execute([self::STATUS_NOT_CONFIRMED]);
@@ -839,9 +848,9 @@ class AllStatistics extends Main {
                 SUM(sp.points_scored) AS points_scored,
                 SUM(sp.`plus_minus`) AS plus_minus,
                 SUM(sg.score) AS score
-            FROM statistic_games sg
-            JOIN statistic_players sp ON sp.game_id = sg.game_id
-            JOIN teams t ON sg.team_id = t.team_id
+            FROM ' . self::TABLE_NAME_STATISTIC_GAMES . ' sg
+            JOIN ' . self::TABLE_NAME_STATISTIC_PLAYERS . ' sp ON sp.game_id = sg.game_id
+            JOIN ' . self::TABLE_NAME_TEAMS . ' t ON sg.team_id = t.team_id
             WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?
             GROUP BY sg.game_id'
         );
@@ -883,9 +892,9 @@ class AllStatistics extends Main {
                 SUM(sp.points_scored) AS points_scored,
                 SUM(sp.`plus_minus`) AS plus_minus,
                 SUM(sg.score) AS score
-            FROM statistic_players sp
-            JOIN statistic_games sg ON sp.game_id = sg.game_id
-            JOIN players p ON p.player_id = sp.player_id
+            FROM ' . self::TABLE_NAME_STATISTIC_PLAYERS . ' sp
+            JOIN ' . self::TABLE_NAME_STATISTIC_GAMES . ' sg ON sp.game_id = sg.game_id
+            JOIN ' . self::TABLE_NAME_PLAYERS . ' p ON p.player_id = sp.player_id
             WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?
             GROUP BY p.player_id'
         );
