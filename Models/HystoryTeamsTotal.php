@@ -53,7 +53,7 @@ class HystoryTeamsTotal extends Main {
 		34 => '`status`'
 	];
 	
-	const SCIPPED_FIELDS = [25,26,28,29,31];
+	const SKIPPED_FIELDS = [25,26,28,29,31];
 
 	public function save($Csv) {
         $data = $Csv->getArray();
@@ -243,7 +243,7 @@ class HystoryTeamsTotal extends Main {
         $finalData = [];
         foreach ($data as $key1 => $row) {
             foreach ($row as $key2 => $value) {
-				if (!in_array($key2, self::SCIPPED_FIELDS)) {
+				if (!in_array($key2, self::SKIPPED_FIELDS)) {
 					$finalData[$key1][self::FIELDS[$key2]] = mb_convert_encoding($value, "utf-8", "windows-1251");
 				}
             }
