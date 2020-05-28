@@ -7,15 +7,10 @@ use PDO;
 class DB {
 	
 	private $_db = null;
-	private $_host = '127.0.0.1';
-	private $_port = '3306';
-	private $_name = 'statistics';
-	private $_login = 'root';
-	private $_password = '';
 
 	const DEBUG_ENABLED = true;
 
-	public function getInstance() {
+    public function getInstance() {
 		if (!$this->_db) {
 			$this->connect();
 		}
@@ -23,12 +18,14 @@ class DB {
 	}
 
 	private function connect() {
+        $config =  parse_ini_file('../config.ini', true);
+
 	    $debug = self::DEBUG_ENABLED ? [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION] : [];
 		try {
 			$this->_db = new PDO(
-				'mysql:dbname=' . $this->_name . ';host=' . $this->_host . ';port=' . $this->_port,
-				$this->_login,
-				$this->_password,
+				'mysql:dbname=' . $config['SQL']['name'] . ';host=' . $config['SQL']['host'] . ';port=' . $config['SQL']['port'],
+                $config['SQL']['login'],
+                $config['SQL']['password'],
                 $debug
 			);
 			$this->_db->query("SET NAMES 'utf8'");

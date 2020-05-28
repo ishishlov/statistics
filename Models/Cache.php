@@ -6,9 +6,6 @@ class Cache {
 	
 	private static $_memcache = null;
 
-	const HOST = '127.0.0.1';
-	const PORT = 11211;
-
 	const CACHE_IS_ENABLED = false;
 
     const CACHE_KEY_SEASONS_STATISTIC       = 'seasonsStatistic';
@@ -202,8 +199,10 @@ class Cache {
 
 	private static function _getMemcache() {
 		if (!self::$_memcache) {
+            $config =  parse_ini_file('../config.ini', true);
+
 			self::$_memcache = new Memcache();
-			self::$_memcache->connect(self::HOST, self::PORT) or die('Could not connect');
+			self::$_memcache->connect($config['CACHE']['host'], $config['CACHE']['port']) or die('Could not connect');
 		}
 		return self::$_memcache;
 	}
