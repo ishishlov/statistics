@@ -12,8 +12,8 @@ class Statistics extends Common {
     /**
 	 * Страница командной статистики. Для тестирования
 	 */
-	public function commandsStatistic() {
-		$this->display('debug/commandsstatistic.tpl');
+	public function localDebug() {
+		$this->display('debug/localdebug.tpl');
 	}
 
 	public function getCommandsStatistic() {
