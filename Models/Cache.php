@@ -115,9 +115,8 @@ class Cache {
 		$data = self::getValue($key);
 		if ($data) {
             unset($data[$seasonId][$tournamentId]);
-            $res = self::setStatistic($key, $data, $seasonId, $tournamentIds);
 
-            return $res;
+            return self::setStatistic($key, $data, $seasonId, $tournamentIds);
         }
 		return false;
 	}
@@ -182,9 +181,8 @@ class Cache {
         $data = self::getValue($key);
         if ($data) {
             unset($data[$id]);
-            $res = self::setInfo($key, $data, $id);
 
-            return $res;
+            return self::setInfo($key, $data, $id);
         }
         return false;
     }
