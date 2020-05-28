@@ -2,8 +2,11 @@
 
 namespace Models;
 
+use PDO;
+
 class Main {
-	
+
+    /** @var PDO|null */
 	protected $_db = null;
 
 	public function __construct() {

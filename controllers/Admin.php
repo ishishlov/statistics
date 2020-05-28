@@ -6,10 +6,12 @@ use Models\AllStatistics;
 class Admin extends Common {
 	
 	private $_statModel = null;
+	private $_teamsModel = null;
 	private $_historyTeamsModel = null;
 
 	public function __construct() {
 		$this->_statModel = new AllStatistics();
+		$this->_teamsModel = new Models\Teams();
 		$this->_historyTeamsModel = new Models\HystoryTeamsTotal();
 	}
 
@@ -43,7 +45,7 @@ class Admin extends Common {
      * Страница показа формы для добавления результата игры
      */
     public function addGameResult() {
-        $this->_data['teams'] = $this->_statModel->getTeams();
+        $this->_data['teams'] = $this->_teamsModel->getTeams();
         $this->_data['nowDate'] = date('Y-m-d');
         $this->_data['seasons'] = $this->_statModel->getAllSeasons();
         $this->_data['tournaments'] = $this->_statModel->getTournaments();

@@ -17,7 +17,6 @@ class AllStatistics extends Main {
 	const TABLE_NAME_STATISTIC_GAMES        = 'statistic_games';
     /** Название таблицы игр истории */
     const TABLE_NAME_HISTORY                = 'history';
-    const TABLE_NAME_TEAMS                  = 'teams';
     const TABLE_NAME_TOURNAMENTS            = 'tournaments';
     const TABLE_NAME_SEASONS                = 'seasons';
     const TABLE_NAME_PLAYERS                = 'players';
@@ -159,18 +158,6 @@ class AllStatistics extends Main {
         return $gameId;
     }
 
-    public function getTeams() {
-        $sth = $this->_db->prepare(
-            'SELECT
-                team_id,
-                `name`
-			FROM ' . self::TABLE_NAME_TEAMS . '
-            ORDER BY `name` ASC'
-        );
-        $sth->execute();
-        return $sth->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     public function getSeasonsStatistic($seasonId, $tournamentIds) {
 		$res = Cache::getStatistic(Cache::CACHE_KEY_SEASONS_STATISTIC, $seasonId, $tournamentIds);
 		if (!$res) {
@@ -232,7 +219,7 @@ class AllStatistics extends Main {
                     tm.url
 				FROM `' . self::TABLE_NAME_STATISTIC_GAMES . '` sg
 				JOIN ' . self::TABLE_NAME_TOURNAMENTS . ' tr ON tr.tournament_id = sg.tournament_id
-				JOIN ' . self::TABLE_NAME_TEAMS . ' tm ON tm.team_id = sg.team_id
+				JOIN ' . Teams::TABLE_NAME_TEAMS . ' tm ON tm.team_id = sg.team_id
 				WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?
 				ORDER BY sg.dt DESC'
 			);
@@ -431,7 +418,7 @@ class AllStatistics extends Main {
 					t.`name` AS team_name
 				FROM ' . self::TABLE_NAME_STATISTIC_GAMES . ' sg 
 				JOIN ' . self::TABLE_NAME_STATISTIC_PLAYERS . ' sp ON sp.game_id = sg.game_id
-				JOIN ' . self::TABLE_NAME_TEAMS . ' t ON t.team_id = sg.team_id
+				JOIN ' . Teams::TABLE_NAME_TEAMS . ' t ON t.team_id = sg.team_id
 				WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ? AND sp.player_id = ?
 				ORDER BY sg.dt DESC'
             );
@@ -484,7 +471,7 @@ class AllStatistics extends Main {
 				FROM ' . self::TABLE_NAME_STATISTIC_GAMES . ' sg 
 				JOIN ' . self::TABLE_NAME_STATISTIC_PLAYERS . ' sp ON sp.game_id = sg.game_id
 				JOIN ' . self::TABLE_NAME_PLAYERS . ' p ON p.player_id = sp.player_id
-				JOIN ' . self::TABLE_NAME_TEAMS . ' t ON t.team_id = sg.team_id
+				JOIN ' . Teams::TABLE_NAME_TEAMS . ' t ON t.team_id = sg.team_id
 				WHERE sg.game_id = ?'
 			);
             $sth->execute([$gameId]);
@@ -573,8 +560,8 @@ class AllStatistics extends Main {
                     t.`name` AS tournament_name,
                     s.`name` AS season_name
                 FROM ' . self::TABLE_NAME_HISTORY . ' h
-                JOIN ' . self::TABLE_NAME_TEAMS . ' tm1 ON tm1.team_id = h.team_id_one
-                JOIN ' . self::TABLE_NAME_TEAMS . ' tm2 ON tm2.team_id = h.team_id_two
+                JOIN ' . Teams::TABLE_NAME_TEAMS . ' tm1 ON tm1.team_id = h.team_id_one
+                JOIN ' . Teams::TABLE_NAME_TEAMS . ' tm2 ON tm2.team_id = h.team_id_two
                 JOIN ' . self::TABLE_NAME_TOURNAMENTS . ' t ON t.tournament_id = h.tournament_id
                 JOIN ' . self::TABLE_NAME_SEASONS . ' s ON s.season_id = h.season_id
                 WHERE h.tournament_id IN (' . $tournamentIdsString . ') AND h.season_id = ?
@@ -584,54 +571,6 @@ class AllStatistics extends Main {
             $res = $sth->fetchAll(PDO::FETCH_ASSOC);
 
             Cache::setStatistic(Cache::CACHE_KEY_HISTORY, $res, $seasonId, $tournamentIds);
-        }
-
-        return $res;
-    }
-
-    public function getHistoryTeamsTotal($seasonId, $tournamentIds) {
-        $res = Cache::getStatistic(Cache::CACHE_KEY_HISTORY, $seasonId, $tournamentIds);
-        if (!$res) {
-            $tournamentIdsString = implode(',', $tournamentIds);
-            $sth = $this->_db->prepare(
-                'SELECT
-                  htt.number,
-                  t.`name`,
-                  htt.season_id,
-                  htt.`two_point_made`,
-                  htt.`two_point_throw`,
-                  htt.`two_point_percent`,
-                  htt.`three_point_made`,
-                  htt.`three_point_throw`,
-                  htt.`three_point_percent`,
-                  htt.`two_three_point_made`,
-                  htt.`two_three_point_throw`,
-                  htt.`two_three_point_percent`,
-                  htt.free_made,
-                  htt.free_throw,
-                  htt.free_percent,
-                  htt.offensive_rebound,
-                  htt.deffensive_rebound,
-                  htt.sum_rebound,
-                  htt.assists,
-                  htt.commited_foul,
-                  htt.recieved_foul,
-                  htt.turnover,
-                  htt.steal,
-                  htt.in_fawor,
-                  htt.`against`,
-                  htt.effectiveness,
-                  htt.points_scored,
-                  htt.`plus_minus`
-                FROM history_teams_total htt
-                LEFT JOIN ' . self::TABLE_NAME_TEAMS . ' t ON t.team_id = htt.team_id
-                WHERE htt.tournament_id IN (' . $tournamentIdsString . ') AND htt.season_id = ?
-                ORDER BY htt.number ASC'
-            );
-            $sth->execute([$seasonId]);
-            $res = $sth->fetchAll(PDO::FETCH_ASSOC);
-
-            Cache::setStatistic(Cache::CACHE_KEY_PLAYER_GAMES_STATISTIC, $res, $seasonId, $tournamentIds);
         }
 
         return $res;
@@ -850,7 +789,7 @@ class AllStatistics extends Main {
                 SUM(sg.score) AS score
             FROM ' . self::TABLE_NAME_STATISTIC_GAMES . ' sg
             JOIN ' . self::TABLE_NAME_STATISTIC_PLAYERS . ' sp ON sp.game_id = sg.game_id
-            JOIN ' . self::TABLE_NAME_TEAMS . ' t ON sg.team_id = t.team_id
+            JOIN ' . Teams::TABLE_NAME_TEAMS . ' t ON sg.team_id = t.team_id
             WHERE sg.tournament_id IN (' . $tournamentIdsString . ') AND sg.season_id = ?
             GROUP BY sg.game_id'
         );

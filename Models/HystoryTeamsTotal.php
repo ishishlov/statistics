@@ -15,6 +15,42 @@ class HystoryTeamsTotal extends Main {
 	/** Выбор по всем сезонам */
 	const ALL_SEASONS = 999;
 
+    const FIELD_NUMBER = 0;
+    const FIELD_TEAM_ID = 1;
+    const FIELD_TWO_POINT_MADE = 2;
+    const FIELD_TWO_POINT_THROW = 3;
+    const FIELD_TWO_POINT_PERCENT = 4;
+    const FIELD_THREE_POINT_MADE = 5;
+    const FIELD_THREE_POINT_THROW = 6;
+    const FIELD_THREE_POINT_PERCENT = 7;
+    const FIELD_TWO_THREE_POINT_MADE = 8;
+    const FIELD_TWO_THREE_POINT_THROW = 9;
+    const FIELD_TWO_THREE_POINT_PERCENT = 10;
+    const FIELD_FREE_MADE = 11;
+    const FIELD_FREE_THROW = 12;
+    const FIELD_FREE_PERCENT = 13;
+    const FIELD_OFFENSIVE_REBOUND = 14;
+    const FIELD_DEFFENSIVE_REBOUND = 15;
+    const FIELD_SUM_REBOUND = 16;
+    const FIELD_ASSISTS = 17;
+    const FIELD_COMMITED_FOUL = 18;
+    const FIELD_RECIEVED_FOUL = 19;
+    const FIELD_TURNOVER = 20;
+    const FIELD_STEAL = 21;
+    const FIELD_IN_FAWOR = 22;
+    const FIELD_AGAINST = 23;
+    const FIELD_EFFECTIVENESS = 24;
+    const FIELD_SKIPPED1 = 25;
+    const FIELD_SKIPPED2 = 26;
+    const FIELD_PLUS_MINUS = 27;
+    const FIELD_SKIPPED3 = 28;
+    const FIELD_SKIPPED4 = 29;
+    const FIELD_TOURNAMENT_ID = 30;
+    const FIELD_SKIPPED5 = 31;
+    const FIELD_POINTS_SCORED = 32;
+    const FIELD_SEASON_ID = 33;
+    const FIELD_STATUS = 34;
+
 	const FIELDS = [
 		0 => '`number`',
 		1 => '`team_id`',
@@ -53,7 +89,13 @@ class HystoryTeamsTotal extends Main {
 		34 => '`status`'
 	];
 	
-	const SKIPPED_FIELDS = [25,26,28,29,31];
+	const SKIPPED_FIELDS = [
+        self::FIELD_SKIPPED1,
+        self::FIELD_SKIPPED2,
+        self::FIELD_SKIPPED3,
+        self::FIELD_SKIPPED4,
+        self::FIELD_SKIPPED5
+    ];
 
 	public function save($Csv) {
         $data = $Csv->getArray();
@@ -72,7 +114,7 @@ class HystoryTeamsTotal extends Main {
 	}
 
 	public function getSeasonId($data) {
-	    return $data[0][self::FIELDS[33]] ?: 0;
+	    return $data[0][self::FIELDS[self::FIELD_SEASON_ID]] ?: 0;
     }
 
     public function getHistoryTeamsTotal($seasonId, $tournamentIds) {
@@ -111,8 +153,8 @@ class HystoryTeamsTotal extends Main {
                   htt.effectiveness,
                   htt.points_scored,
                   htt.`plus_minus`
-                FROM history_teams_total htt
-                LEFT JOIN teams t ON t.team_id = htt.team_id
+                FROM ' . self::TABLE_NAME . ' htt
+                LEFT JOIN ' . Teams::TABLE_NAME_TEAMS . ' t ON t.team_id = htt.team_id
                 WHERE htt.tournament_id IN (' . $tournamentIdsString . ') ' . $seasonSql . '
                 ORDER BY htt.number ASC'
             );
@@ -133,7 +175,7 @@ class HystoryTeamsTotal extends Main {
 	public function getNotConfirmedIds() {
 		$sth = $this->_db->prepare('
 			SELECT history_teams_total_id
-			FROM `history_teams_total` 
+			FROM `' . self::TABLE_NAME . '` 
 			WHERE status = ?');
 		$sth->execute([self::STATUS_NOT_CONFIRMED]);
 		return $sth->fetchAll(PDO::FETCH_COLUMN);
@@ -142,7 +184,7 @@ class HystoryTeamsTotal extends Main {
     public function getIdsBySeasonId($seasonId) {
         $sth = $this->_db->prepare('
 			SELECT history_teams_total_id
-			FROM `history_teams_total` 
+			FROM `' . self::TABLE_NAME . '` 
 			WHERE season_id = ?');
         $sth->execute([$seasonId]);
         return $sth->fetchAll(PDO::FETCH_COLUMN);
@@ -180,7 +222,7 @@ class HystoryTeamsTotal extends Main {
                   htt.points_scored,
                   htt.`plus_minus`
 			FROM ' . self::TABLE_NAME . ' htt
-            LEFT JOIN teams t ON t.team_id = htt.team_id
+            LEFT JOIN ' . Teams::TABLE_NAME_TEAMS . ' t ON t.team_id = htt.team_id
             WHERE `status` = ?
             ORDER BY htt.number ASC
 		');
@@ -247,7 +289,7 @@ class HystoryTeamsTotal extends Main {
 					$finalData[$key1][self::FIELDS[$key2]] = mb_convert_encoding($value, "utf-8", "windows-1251");
 				}
             }
-            $finalData[$key1][self::FIELDS[34]] = self::STATUS_NOT_CONFIRMED;
+            $finalData[$key1][self::FIELDS[self::FIELD_STATUS]] = self::STATUS_NOT_CONFIRMED;
         }
 
         return $finalData;
@@ -260,7 +302,7 @@ class HystoryTeamsTotal extends Main {
      * @return array
      */
     private function _removeFirstRow($data) {
-        $temp = (int)$data[0][self::FIELDS[0]];
+        $temp = (int)$data[0][self::FIELDS[self::FIELD_NUMBER]];
         if (!$temp) {
             array_shift($data);
         }
