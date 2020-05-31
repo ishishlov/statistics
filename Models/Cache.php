@@ -7,6 +7,7 @@ class Cache {
 	private static $_memcache = null;
 
 	const CACHE_IS_ENABLED = false;
+    const CONFIG_PATH = __DIR__ . '/../../config.ini';
 
     const CACHE_KEY_SEASONS_STATISTIC       = 'seasonsStatistic';
     const CACHE_KEY_GAMES_STATISTIC         = 'gamesStatistic';
@@ -199,7 +200,7 @@ class Cache {
 
 	private static function _getMemcache() {
 		if (!self::$_memcache) {
-            $config =  parse_ini_file('../config.ini', true);
+            $config =  parse_ini_file(self::CONFIG_PATH, true);
 
 			self::$_memcache = new Memcache();
 			self::$_memcache->connect($config['CACHE']['host'], $config['CACHE']['port']) or die('Could not connect');

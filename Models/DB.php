@@ -10,6 +10,7 @@ class DB {
 	private $_db = null;
 
 	const DEBUG_ENABLED = true;
+	const CONFIG_PATH = __DIR__ . '/../../config.ini';
 
     public function getInstance() {
 		if (!$this->_db) {
@@ -19,7 +20,7 @@ class DB {
 	}
 
 	private function connect() {
-        $config =  parse_ini_file('../config.ini', true);
+        $config =  parse_ini_file(self::CONFIG_PATH, true);
         $port = $config['SQL']['port'] ? ';port=' . $config['SQL']['port'] : '';
 
 	    $debug = self::DEBUG_ENABLED ? [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION] : [];
