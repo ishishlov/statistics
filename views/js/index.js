@@ -1023,6 +1023,7 @@
 				}
 
                 $('.stat-widget-player-games-statistic').empty().append(adaptiveHtml);
+				$('.stat-widget-sortable-table').tablesorter();
             },
 
 			getPlayerGamesStatisticHtml: function (data) {
@@ -1060,7 +1061,7 @@
 					);
 				});
 				var html = (
-					'<table class="stat-widget-season-statistic-table">' +
+					'<table class="stat-widget-season-statistic-table stat-widget-sortable-table">' +
 						'<colgroup>' +
 							'<col width="70" />' +
 							'<col width="60" />' +
@@ -1089,7 +1090,7 @@
 							'<col width="50" />' +
 							'<col width="50" />' +
 						'</colgroup>' +
-						'<tbody>' +
+						'<thead>' +
 						'<tr class="stat-widget-table-head-row stat-widget-table-row-stretch">' +
 							'<th class="stat-widget-season-statistic-table-cell-head stat-widget-table-first-column"></th>' +
 							'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
@@ -1131,7 +1132,10 @@
 							'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Эфф</td>' +
 							'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">+/-</td>' +
 							'<td class="stat-widget-season-statistic-table-cell-bold">Оч</td>' +
-						'</tr>' + rows +
+						'</tr>' +
+						'</thead>' +
+						'<tbody' +
+							rows +
 						'</tbody>' +
 					'</table>'
 				);
@@ -1148,6 +1152,7 @@
                 var title = 'ХИМКИ - ' + data['player'][0].team_name + ' / ' + data['player'][0].score + ' / ' + data['player'][0].dt;
                 $('.stat-widget-title').empty().append(title);
                 $('.stat-widget-game-info').empty().append(adaptiveHtml);
+				$('.stat-widget-sortable-table').tablesorter();
             },
 
 			getGameInfoHtml: function (data) {
@@ -1185,7 +1190,7 @@
 					);
 				});
 				var html = (
-					'<table class="stat-widget-season-statistic-table">' +
+					'<table class="stat-widget-season-statistic-table stat-widget-sortable-table">' +
 						'<colgroup>' +
 							'<col width="70" />' +
 							'<col width="60" />' +
@@ -1214,7 +1219,7 @@
 							'<col width="50" />' +
 							'<col width="50" />' +
 						'</colgroup>' +
-						'<tbody>' +
+						'<thead>' +
 							'<tr class="stat-widget-table-head-row">' +
 								'<th class="stat-widget-season-statistic-table-cell-head stat-widget-table-first-column"></th>' +
 								'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
@@ -1256,7 +1261,11 @@
 								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Эфф</td>' +
 								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">+/-</td>' +
 								'<td class="stat-widget-season-statistic-table-cell-bold">Оч</td>' +
-							'</tr>' + rows +
+							'</tr>' +
+						'</thead>' +
+					'<tbody>' +
+						rows +
+					'</tbody>' +
 							'<tr>' +
 								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name stat-widget-table-first-column">Сумма</td>' +
 								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + data['sum'].player_time + '</td>' +
@@ -1282,7 +1291,6 @@
 								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + data['sum']['plus_minus'] + '</td>' +
 								'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + data['sum']['points_scored'] + '</td>' +
 							'</tr>' +
-						'</tbody>' +
 					'</table>'
 				);
 
