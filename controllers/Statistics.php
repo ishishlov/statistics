@@ -1,5 +1,5 @@
 <?php
-require_once 'controllers/Common.php';
+require_once __DIR__ . '/Common.php';
 
 class Statistics extends Common {
 	
