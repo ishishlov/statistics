@@ -26,5 +26,13 @@ foreach ($names as $name) {
 function printMessage($i, $count, $name, $status) {
     $pos = strlen($name) - 4;
     $name = substr($name, 0, $pos);
-    print("({$i}/{$count}) Status - {$status}. Add table {$name}" . PHP_EOL);
+    $text = "({$i}/{$count}) Status - {$status}. Add table {$name}" . PHP_EOL;
+
+    if (empty($_GET['web'])) {
+        print($text);
+    } else {
+        echo '<pre>';
+        print($text);
+        echo '</pre>';
+    }
 }

@@ -122,7 +122,7 @@ function calcTime($startTime, $finishTime) {
 }
 
 function printMessage($name, $times) {
-    printf(
+    $text = sprintf(
         "Run time %s:\n 1 run - %s sec\n 10 run - %s sec\n 100 run - %s sec\n 1000 run - %s sec\n\n",
         $name,
         calcTime($times['now'], $times['run1']),
@@ -130,4 +130,12 @@ function printMessage($name, $times) {
         calcTime($times['now'], $times['run100']),
         calcTime($times['now'], $times['run1000'])
     );
+
+    if (empty($_GET['web'])) {
+        print($text);
+    } else {
+        echo '<pre>';
+        print($text);
+        echo '</pre>';
+    }
 }
