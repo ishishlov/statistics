@@ -10,7 +10,7 @@ class Route {
 			$method = 'index';
 		} else {
 			$urlArray = explode('/', $url);
-			$controllerName = trim($urlArray[1]);
+			$controllerName = ucfirst(trim($urlArray[1]));
 			$methodArray = explode('?', trim($urlArray[2]));
             $method = $methodArray[0];
 		}
