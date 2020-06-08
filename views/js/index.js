@@ -85,7 +85,7 @@
 			paging:         false,
 			searching:		false,
 			info:			false,
-			autoWidth: 		false,
+			scrollXInner:   "100%",
 			fixedColumns:   {
 				leftColumns: 1
 			}
@@ -1133,7 +1133,7 @@
                             '<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name">' +
 								'<span class="stat-widget-link stat-widget-player-profile" data-player-id="' + val.player_id + '">' + fullName + '</span>' +
 							'</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.player_time + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end" data-sort="' + val.seconds + '">' + val.player_time + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell">' + val.two_point_made + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell-end">' + val.two_point_throw + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell">' + val.three_point_made + '</td>' +
