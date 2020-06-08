@@ -427,6 +427,7 @@ class AllStatistics extends Main {
 
             foreach ($res as &$game) {
                 $game['player_time'] = $this->getPlayerTime($game['seconds']);
+                $game['dt_timestamp'] = strtotime($game['dt']);
             }
             unset($game);
 

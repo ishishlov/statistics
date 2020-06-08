@@ -1038,11 +1038,11 @@
 				$.each(data, function(idx, val) {
 					rows += (
 						'<tr>' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name">' +
+							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name" data-sort="' + val.dt_timestamp + '">' +
 								'<span class="stat-widget-show-game-info stat-widget-link" data-game-id="' + val.game_id + '">' + val.team_name + '</span>' +
 								'<span class="stat-widget-game-statistic-table-dt">' + val.dt + '</span>' +
 							'</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end">' + val.player_time + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end" data-sort="' + val.seconds + '">' + val.player_time + '</td>' +
 							'<td class="stat-widget-season-statistic-table-cell">' + val.two_point_made + '</td>' +
 							'<td class="stat-widget-season-statistic-table-cell-end">' + val.two_point_throw + '</td>' +
 							'<td class="stat-widget-season-statistic-table-cell">' + val.three_point_made + '</td>' +
@@ -1068,7 +1068,7 @@
 					);
 				});
 				var html = (
-					'<table class="stat-widget-season-statistic-table stat-widget-sortable-table mini-compact">' +
+					'<table class="stat-widget-season-statistic-table stat-widget-sortable-table mini-compact" data-order="[[ 0, &quot;desc&quot; ]]">' +
 						'<thead>' +
 						'<tr class="stat-widget-table-head-row stat-widget-table-row-stretch">' +
 							'<th class="stat-widget-season-statistic-table-cell-head" rowspan="2"></th>' +
@@ -1159,7 +1159,7 @@
 					);
 				});
 				var html = (
-					'<table class="stat-widget-season-statistic-table stat-widget-sortable-table mini-compact">' +
+					'<table class="stat-widget-season-statistic-table stat-widget-sortable-table mini-compact" data-order="[[ 0, &quot;asc&quot; ]]">' +
 						'<thead>' +
 							'<tr class="stat-widget-table-head-row">' +
 								'<th class="stat-widget-season-statistic-table-cell-head" rowspan="2"></th>' +
@@ -1254,7 +1254,7 @@
                             '<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name">' +
                                 '<span class="stat-widget-link stat-widget-player-profile" data-player-id="' + val.player_id + '">' + fullName + '</span>' +
                             '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.player_time + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end" data-sort="' + val.seconds + '">' + val.player_time + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell">' + val.two_point_made + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell-end">' + val.two_point_throw + '</td>' +
                             '<td class="stat-widget-season-statistic-table-cell">' + val.three_point_made + '</td>' +
@@ -1280,7 +1280,7 @@
                     );
                 });
                 var html = (
-                    '<table id="' + tableId + '" class="stat-widget-season-statistic-table mini-compact">' +
+                    '<table id="' + tableId + '" class="stat-widget-season-statistic-table mini-compact" data-order="[[ 0, &quot;asc&quot; ]]">' +
 						'<thead>' +
                             '<tr class="stat-widget-table-head-row">' +
                                 '<th class="stat-widget-season-statistic-table-cell-head" rowspan="2"></th>' +
