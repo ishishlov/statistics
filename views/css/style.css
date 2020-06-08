@@ -351,7 +351,7 @@
 }
 
 table.dataTable.mini-compact thead th, table.dataTable.mini-compact thead td {
-	padding: 2px 13px
+	padding: 2px 14px
 }
 
 table.dataTable.mini-compact tfoot th, table.dataTable.mini-compact tfoot td {
@@ -411,15 +411,7 @@ table.dataTable.mini-compact tbody th, table.dataTable.mini-compact tbody td {
 	}
 
 	table.dataTable.mini-compact thead th, table.dataTable.mini-compact thead td {
-		padding: 0 10px
-	}
-
-	table.dataTable.mini-compact tfoot th, table.dataTable.mini-compact tfoot td {
-		padding: 0
-	}
-
-	table.dataTable.mini-compact tbody th, table.dataTable.mini-compact tbody td {
-		padding: 0
+		padding: 2px 10px
 	}
 }
 
@@ -515,14 +507,6 @@ table.dataTable.mini-compact tbody th, table.dataTable.mini-compact tbody td {
 	}
 
 	table.dataTable.mini-compact thead th, table.dataTable.mini-compact thead td {
-		padding: 0 6px
-	}
-
-	table.dataTable.mini-compact tfoot th, table.dataTable.mini-compact tfoot td {
-		padding: 0
-	}
-
-	table.dataTable.mini-compact tbody th, table.dataTable.mini-compact tbody td {
-		padding: 0
+		padding: 2px 6px
 	}
 }
