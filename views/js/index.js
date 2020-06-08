@@ -59,7 +59,7 @@
 		};
 
 		var _module;
-		var _domenName = '';
+		var _domainName = '';
 		var $_mainContainer;
 		var _tournamentIds = [2];
 		var _seasonId = CURRENT_SEASON;
@@ -79,10 +79,22 @@
 		var ALL_TOURNAMENTS_ALIAS = 999;
 		var ALL_TOURNAMENTS_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+		var DATA_TABLES_DEFAULT_SETTINGS = {
+			scrollX:        true,
+			scrollCollapse: false,
+			paging:         false,
+			searching:		false,
+			info:			false,
+			autoWidth: 		false,
+			fixedColumns:   {
+				leftColumns: 1
+			}
+		};
+
 		return {
 			init: function() {
 				_module = this;
-				_module.setDomenName();
+				_module.setDomainName();
 				$_mainContainer = $('#stat-widget');
 				_module.renderWidget();
 
@@ -278,11 +290,11 @@
 				}
 			},
 
-			setDomenName: function () {
+			setDomainName: function () {
 				if (location.hostname !== 'statistic.ru' &&
 					location.hostname !== '127.0.0.1'
 				) {
-					_domenName = 'http://statistics.ivanshi.ru';
+					_domainName = 'http://statistics.ivanshi.ru';
 				}
 			},
 
@@ -459,7 +471,7 @@
 			},
 
 			getAllSeasons: function () {
-				var url = _domenName + '/statistics/getAllSeasons';
+				var url = _domainName + '/statistics/getAllSeasons';
 				$.ajax({
 					url: url,
 					type: 'POST',
@@ -471,7 +483,7 @@
 
 			getTournaments: function () {
 				//_module.showLoader();
-				var url = _domenName + '/statistics/getTournaments';
+				var url = _domainName + '/statistics/getTournaments';
 				$.ajax({
 					url: url,
 					type: 'POST',
@@ -484,7 +496,7 @@
 
 			getCommandsStatistic: function () {
 				_module.showLoader();
-				var url = _domenName + '/statistics/getCommandsStatistic';
+				var url = _domainName + '/statistics/getCommandsStatistic';
 				var ajaxParams = {
 					seasonId: _seasonId,
 					tournamentIds: _tournamentIds
@@ -503,7 +515,7 @@
 
 			getPlayersStatistic: function () {
 				_module.showLoader();
-				var url = _domenName + '/statistics/getPlayersStatistic';
+				var url = _domainName + '/statistics/getPlayersStatistic';
 				var ajaxParams = {
 					seasonId: _seasonId,
 					tournamentIds: _tournamentIds
@@ -522,7 +534,7 @@
 
 			getPlayerInfo: function () {
 				_module.showLoader();
-				var url = _domenName + '/statistics/getPlayerData';
+				var url = _domainName + '/statistics/getPlayerData';
 				var ajaxParams = {
 					playerId: _playerId,
 					seasonId: _seasonId,
@@ -543,7 +555,7 @@
 			
 			getGameInfo: function () {
 				_module.showLoader();
-				var url = _domenName + '/statistics/getGameInfo';
+				var url = _domainName + '/statistics/getGameInfo';
 				var ajaxParams = {
 					gameId: _gameId
 				};
@@ -560,7 +572,7 @@
 
 			getHistoryData: function () {
 				_module.showLoader();
-				var url = _domenName + '/statistics/getHistoryData';
+				var url = _domainName + '/statistics/getHistoryData';
 				var ajaxParams = {
 					seasonId: _seasonId,
 					tournamentIds: _tournamentIds
@@ -595,6 +607,7 @@
 				return (
 					'<div class="stat-widget-filters">' +
 						'<ul class="stat-widget-filter-tournaments"></ul>' +
+						'<ul class="stat-widget-filter-seasons"></ul>' +
 					'</div>'
 				);
 			},
@@ -611,16 +624,14 @@
 				});
 
 				var html = (
-					'<ul>' +
-						'<li>' +
-							'<select class="stat-widget-filter-season">' +
-								optionsHtml +
-							'</select>' +
-						'</li>' +
-					'</ul>'
+					'<li>' +
+						'<select class="stat-widget-filter-season">' +
+							optionsHtml +
+						'</select>' +
+					'</li>'
 				);
 
-				$('.stat-widget-filters').append(html);
+				$('.stat-widget-filter-seasons').empty().append(html);
 			},
 
 			/**
@@ -803,7 +814,7 @@
 						'<tr>' +
 							'<td class="stat-widget-player-statistic-table-cell">' + val.number + '</td>' +
 							'<td class="stat-widget-player-statistic-table-cell stat-widget-player-avatar-cell">' +
-								'<img src="' + _domenName + avatar + '" alt="' + fullName + '" width="50" title="' + fullName + '">' +
+								'<img src="' + _domainName + avatar + '" alt="' + fullName + '" width="50" title="' + fullName + '">' +
 							'</td>' +
 							'<td class="stat-widget-player-statistic-table-cell">' +
 								'<span class="stat-widget-link stat-widget-player-profile" data-player-id="' + val.player_id + '">' + fullName + '</span>' +
@@ -850,7 +861,7 @@
 
 				var html = (
 					'<div class="stat-widget-player-info-img">' +
-						'<img src="' + _domenName + avatar + '" alt="' + fullName + '" title="' + fullName + '" width="120px">' +
+						'<img src="' + _domainName + avatar + '" alt="' + fullName + '" title="' + fullName + '" width="120px">' +
 					'</div>' +
 					'<table class="stat-widget-game-player-statistic-table">' +
 						'<colgroup>' +
@@ -1012,87 +1023,55 @@
 				return html;
 			},
 
-            appendHtmlPlayerGamesStatistic: function (data) {
-				var adaptiveHtml = '';
+			appendHtmlPlayerGamesStatistic: function (data) {
+				var html = '';
 				if (data.length > 0) {
-					var html = _module.getPlayerGamesStatisticHtml(data);
-					adaptiveHtml = (
-						'<div class="stat-widget-table-first">' + html + '</div>' +
-						'<div class="stat-widget-table-second stat-widget-table-second-stretch">' + html + '</div>'
-					);
+					html = _module.getPlayerGamesStatisticHtml(data);
 				}
 
-                $('.stat-widget-player-games-statistic').empty().append(adaptiveHtml);
-				$('.stat-widget-sortable-table').tablesorter();
-            },
+				$('.stat-widget-player-games-statistic').empty().append(html);
+				$('.stat-widget-sortable-table').DataTable(DATA_TABLES_DEFAULT_SETTINGS);
+			},
 
 			getPlayerGamesStatisticHtml: function (data) {
 				var rows = '';
 				$.each(data, function(idx, val) {
 					rows += (
-						'<tr class="stat-widget-table-row-stretch">' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name stat-widget-table-first-column">' +
+						'<tr>' +
+							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name">' +
 								'<span class="stat-widget-show-game-info stat-widget-link" data-game-id="' + val.game_id + '">' + val.team_name + '</span>' +
 								'<span class="stat-widget-game-statistic-table-dt">' + val.dt + '</span>' +
 							'</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.player_time + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.two_point_made + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.two_point_throw + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.three_point_made + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.three_point_throw + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + (parseInt(val.two_point_made) + parseInt(val.three_point_made)) + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + (parseInt(val.two_point_throw) + parseInt(val.three_point_throw)) + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.free_made + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.free_throw + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.offensive_rebound + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.deffensive_rebound + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + (parseInt(val.offensive_rebound) + parseInt(val.deffensive_rebound)) + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.assists + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.commited_foul + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.recieved_foul + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.turnover + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.steal + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.in_fawor + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.against + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.effectiveness + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.plus_minus + '</td>' +
-							'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.points_scored + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + val.player_time + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell">' + val.two_point_made + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + val.two_point_throw + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell">' + val.three_point_made + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + val.three_point_throw + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell">' + (parseInt(val.two_point_made) + parseInt(val.three_point_made)) + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + (parseInt(val.two_point_throw) + parseInt(val.three_point_throw)) + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell">' + val.free_made + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + val.free_throw + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell">' + val.offensive_rebound + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell">' + val.deffensive_rebound + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + (parseInt(val.offensive_rebound) + parseInt(val.deffensive_rebound)) + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + val.assists + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell">' + val.commited_foul + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + val.recieved_foul + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + val.turnover + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + val.steal + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + val.in_fawor + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + val.against + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + val.effectiveness + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell-end">' + val.plus_minus + '</td>' +
+							'<td class="stat-widget-season-statistic-table-cell">' + val.points_scored + '</td>' +
 						'</tr>'
 					);
 				});
 				var html = (
-					'<table class="stat-widget-season-statistic-table stat-widget-sortable-table">' +
-						'<colgroup>' +
-							'<col width="70" />' +
-							'<col width="60" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-						'</colgroup>' +
+					'<table class="stat-widget-season-statistic-table stat-widget-sortable-table mini-compact">' +
 						'<thead>' +
 						'<tr class="stat-widget-table-head-row stat-widget-table-row-stretch">' +
-							'<th class="stat-widget-season-statistic-table-cell-head stat-widget-table-first-column"></th>' +
+							'<th class="stat-widget-season-statistic-table-cell-head" rowspan="2"></th>' +
 							'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
 							'<th class="stat-widget-season-statistic-table-cell-head" colspan="2">2-ОЧК</th>' +
 							'<th class="stat-widget-season-statistic-table-cell-head" colspan="2">3-ОЧК</th>' +
@@ -1101,15 +1080,9 @@
 							'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">ПД</th>' +
 							'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
 							'<th class="stat-widget-season-statistic-table-cell-head" colspan="2">Ф</th>' +
-							'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-							'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-							'<th class="stat-widget-season-statistic-table-cell-head" colspan="2"></th>' +
-							'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-							'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-							'<th class="stat-widget-season-statistic-table-cell-head-end"></th>' +
+							'<th class="stat-widget-season-statistic-table-cell-head-end" colspan="7"></th>' +
 						'</tr>' +
 						'<tr class="stat-widget-table-head-row stat-widget-table-row-stretch">' +
-							'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end stat-widget-table-first-column"></td>' +
 							'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">мин</td>' +
 							'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
 							'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Б</td>' +
@@ -1145,14 +1118,10 @@
 
             appendHtmlGameInfo: function (data) {
                 var html = _module.getGameInfoHtml(data);
-                var adaptiveHtml = (
-                    '<div class="stat-widget-table-first">' + html + '</div>' +
-                    '<div class="stat-widget-table-second">' + html + '</div>'
-                );
                 var title = 'ХИМКИ - ' + data['player'][0].team_name + ' / ' + data['player'][0].score + ' / ' + data['player'][0].dt;
                 $('.stat-widget-title').empty().append(title);
-                $('.stat-widget-game-info').empty().append(adaptiveHtml);
-				$('.stat-widget-sortable-table').tablesorter();
+                $('.stat-widget-game-info').empty().append(html);
+				$('.stat-widget-sortable-table').DataTable(DATA_TABLES_DEFAULT_SETTINGS);
             },
 
 			getGameInfoHtml: function (data) {
@@ -1161,67 +1130,39 @@
 					var fullName = val.name + ' ' + val.surname;
 					rows += (
 						'<tr>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name stat-widget-table-first-column">' +
+                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name">' +
 								'<span class="stat-widget-link stat-widget-player-profile" data-player-id="' + val.player_id + '">' + fullName + '</span>' +
 							'</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.player_time + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.two_point_made + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.two_point_throw + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.three_point_made + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.three_point_throw + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + (parseInt(val.two_point_made) + parseInt(val.three_point_made)) + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + (parseInt(val.two_point_throw) + parseInt(val.three_point_throw)) + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.free_made + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.free_throw + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.offensive_rebound + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.deffensive_rebound + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + (parseInt(val.offensive_rebound) + parseInt(val.deffensive_rebound)) + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.assists + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.commited_foul + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.recieved_foul + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.turnover + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.steal + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.in_fawor + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.against + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.effectiveness + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.plus_minus + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.points_scored + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.player_time + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + val.two_point_made + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.two_point_throw + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + val.three_point_made + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.three_point_throw + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + (parseInt(val.two_point_made) + parseInt(val.three_point_made)) + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + (parseInt(val.two_point_throw) + parseInt(val.three_point_throw)) + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + val.free_made + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.free_throw + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + val.offensive_rebound + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + val.deffensive_rebound + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + (parseInt(val.offensive_rebound) + parseInt(val.deffensive_rebound)) + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.assists + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + val.commited_foul + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.recieved_foul + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.turnover + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.steal + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.in_fawor + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.against + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.effectiveness + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.plus_minus + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + val.points_scored + '</td>' +
 						'</tr>'
 					);
 				});
 				var html = (
-					'<table class="stat-widget-season-statistic-table stat-widget-sortable-table">' +
-						'<colgroup>' +
-							'<col width="70" />' +
-							'<col width="60" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-							'<col width="50" />' +
-						'</colgroup>' +
+					'<table class="stat-widget-season-statistic-table stat-widget-sortable-table mini-compact">' +
 						'<thead>' +
 							'<tr class="stat-widget-table-head-row">' +
-								'<th class="stat-widget-season-statistic-table-cell-head stat-widget-table-first-column"></th>' +
+								'<th class="stat-widget-season-statistic-table-cell-head" rowspan="2"></th>' +
 								'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
 								'<th class="stat-widget-season-statistic-table-cell-head" colspan="2">2-ОЧК</th>' +
 								'<th class="stat-widget-season-statistic-table-cell-head" colspan="2">3-ОЧК</th>' +
@@ -1230,15 +1171,9 @@
 								'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">ПД</th>' +
 								'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
 								'<th class="stat-widget-season-statistic-table-cell-head" colspan="2">Ф</th>' +
-								'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-								'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-								'<th class="stat-widget-season-statistic-table-cell-head" colspan="2"></th>' +
-								'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-								'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-								'<th class="stat-widget-season-statistic-table-cell-head-end"></th>' +
+								'<th class="stat-widget-season-statistic-table-cell-head-end" colspan="7"></th>' +
 							'</tr>' +
 							'<tr class="stat-widget-table-head-row">' +
-								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end stat-widget-table-first-column"></td>' +
 								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">мин</td>' +
 								'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
 								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Б</td>' +
@@ -1263,34 +1198,36 @@
 								'<td class="stat-widget-season-statistic-table-cell-bold">Оч</td>' +
 							'</tr>' +
 						'</thead>' +
-					'<tbody>' +
-						rows +
-					'</tbody>' +
-							'<tr>' +
-								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name stat-widget-table-first-column">Сумма</td>' +
-								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + data['sum'].player_time + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + data['sum'].two_point_made + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + data['sum']['two_point_throw'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + data['sum']['three_point_made'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + data['sum']['three_point_throw'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + (parseInt(data['sum']['two_point_made']) + parseInt(data['sum']['three_point_made'])) + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + (parseInt(data['sum']['two_point_throw']) + parseInt(data['sum']['three_point_throw'])) + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + data['sum']['free_made'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + data['sum']['free_throw'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + data['sum']['offensive_rebound'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + data['sum']['deffensive_rebound'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + (parseInt(data['sum']['offensive_rebound']) + parseInt(data['sum']['deffensive_rebound'])) + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + data['sum']['assists'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + data['sum']['commited_foul'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + data['sum']['recieved_foul'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + data['sum']['turnover'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + data['sum']['steal'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + data['sum']['in_fawor'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + data['sum']['against'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + data['sum']['effectiveness'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + data['sum']['plus_minus'] + '</td>' +
-								'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + data['sum']['points_scored'] + '</td>' +
-							'</tr>' +
+						'<tbody>' +
+							rows +
+						'</tbody>' +
+						'<tfoot>' +
+								'<tr>' +
+									'<th class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name">Сумма</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-end">' + data['sum'].player_time + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell">' + data['sum'].two_point_made + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-end">' + data['sum']['two_point_throw'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell">' + data['sum']['three_point_made'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-end">' + data['sum']['three_point_throw'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell">' + (parseInt(data['sum']['two_point_made']) + parseInt(data['sum']['three_point_made'])) + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-end">' + (parseInt(data['sum']['two_point_throw']) + parseInt(data['sum']['three_point_throw'])) + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell">' + data['sum']['free_made'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-end">' + data['sum']['free_throw'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell">' + data['sum']['offensive_rebound'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell">' + data['sum']['deffensive_rebound'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-end">' + (parseInt(data['sum']['offensive_rebound']) + parseInt(data['sum']['deffensive_rebound'])) + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-end">' + data['sum']['assists'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell">' + data['sum']['commited_foul'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-end">' + data['sum']['recieved_foul'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-end">' + data['sum']['turnover'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-end">' + data['sum']['steal'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-end">' + data['sum']['in_fawor'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-end">' + data['sum']['against'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-end">' + data['sum']['effectiveness'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell-end">' + data['sum']['plus_minus'] + '</th>' +
+									'<th class="stat-widget-season-statistic-table-cell">' + data['sum']['points_scored'] + '</th>' +
+								'</tr>' +
+						'</tfoot>' +
 					'</table>'
 				);
 
@@ -1301,84 +1238,52 @@
 				if (!data.length) {
 					$('.stat-widget-history-data-tables').empty().append('Нет данных');
 				} else {
-					var html = _module.getHistoryTabelsHtml(data);
-					var adaptiveHtml = (
-						'<div class="stat-widget-table-first">' + html + '</div>' +
-						'<div class="stat-widget-table-second">' + html + '</div>'
-					);
-
-					$('.stat-widget-history-data-tables').empty().append(adaptiveHtml);
-					$('.stat-widget-sortable-table').tablesorter();
+					var tableId = 'sortable-table-1';
+					var html = _module.getHistoryTabelsHtml(data, tableId);
+					$('.stat-widget-history-data-tables').empty().append(html);
+					$('#' + tableId).DataTable(DATA_TABLES_DEFAULT_SETTINGS);
 				}
             },
 
-            getHistoryTabelsHtml: function (data) {
+            getHistoryTabelsHtml: function (data, tableId) {
                 var rows = '';
                 $.each(data, function(idx, val) {
                     var fullName = val.name + ' ' + val.surname;
                     rows += (
                         '<tr>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name stat-widget-table-first-column">' +
+                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-game-statistic-table-name">' +
                                 '<span class="stat-widget-link stat-widget-player-profile" data-player-id="' + val.player_id + '">' + fullName + '</span>' +
                             '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.player_time + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.two_point_made + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.two_point_throw + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.three_point_made + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.three_point_throw + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + (parseInt(val.two_point_made) + parseInt(val.three_point_made)) + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + (parseInt(val.two_point_throw) + parseInt(val.three_point_throw)) + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.free_made + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.free_throw + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.offensive_rebound + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.deffensive_rebound + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + (parseInt(val.offensive_rebound) + parseInt(val.deffensive_rebound)) + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.assists + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.commited_foul + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.recieved_foul + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.turnover + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.steal + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.in_fawor + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.against + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.effectiveness + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.plus_minus + '</td>' +
-                            '<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.points_scored + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.player_time + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + val.two_point_made + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.two_point_throw + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + val.three_point_made + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.three_point_throw + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + (parseInt(val.two_point_made) + parseInt(val.three_point_made)) + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + (parseInt(val.two_point_throw) + parseInt(val.three_point_throw)) + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + val.free_made + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.free_throw + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + val.offensive_rebound + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + val.deffensive_rebound + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + (parseInt(val.offensive_rebound) + parseInt(val.deffensive_rebound)) + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.assists + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + val.commited_foul + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.recieved_foul + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.turnover + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.steal + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.in_fawor + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.against + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.effectiveness + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell-end">' + val.plus_minus + '</td>' +
+                            '<td class="stat-widget-season-statistic-table-cell">' + val.points_scored + '</td>' +
                         '</tr>'
                     );
                 });
                 var html = (
-                    '<table class="stat-widget-season-statistic-table stat-widget-sortable-table">' +
-                        '<colgroup>' +
-                            '<col width="70" />' +
-                            '<col width="60" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                            '<col width="50" />' +
-                        '</colgroup>' +
+                    '<table id="' + tableId + '" class="stat-widget-season-statistic-table mini-compact">' +
 						'<thead>' +
                             '<tr class="stat-widget-table-head-row">' +
-                                '<th class="stat-widget-season-statistic-table-cell-head stat-widget-table-first-column"></th>' +
+                                '<th class="stat-widget-season-statistic-table-cell-head" rowspan="2"></th>' +
                                 '<th class="stat-widget-season-statistic-table-cell-head"></th>' +
                                 '<th class="stat-widget-season-statistic-table-cell-head" colspan="2">2-ОЧК</th>' +
                                 '<th class="stat-widget-season-statistic-table-cell-head" colspan="2">3-ОЧК</th>' +
@@ -1387,15 +1292,9 @@
                                 '<th class="stat-widget-season-statistic-table-cell-head" colspan="3">ПД</th>' +
                                 '<th class="stat-widget-season-statistic-table-cell-head"></th>' +
                                 '<th class="stat-widget-season-statistic-table-cell-head" colspan="2">Ф</th>' +
-                                '<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-                                '<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-                                '<th class="stat-widget-season-statistic-table-cell-head" colspan="2"></th>' +
-                                '<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-                                '<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-                                '<th class="stat-widget-season-statistic-table-cell-head-end"></th>' +
+                                '<th class="stat-widget-season-statistic-table-cell-head-end" colspan="7"></th>' +
                             '</tr>' +
                             '<tr class="stat-widget-table-head-row">' +
-                                '<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end stat-widget-table-first-column"></td>' +
                                 '<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">мин</td>' +
                                 '<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
                                 '<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Б</td>' +
@@ -1501,7 +1400,6 @@
 			},
 
 			appendHtmlTeamHistoryTotal: function (historyTeamsTotal, historyTables) {
-				var adaptiveHtml = '';
 				var showHistoryTeamsTotal = historyTeamsTotal.length ? true : false;
 				var showHistoryTabels = (_seasonId == ALL_SEASONS_ALIAS && historyTables.length) ? true : false;
 				$('.stat-widget-history-data-totals').empty();
@@ -1512,23 +1410,15 @@
 				} else {
 					if (showHistoryTeamsTotal) {
 						var html = _module.getTeamHistoryTeamHtml(historyTeamsTotal);
-						adaptiveHtml += (
-							'<div class="stat-widget-table-first">' + html + '</div>' +
-							'<div class="stat-widget-table-second">' + html + '</div>'
-						);
-						$('.stat-widget-history-data-totals').empty().append(adaptiveHtml);
-						$(".stat-widget-sortable-table").tablesorter();
+						$('.stat-widget-history-data-totals').empty().append(html);
+						$('.stat-widget-sortable-teams-table').DataTable(DATA_TABLES_DEFAULT_SETTINGS);
 					}
 
 					if (showHistoryTabels) {
-						var html = _module.getHistoryTabelsHtml(historyTables);
-						var adaptiveHtml = (
-							'<div class="stat-widget-table-first">' + html + '</div>' +
-							'<div class="stat-widget-table-second">' + html + '</div>'
-						);
-
-						$('.stat-widget-history-table-sum').empty().append(adaptiveHtml);
-						$('.stat-widget-sortable-table').tablesorter();
+						var tableId = 'sortable-table-2';
+						var tablesHtml = _module.getHistoryTabelsHtml(historyTables, tableId);
+						$('.stat-widget-history-table-sum').empty().append(tablesHtml);
+						$('#' + tableId).DataTable(DATA_TABLES_DEFAULT_SETTINGS);
 					}
 				}	
 			},
@@ -1541,113 +1431,79 @@
 						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-first-column stat-widget-game-statistic-table-name">' +
 							'<div class="stat-widget-table-adaptive-name">' + val.name + '</div>' +
 						'</td>' +
-						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.two_point_made + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.two_point_throw + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.two_point_percent + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.three_point_made + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.three_point_throw + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.three_point_percent + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.two_three_point_made + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.two_three_point_throw + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.two_three_point_percent + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.free_made + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.free_throw + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.free_percent + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.offensive_rebound + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.deffensive_rebound + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.sum_rebound + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.assists + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.commited_foul + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.recieved_foul + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.turnover + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.steal + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.in_fawor + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.against + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.effectiveness + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-end stat-widget-table-not-first-column">' + val.plus_minus + '</td>' +
-						'<td class="stat-widget-season-statistic-table-cell stat-widget-table-not-first-column">' + val.points_scored + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell">' + val.two_point_made + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell">' + val.two_point_throw + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end">' + val.two_point_percent + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell">' + val.three_point_made + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell">' + val.three_point_throw + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end">' + val.three_point_percent + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell">' + val.two_three_point_made + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell">' + val.two_three_point_throw + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end">' + val.two_three_point_percent + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell">' + val.free_made + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell">' + val.free_throw + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end">' + val.free_percent + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell">' + val.offensive_rebound + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell">' + val.deffensive_rebound + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end">' + val.sum_rebound + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end">' + val.assists + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell">' + val.commited_foul + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end">' + val.recieved_foul + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end">' + val.turnover + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end">' + val.steal + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end">' + val.in_fawor + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end">' + val.against + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end">' + val.effectiveness + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell-end">' + val.plus_minus + '</td>' +
+						'<td class="stat-widget-season-statistic-table-cell">' + val.points_scored + '</td>' +
 						'</tr>'
 					);
 				});
 				var html = (
-					'<table class="stat-widget-season-statistic-table stat-widget-sortable-table">' +
-					'<colgroup>' +
-						'<col width="70" />' +
-						'<col width="60" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-						'<col width="50" />' +
-					'</colgroup>' +
-					'<thead>' +
-						'<tr class="stat-widget-table-head-row">' +
-						'<th class="stat-widget-season-statistic-table-cell-head stat-widget-table-first-column"></th>' +
-						'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">2-ОЧК</th>' +
-						'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">3-ОЧК</th>' +
-						'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">2+3-ОЧК</th>' +
-						'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">ШТР</th>' +
-						'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">ПД</th>' +
-						'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-						'<th class="stat-widget-season-statistic-table-cell-head" colspan="2">Ф</th>' +
-						'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-						'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-						'<th class="stat-widget-season-statistic-table-cell-head" colspan="2"></th>' +
-						'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-						'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
-						'<th class="stat-widget-season-statistic-table-cell-head-end"></th>' +
-					'</tr>' +
-					'<tr class="stat-widget-table-head-row">' +
-						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end stat-widget-table-first-column">Команда</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold">Ч</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold">С</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">В</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">РП</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold">Ф</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">ФС</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Пт</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Пх</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">БШ</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">БШ НА</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Эфф</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">+/-</td>' +
-						'<td class="stat-widget-season-statistic-table-cell-bold">Оч</td>' +
-					'</tr>' +
-					'</thead>' +
-					'<tbody>' +
-					rows +
-					'</tbody>' +
+					'<table class="stat-widget-season-statistic-table stat-widget-sortable-teams-table mini-compact">' +
+						'<thead>' +
+							'<tr class="stat-widget-table-head-row">' +
+								'<th class="stat-widget-season-statistic-table-cell-head" rowspan="2">Команда</th>' +
+								'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">2-ОЧК</th>' +
+								'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">3-ОЧК</th>' +
+								'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">2+3-ОЧК</th>' +
+								'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">ШТР</th>' +
+								'<th class="stat-widget-season-statistic-table-cell-head" colspan="3">ПД</th>' +
+								'<th class="stat-widget-season-statistic-table-cell-head"></th>' +
+								'<th class="stat-widget-season-statistic-table-cell-head" colspan="2">Ф</th>' +
+								'<th class="stat-widget-season-statistic-table-cell-head-end" colspan="7"></th>' +
+							'</tr>' +
+							'<tr class="stat-widget-table-head-row">' +
+								'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold">З</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold">Б</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">%</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold">Ч</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold">С</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">В</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">РП</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold">Ф</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">ФС</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Пт</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Пх</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">БШ</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">БШ НА</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">Эфф</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold stat-widget-season-statistic-table-cell-end">+/-</td>' +
+								'<td class="stat-widget-season-statistic-table-cell-bold">Оч</td>' +
+							'</tr>' +
+						'</thead>' +
+						'<tbody>' +
+							rows +
+						'</tbody>' +
 					'</table>'
 				);
 
@@ -1737,7 +1593,7 @@
 							'width:300px;' +
 							'z-index:3;' +
 							'">' +
-						'<img src=' + _domenName + '"/images/loader.gif" />' +
+						'<img src=' + _domainName + '"/images/loader.gif" />' +
 					'</div>'
 				);
 				$('.stat-widget-data').css('opacity', '0.5');

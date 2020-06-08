@@ -17,7 +17,11 @@
 
 .stat-widget-title {
 	font-size: 24px;
-	margin-top: 40px;
+	margin-top: 30px;
+}
+
+.stat-widget-game-info {
+	margin-top: 10px;
 }
 
 .stat-widget-wrap-stat {
@@ -338,6 +342,26 @@
 	margin-bottom: 40px;
 }
 
+.stat-widget-player-games-statistic table.dataTable.no-footer {
+	border-bottom: none;
+}
+
+.stat-widget-player-games-statistic .dataTables_wrapper.no-footer .dataTables_scrollBody {
+	border-bottom: none;
+}
+
+table.dataTable.mini-compact thead th, table.dataTable.mini-compact thead td {
+	padding: 2px 13px
+}
+
+table.dataTable.mini-compact tfoot th, table.dataTable.mini-compact tfoot td {
+	padding: 2px
+}
+
+table.dataTable.mini-compact tbody th, table.dataTable.mini-compact tbody td {
+	padding: 2px
+}
+
 @media (max-width: 975px) {
 	.stat-widget-records-comand {
 		display: block;
@@ -371,6 +395,7 @@
 
 	.stat-widget-title {
 		font-size: 16px;
+		margin-top: 10px;
 	}
 
 	.stat-widget-records-title {
@@ -383,6 +408,18 @@
 
 	.stat-widget-copy-link-edit {
 		font-size: 12px;
+	}
+
+	table.dataTable.mini-compact thead th, table.dataTable.mini-compact thead td {
+		padding: 0 10px
+	}
+
+	table.dataTable.mini-compact tfoot th, table.dataTable.mini-compact tfoot td {
+		padding: 0
+	}
+
+	table.dataTable.mini-compact tbody th, table.dataTable.mini-compact tbody td {
+		padding: 0
 	}
 }
 
@@ -475,5 +512,17 @@
 
 	.stat-widget-copy-link-edit {
 		font-size: 8px;
+	}
+
+	table.dataTable.mini-compact thead th, table.dataTable.mini-compact thead td {
+		padding: 0 6px
+	}
+
+	table.dataTable.mini-compact tfoot th, table.dataTable.mini-compact tfoot td {
+		padding: 0
+	}
+
+	table.dataTable.mini-compact tbody th, table.dataTable.mini-compact tbody td {
+		padding: 0
 	}
 }
