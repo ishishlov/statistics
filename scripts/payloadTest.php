@@ -28,7 +28,7 @@ for ($i = 1; $i<=1000; $i++) {
 }
 $times['run1000'] = microtime(true);
 
-printMessage('Command statistic (first tab)', $times);
+printMessage('Command statistic (first tab)', $times, 1);
 
 //////
 $times['now'] = microtime(true);
@@ -48,7 +48,7 @@ for ($i = 1; $i<=1000; $i++) {
 }
 $times['run1000'] = microtime(true);
 
-printMessage('Match result (first tab)', $times);
+printMessage('Match result (first tab)', $times, 2);
 
 //////
 $times['now'] = microtime(true);
@@ -69,7 +69,7 @@ for ($i = 1; $i<=1000; $i++) {
 }
 $times['run1000'] = microtime(true);
 
-printMessage('Players (second tab)', $times);
+printMessage('Players (second tab)', $times, 3);
 
 //////
 $times['now'] = microtime(true);
@@ -92,7 +92,7 @@ for ($i = 1; $i<=1000; $i++) {
 }
 $times['run1000'] = microtime(true);
 
-printMessage('Player info (second tab)', $times);
+printMessage('Player info (second tab)', $times, 4);
 
 //////
 $times['now'] = microtime(true);
@@ -114,16 +114,19 @@ for ($i = 1; $i<=1000; $i++) {
 }
 $times['run1000'] = microtime(true);
 
-printMessage('History (third tab)', $times);
+printMessage('History (third tab)', $times, 5);
+
+echo PHP_EOL . 'The script is finished';
 
 
 function calcTime($startTime, $finishTime) {
     return substr($finishTime - $startTime, 0, 7);
 }
 
-function printMessage($name, $times) {
+function printMessage($name, $times, $numberTest) {
     $text = sprintf(
-        "Run time %s:\n 1 run - %s sec\n 10 run - %s sec\n 100 run - %s sec\n 1000 run - %s sec\n\n",
+        "(%d/5) Run time %s:\n 1 run - %s sec\n 10 run - %s sec\n 100 run - %s sec\n 1000 run - %s sec\n\n",
+        $numberTest,
         $name,
         calcTime($times['now'], $times['run1']),
         calcTime($times['now'], $times['run10']),
